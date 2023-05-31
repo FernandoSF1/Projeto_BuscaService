@@ -1,128 +1,208 @@
-<?php 
-    # para trabalhar com sessões sempre iniciamos com session_start.
-    session_start();
+<?php
+# para trabalhar com sessões sempre iniciamos com session_start.
+session_start();
 
-    # inclui os arquivos header, menu e login.
-    require_once 'layouts/site/header.php';
-    require_once 'layouts/site/menu.php';
-    require_once 'login.php';
+# inclui os arquivos header, menu e login.
+require_once 'layouts/site/header.php';
+require_once 'layouts/site/menu.php';
+require_once 'login.php';
+
+# verifica se o formulário foi submetido
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['servico'])) {
+    $nomeServico = $_GET['servico'];
+} else {
+    $nomeServico = '';
+}
 ?>
 
 <main>
     <?php
-        # verifca se existe uma mensagem de erro enviada via GET.
-        # se sim, exibe a mensagem enviada no cabeçalho.
-        if(isset($_GET['error'])) { ?>
-            <script>
-                Swal.fire({
+    // Verifica se existe uma mensagem de erro enviada via GET
+    if (isset($_GET['error'])) {
+    ?>
+        <script>
+            Swal.fire({
                 icon: 'error',
-                title: 'Usuários',
-                text: '<?=$_GET['error'] ?>',
-                })
-            </script>
-    <?php } ?>
+                title: 'Acesso Negado',
+                text: '<?= $_GET['error'] ?>',
+            })
+        </script>
+    <?php
+    }
+
+    // Verifica se existe uma mensagem de sucesso enviada via GET
+    if (isset($_GET['success'])) {
+        $successMessage = $_GET['success'];
+        $title = '';
+
+        // Verifica o valor de $_GET['success'] para definir o título correspondente
+        if ($successMessage === 'cliente') {
+            $title = 'Cadastro de Cliente';
+        } elseif ($successMessage === 'profissional') {
+            $title = 'Cadastro de Profissional';
+        } else {
+            $title = 'Sucesso'; // Valor padrão para o título
+        }
+
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<?= $title ?>',
+                text: '<?= $successMessage ?>',
+            })
+        </script>
+    <?php
+    }
+    ?>
 
     <!--FIM DOBRA CABEÇALHO-->
 
     <!--INÍCIO DOBRA BUSCA-->
-        <section>
-            <article class="introducao">
-                <header>
-                    <h1>Encontre os serviços que está buscando!</h1>
-                </header>
-            </article>
+    <section>
+        <article class="introducao">
+            <header>
+                <h1>Encontre os serviços que está buscando!</h1>
+            </header>
+        </article>
 
-            <article>
-                <header>
-                    <div class="busca">
-                        <div class="main-busca">
-                            <input type="text" class="busca-txt" placeholder="Pesquisar">
-                            <a href="#" class="busca-btn">
-                                <img src="assets/img/lupa.png" alt="Lupa" width="25"><br><br><br>
-                            </a>
-                        </div>
+        <article>
+            <header>
+                <div class="busca">
+                    <div>
+                        <form action="resultado.php" method="get" class="main-busca">
+                            <input type="text" name="servico" class="busca-txt" placeholder="Pesquisar">
+                            <button type="submit" class="busca-btn">
+                                <img src="assets/img/lupa.png" alt="Lupa" width="25">
+                            </button>
+                        </form>
                     </div>
-                </header>
-            </article>
+                </div>
+            </header>
+        </article>
 
-            <article>
-                <header>
-                    <div class="busca-categoria">
-                        <h2>Busca por categoria de serviço</h2>
+        <?php
+        require_once 'login.php';
+        require_once "../database/conexao.php";
+
+        // Cria a variável $dbh que vai receber a conexão com o SGBD e banco de dados.
+        $dbh = Conexao::getInstance();
+
+        // Consulta SQL para recuperar as categorias e serviços com profissionais associados
+        $query = "SELECT s.categoria, s.nome
+          FROM servico s
+          INNER JOIN profissional_has_servico ps ON s.idserv = ps.idserv
+          GROUP BY s.categoria, s.nome
+          ORDER BY s.categoria, s.nome";
+        $stmt = $dbh->prepare($query);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+
+        <article>
+            <header>
+                <div class="busca-categoria">
+                    <h2>Busca por categoria de serviço</h2>
+                    <div class="busca-categoria-scroll">
                         <ul class="busca-categoria-lista">
-                            <li><a href="#">Saúde</a></li>
-                            <li><a href="#">Reformas</a></li>
-                            <li><a href="#">Manutenção</a></li>
-                            <li><a href="#">Domésticos</a></li>
+                            <?php
+                            $servicesByCategory = [];
+
+                            if (empty($rows)) {
+                                echo "<span class='nenhum_servico'>Nenhum serviço cadastrado no sistema.</span>";
+                            } else {
+                                foreach ($rows as $row) {
+                                    $categoria = $row['categoria'];
+                                    $nome = $row['nome'];
+                                    $servicesByCategory[$categoria][] = $nome;
+                                }
+
+                                foreach ($servicesByCategory as $categoria => $servicos) {
+                                    echo "<div class='categoria_servicos'>";
+                                    echo "<p><b>$categoria:</b></p>";
+
+                                    echo "<ul>";
+
+                                    foreach ($servicos as $nome) {
+                                        echo "<li><a href='resultado.php?servico=" . urlencode($nome) . "'>$nome</a></li>";
+                                    }
+
+                                    echo "</ul>";
+                                    echo "</div>";
+                                }
+                            }
+                            ?>
                         </ul>
                     </div>
-                </header>
-            </article>
+                </div>
+            </header>
+        </article>
+
         <!--FIM DOBRA BUSCA-->
 
         <!--INÍCIO DOBRA REGISTRO-->
-            <article>
-                <header>
-                    <div class="registrar">
-                        <div class="registrar-pro">
-                            <p>Se você é um profissional autônomo, registre o seu serviço no site e alcançe mais clientes!</p>
-                            <div class="registrar-pro-btn">
-                                <a href="cadastra_pro.php">Registre-se como profissional</a>
-                            </div>
-                        </div>
-
-                        <div class="registrar-cli">
-                            <p>Você é um cliente? Registre-se como cliente e tenha acesso a mais recursos</p>
-                            <div class="registrar-cli-btn">
-                                <a href="cadastra_cli.php">Registre-se como cliente</a>
-                            </div>
+        <article>
+            <header>
+                <div class="registrar">
+                    <div class="registrar-pro">
+                        <p>Se você é um profissional autônomo, registre o seu serviço no site e alcançe mais clientes!</p>
+                        <div class="registrar-pro-btn">
+                            <a href="cadastra_pro.php">Registre-se como profissional</a>
                         </div>
                     </div>
-                </header>
-            </article>
-        </section>
-        <!--FIM DOBRA REGISTRO-->
 
-        <!--DOBRA PALCO PRINCIPAL-->
-
-    
-        <!--INICIO SESSÃO SESSÃO DE ARTIGOS-->
-        <section class="main_blog">
-            <header class="main_blog_header">
-                <h1 class="icon-blog">O que é o Busca Service?</h1>
-                <p>Encontre o serviço ideal em apenas alguns cliques! O Busca Service conecta você aos profissionais da sua região, enquanto permite que eles alcancem mais clientes e expandam seus negócios. A solução perfeita para quem busca praticidade e eficiência.</p>
+                    <div class="registrar-cli">
+                        <p>Você é um cliente? Registre-se como cliente e tenha acesso a mais recursos</p>
+                        <div class="registrar-cli-btn">
+                            <a href="cadastra_cli.php">Registre-se como cliente</a>
+                        </div>
+                    </div>
+                </div>
             </header>
+        </article>
+    </section>
+    <!--FIM DOBRA REGISTRO-->
 
-            <article>
-                <a href="#">
-                    <img src="assets/img/aperto_mao.png" width="50" alt="Imagem post" title="Imagem Post">
-                </a>
-                <p><a href="" class="category">O que fazemos?</a></p>
-                <h2><a href="" class="title">Facilitamos a sua busca por serviços que você precisa por lhe apresentar uma lista de profissionais da área pesquisada.<br>
-                    Também divulgamos serviços de profissionais autônomos.</a></h2>
-            </article>
+    <!--DOBRA PALCO PRINCIPAL-->
 
-            <article>
-                <a href="#">
-                    <img src="assets/img/procura.png" width="50" alt="Imagem post" title="Imagem Post">
-                </a>
-                <p><a href="" class="category">Como achar um profissional?</a></p>
-                <h2><a href="" class="title">Está precisando de algum serviço?<br>
-                    Digite-o na pesquisa, procure pelo profissional desejado e entre em contato diretamente com ele pelos telefones disponíveis.</a></h2>
-            </article>
 
-            <article>
-                <a href="#">
-                    <img src="assets/img/divulgar.png" width="50" alt="Imagem post" title="Imagem Post">
-                </a>
-                <p><a href="" class="category">Como divulgar meu trabalho?</a></p>
-                <h2><a href="" class="title">Você é um profissional autônomo e deseja aumentar a divulgação do seu serviço?<br>
-                    Registre o seu negócio no site e conquiste mais clientes!</a></h2>
-            </article>
-        </section>
+    <!--INICIO SESSÃO SESSÃO DE ARTIGOS-->
+    <section class="main_blog">
+        <header class="main_blog_header">
+            <h1 class="icon-blog">O que é o Busca Service?</h1>
+            <p>Encontre o serviço ideal em apenas alguns cliques! O Busca Service conecta você aos profissionais da sua região, enquanto permite que eles alcancem mais clientes e expandam seus negócios. A solução perfeita para quem busca praticidade e eficiência.</p>
+        </header>
 
-        <!--FIM SESSÃO SESSÃO DE ARTIGOS-->
+        <article>
+            <a href="#">
+                <img src="assets/img/aperto_mao.png" width="50" alt="Imagem post" title="Imagem Post">
+            </a>
+            <p class="category">O que fazemos?</p>
+            <h2>Facilitamos a sua busca por serviços que você precisa por lhe apresentar uma lista de profissionais da área pesquisada.<br>
+                Também divulgamos serviços de profissionais autônomos.</a></h2>
+        </article>
+
+        <article>
+            <a href="#">
+                <img src="assets/img/procura.png" width="50" alt="Imagem post" title="Imagem Post">
+            </a>
+            <p class="category">Como achar um profissional?</a></p>
+            <h2>Está precisando de algum serviço?<br>
+                Digite-o na pesquisa, procure pelo profissional desejado e entre em contato diretamente com ele pelos telefones disponíveis.</a></h2>
+        </article>
+
+        <article>
+            <a href="#">
+                <img src="assets/img/divulgar.png" width="50" alt="Imagem post" title="Imagem Post">
+            </a>
+            <p class="category">Como divulgar meu trabalho?</a></p>
+            <h2>Você é um profissional autônomo e deseja aumentar a divulgação do seu serviço?<br>
+                Registre o seu negócio no site e conquiste mais clientes!</a></h2>
+        </article>
+    </section>
+
+    <!--FIM SESSÃO SESSÃO DE ARTIGOS-->
 </main>
-       
-        <!-- inclui o arquivo de rodape do site -->
-        <?php require_once 'layouts/site/footer.php'; ?>
+
+<!-- inclui o arquivo de rodape do site -->
+<?php require_once 'layouts/site/footer.php'; ?>

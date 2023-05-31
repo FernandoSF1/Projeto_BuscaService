@@ -1,23 +1,22 @@
 <?php
-class Conexao 
+class Conexao
 {
     public static function getInstance()
     {
-        try
-        {
+        try {
             $dbh = new PDO(
-                "mysql:host=127.0.0.1;port=3306;dbname=busca_service", "root", ""
+                "mysql:host=127.0.0.1;port=3306;dbname=busca_service",
+                "root",
+                ""
             );
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);  
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
             $dbh->query('SET NAMES utf8');
             $dbh->query('SET CHARACTER SET utf8');
-            
+
             //echo "Conexão com o banco de dados estabelecida com sucesso!";
-            
+
             return $dbh;
-        }
-        catch(PDOException $error)
-        {
+        } catch (PDOException $error) {
             throw new Exception("Erro ao tentar conectar ao banco de dados. Verifique a conexão e o SGBD.");
         }
     }

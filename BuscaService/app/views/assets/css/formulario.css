@@ -1,5 +1,4 @@
-        
-        .box{
+        .box {
             margin: 5% auto;
             color: rgb(0, 0, 0);
             position: relative;
@@ -7,13 +6,13 @@
             width: 50%;
         }
 
-        .box fieldset{
+        .box fieldset {
             background-color: #bebebe;
             border-radius: 25px;
             border: 2px solid #000;
         }
 
-        .bg_form{
+        .bg_form {
             background-color: #656c75;
         }
 
@@ -22,7 +21,7 @@
         }*/
 
         /*INÍCIO FORMULÁRIO*/
-        legend{
+        legend {
             border: 1px solid rgb(3, 3, 133);
             padding: 10px;
             text-align: center;
@@ -36,14 +35,14 @@
             display: flex;
             flex-wrap: wrap;
         }
-        
+
         .endereco .inputBox {
             width: 40%;
             box-sizing: border-box;
             padding-right: 10px;
-        }        
+        }
 
-        .main_form{
+        .main_form {
             background-color: #fff;
             border-radius: 10px;
         }
@@ -53,7 +52,7 @@
             margin: 30px;
             font-weight: 500;
         }
-        
+
         .inputUser {
             background: none;
             border: none;
@@ -68,7 +67,7 @@
             letter-spacing: 2px;
             font-weight: 300;
         }
-        
+
         .labelInput {
             position: absolute;
             top: 0px;
@@ -77,43 +76,50 @@
             pointer-events: none;
             transition: .5s;
         }
-        
+
         .fileInput {
-            display: none; /* Esconde o campo de input real */
-          }
-          
-          .fileInputLabel {
-            background-color: #4CAF50; /* Cor de fundo do botão */
-            color: white; /* Cor do texto do botão */
-            padding: 10px 10px; /* Espaçamento interno do botão */
-            border-radius: 4px; /* Arredonda as bordas do botão */
-            cursor: pointer; /* Altera o cursor do mouse ao passar sobre o botão */
-          }
-          
-          .fileInputLabel:hover {
-            background-color: #45a049; /* Cor de fundo do botão ao passar o mouse */
-          }
-          
-        .inputUser:focus ~ .labelInput,
-        .inputUser:valid ~ .labelInput{
-            top: -20px;
-            font-size: 0.95em;
-            color: rgb(3, 3, 133);
-            font-weight: 600;
+            display: none;
+            /* Esconde o campo de input real */
         }
-        
-        .select-wrapper {
-            border-radius: 5px;
+
+        .fileInputLabel {
+            background-color: #4CAF50;
+            /* Cor de fundo do botão */
+            color: white;
+            /* Cor do texto do botão */
+            padding: 10px 10px;
+            /* Espaçamento interno do botão */
+            border-radius: 4px;
+            /* Arredonda as bordas do botão */
+            cursor: pointer;
+            /* Altera o cursor do mouse ao passar sobre o botão */
         }
-        
-        .active{
+
+        .fileInputLabel:hover {
+            background-color: #45a049;
+            /* Cor de fundo do botão ao passar o mouse */
+        }
+
+        .inputUser:focus~.labelInput,
+        .inputUser:valid~.labelInput {
             top: -20px;
             font-size: 0.95em;
             color: rgb(3, 3, 133);
             font-weight: 600;
         }
 
-        #submit{
+        .select-wrapper {
+            border-radius: 5px;
+        }
+
+        .active {
+            top: -20px;
+            font-size: 0.95em;
+            color: rgb(3, 3, 133);
+            font-weight: 600;
+        }
+
+        #submit {
             background-color: rgb(3, 3, 133);
             width: 30%;
             border: none;
@@ -128,7 +134,7 @@
             border: 1px solid #000;
         }
 
-        #cancel{
+        #cancel {
             background-color: rgb(0, 73, 122);
             width: 30%;
             border: none;
@@ -143,87 +149,95 @@
             border: 1px solid #000;
         }
 
-        .btn_alinhamento{
+        .btn_alinhamento {
             width: 100%;
             text-align: center;
             margin: 0px auto;
             margin-top: 10px;
         }
-        
-        #submit:hover{
+
+        #submit:hover {
             opacity: 1;
             transition: 0.2s;
         }
 
-        #cancel:hover{
+        #cancel:hover {
             opacity: 1;
             transition: 0.2s;
         }
 
-  
-        .main_cta .main_cta_content .main_cta_content_spacer_products{
-            margin:0 auto;
+
+        .main_cta .main_cta_content .main_cta_content_spacer_products {
+            margin: 0 auto;
             max-width: 1300px;
             padding: 500px 40px;
         }
 
-        .main_header_content_menu ul li a{
+        .main_header_content_menu ul li a {
             padding: 0 26px;
             display: flex;
             align-items: center;
             height: 100%;
-            color:#d36833;
+            color: #d36833;
         }
 
         /*FIM FORMULÁRIO*/
 
         /*MENU DE SERVIÇOS*/
-.seleciona_servicos {
-    border: 0px solid rgb(161, 161, 161);
-    border-radius: 5px;
-    margin: 0px auto;
-}
+        .seleciona_servicos {
+            border: 0px solid rgb(161, 161, 161);
+            border-radius: 5px;
+            margin: 0px auto;
+        }
 
-.categoria_servicos{
-    padding-left: 15px;
-    padding-right: 15px;
-}
+        .categoria_servicos {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
 
-.categoria_servicos ul {
-    display: inline-block;
-    vertical-align: top;
-    text-decoration: none;
-}
+        .categoria_servicos ul {
+            display: inline-block;
+            vertical-align: top;
+            text-decoration: none;
+        }
 
-.servicos_lista {
-    display: flex;
-    margin: 10px 10px;
-    gap: 5px;
-    flex-wrap: wrap;
-    border: 1px solid #bebebe;
-    justify-content: space-between;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid #656c75;
-}
+        .servicos_lista {
+            display: flex;
+            margin: 10px 10px;
+            gap: 5px;
+            flex-wrap: wrap;
+            border: 1px solid #bebebe;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 5px;
+            border: 1px solid #656c75;
+        }
 
-.coluna_servicos {
-    margin-bottom: 10px;
-    border: 0px solid black;
-}
+        .coluna_servicos {
+            margin-bottom: 10px;
+            border: 0px solid black;
+        }
 
-.servicos_oferecidos {
-    display: flex;
-    margin-left: 30px;
-    font-weight: 500;
-}
+        .servicos_oferecidos {
+            display: flex;
+            margin-left: 30px;
+            font-weight: 500;
+        }
 
-.servicos_lista ul {
-    list-style-type: none;
-}
-/*FIM MENU DE SERVIÇOS*/
+        .servicos_lista ul {
+            list-style-type: none;
+        }
 
-        .descricao{
+        .nenhum_servico{
+            display: flex;
+            justify-content: center;
+            font-weight: 600;
+            margin: 30px auto;
+        }
+
+        /*FIM MENU DE SERVIÇOS*/
+
+        .descricao {
             width: 100%;
             height: 150px;
             padding: 10px;
@@ -231,7 +245,19 @@
             border: 1px solid #bebebe;
             border-radius: 4px;
             resize: vertical;
-            -webkit-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
-            -moz-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
-            box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+            -webkit-box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
         }
+
+        .servicos-obrigatorio {
+            display: flex;
+            justify-content: center;
+            color: rgb(0, 0, 0);
+            font-size: 1.1em;
+            margin-top: 5px;
+            margin: auto 30px;
+            border-radius: 5px;
+            background-color: #a05f5f;
+        }
+        

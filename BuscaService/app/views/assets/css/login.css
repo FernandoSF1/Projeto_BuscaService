@@ -1,4 +1,4 @@
-.div_login{
+.div_login {
     background-color: #fff;
     position: absolute;
     top: 50%;
@@ -10,15 +10,16 @@
     text-align: center;
     border: 1px solid black;
 }
-.div_login h1{
+
+.div_login h1 {
     font-size: 1.5em;
     font-weight: 700;
     margin-bottom: 50px;
-    
+
 }
 
-.div_login h1::after{
-    content:'';
+.div_login h1::after {
+    content: '';
     display: block;
     width: 10rem;
     height: 0.2rem;
@@ -28,7 +29,7 @@
     border-radius: 5px;
 }
 
-.input{
+.input {
     padding: 13px;
     border: none;
     outline: none;
@@ -37,7 +38,8 @@
     border-radius: 5px;
     border: 1px solid black;
 }
-.button{
+
+.button {
     margin-top: 30px;
     margin-bottom: 50px;
     color: white;
@@ -50,14 +52,15 @@
     opacity: 0.8;
     border: 2px solid black;
 }
-.button:hover{
+
+.button:hover {
     color: white;
     background-color: rgb(3, 3, 133);
     opacity: 1;
     cursor: pointer;
 }
 
-.div_login a{
+.div_login a {
     font-size: 1;
     margin: 10px;
 }

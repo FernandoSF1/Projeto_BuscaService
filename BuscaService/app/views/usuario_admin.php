@@ -1,33 +1,34 @@
-<?php 
-    # para trabalhar com sessões sempre iniciamos com session_start.
-    session_start();
-    
-    # inclui o arquivo header
-    require_once 'layouts/site/header.php';
-    
-    # verifica se existe sessão de usuario e se ele é administrador.
-    # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
-    # sai da pagina.
-    if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
-        header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
-        exit;
-    }
+<?php
+# para trabalhar com sessões sempre iniciamos com session_start.
+session_start();
+
+# inclui o arquivo header
+require_once 'layouts/site/header.php';
+
+# verifica se existe sessão de usuario e se ele é administrador.
+# se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
+# sai da pagina.
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+    header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
+    exit;
+}
 ?>
+
 <body>
-    <?php require_once 'layouts/admin/menu.php';?>
+    <?php require_once 'layouts/admin/menu.php'; ?>
     <main>
-    <?php
+        <?php
         # verifca se existe uma mensagem de sucesso enviada via GET.
         # se sim, exibe a mensagem enviada no cabeçalho.
-        if(isset($_GET['success'])) { ?>
+        if (isset($_GET['success'])) { ?>
             <script>
                 Swal.fire({
-                icon: 'success',
-                title: 'Usuários',
-                text: '<?=$_GET['success'] ?>',
+                    icon: 'success',
+                    title: 'Usuários',
+                    text: '<?= $_GET['success'] ?>',
                 })
             </script>
-    <?php } ?>
+        <?php } ?>
         <div class="main_opc">
 
             <section class="main_course" id="escola">
@@ -38,25 +39,26 @@
                     <article>
                         <h2 align="center">Cadastrar dados</h2>
                         <header>
-                            
+
                             <p align="center">
-                                <a href="gerenciamento_admin_add.php"><img src="assets/img/cadastro.png" width="200"></a></p>
-                               
+                                <a href="gerenciamento_admin_add.php"><img src="assets/img/cadastro.png" width="200"></a>
+                            </p>
+
                         </header>
                     </article>
                     <article>
                         <h2 align="center">Alterar dados</h2>
                         <header>
-                            
+
                             <p align="center"><a href="gerenciamento_admin_list.php"><img src="assets/img/listar.png" width="350"></a></p>
-                            
+
                         </header>
                     </article>
 
                 </div>
                 </article>
             </section>
-            </div>
+        </div>
 
     </main>
     <!--FIM DOBRA PALCO PRINCIPAL-->

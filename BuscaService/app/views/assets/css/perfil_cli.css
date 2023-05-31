@@ -1,0 +1,58 @@
+.container {
+    max-width: 80%;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    box-sizing: border-box;
+}
+
+.dados {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
+}
+
+.dados-pessoais_cli {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 50%;
+}
+
+.dados-endereco {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alterado */
+    justify-content: flex-start; /* Adicionado */
+    flex-basis: 50%;
+}
+
+.campo {
+    margin-bottom: 10px;
+}
+
+.label_perfil {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.input_perfil[type="text"] {
+    padding: 5px;
+    width: 300px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}

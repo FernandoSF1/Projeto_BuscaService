@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="assets/css/login.css" type="text/css">
     <link rel="stylesheet" href="assets/css/lista.css" type="text/css">
     <link rel="stylesheet" href="assets/css/formulario.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/footer_links.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/contato.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/resultado.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/perfil_cli.css" type="text/css">
 
     <script type="text/javascript" src="assets/js/modal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

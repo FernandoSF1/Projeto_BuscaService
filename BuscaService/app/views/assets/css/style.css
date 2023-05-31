@@ -1,4 +1,3 @@
-
 html {
     height: 100%;
     min-height: 100%;
@@ -14,7 +13,7 @@ footer {
     margin-top: auto;
 }
 
-.main-navbar{
+.main-navbar {
     display: flex;
     justify-content: space-between;
     padding: 20px 40px;
@@ -25,26 +24,26 @@ footer {
     gap: 30px;
 }
 
-.main-navbar-logo-nome{
+.main-navbar-logo-nome {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: #ebebeb;
     border-radius: 25px;
-    -webkit-box-shadow: 0px 0px 31px 0px rgba(0,0,0,0.33);
-    -moz-box-shadow: 0px 0px 31px 0px rgba(0,0,0,0.33);
-    box-shadow: 0px 0px 31px 0px rgba(0,0,0,0.33);
+    -webkit-box-shadow: 0px 0px 31px 0px rgba(0, 0, 0, 0.33);
+    -moz-box-shadow: 0px 0px 31px 0px rgba(0, 0, 0, 0.33);
+    box-shadow: 0px 0px 31px 0px rgba(0, 0, 0, 0.33);
     transition: transform 0.3s ease;
-    
+
 }
 
 .main-navbar-logo-nome:hover {
     transform: scale(1.05);
-  }
+}
 
-.nomesite{
-    font-size: 1.3em;
-    font-weight: 500;
+.nomesite {
+    font-size: 1.5em;
+    font-weight: 300;
     margin-right: 10px;
 }
 
@@ -52,51 +51,54 @@ footer {
     border: 0px solid black;
     margin-right: 5px;
     margin-left: 5px;
-  }
-  
+}
 
 
-.navmenu{
+
+.navmenu {
     list-style: none;
     display: flex;
     gap: 25px;
     font-weight: 500;
-       
 }
 
+.navmenu li {
+    display: flex;
+    align-items: center;
+  }  
+
 .navmenu a {
-    font-size: 1.1em;
+    font-size: 1.2em;
     text-decoration: none;
     color: #ebebeb;
     padding: 7px;
     border-radius: 5px;
     transition: all 0.5s ease;
-  }
-  
-  .navmenu a:hover {
+}
+
+.navmenu a:hover {
     color: lightblue;
     background-color: #555555;
     border-bottom: 1px solid lightblue;
     transition: all 0.5s ease;
-  }
-  
-  
+}
+
 
 /*INÍCIO DOBRA BUSCA*/
 
-.introducao{
+.introducao {
     font-size: 2em;
     font-weight: 500px;
-    margin: 70px auto;
-    margin-left: 40px;
+    color: #000;
 }
 
-.introducao h1{
+.introducao h1 {
     text-align: center;
+    margin-top: 70px;
 }
 
-.main-busca{
-    
+.main-busca {
+
     background-color: rgb(207, 234, 255);
     height: 50px;
     padding: 10px 10px;
@@ -106,21 +108,21 @@ footer {
     align-items: center;
     max-width: 1300px;
     width: 900px;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
-.busca-txt{
+.busca-txt {
     border: none;
     background: none;
     outline: none;
     padding: 0;
-    font-size: 1em;
+    font-size: 1.4em;
     line-height: 22px;
     width: 825px;
     border-bottom: 1px solid rgb(176, 201, 221);
 }
 
-.busca-btn{
+.busca-btn {
     width: 50px;
     height: 50px;
     border-radius: 40%;
@@ -130,125 +132,167 @@ footer {
     align-items: center;
 }
 
-.busca{
+.busca {
     display: flex;
     text-align: center;
     justify-content: center;
-    margin: 0 40px;
+    margin: 80px 40px;
+    align-items: center;
 }
 
-.busca-categoria{
+.busca-categoria {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 700px;
-    margin: 50px auto;
-    border: 0px solid black;
-}
-
-.busca-categoria-lista{
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid #ebebeb;
+    border-radius: 15px;
+  }
+  
+  .busca-categoria-scroll {
+    overflow-y: auto;
+    max-height: 300px;
+    width: 100%;
+  }
+  
+  .busca-categoria-lista {
     display: flex;
+    flex-wrap: wrap;
     list-style: none;
-    gap: 100px;
-    margin: 50px auto;
-}
-
-.busca-categoria h2{
+    gap: 70px; /* Reduzindo a distância entre as listas */
+    margin: 0;
+    padding: 0;
+    font-size: 1.4em;
+  }
+  
+  .busca-categoria h2 {
     display: flex;
-    font-size: 1.5em;
+    color: #000;
+    font-size: 1.8em;
     font-weight: 500;
-}
+    padding: 10px 280px;
+    background-color: #ebebeb;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: 1px solid #d8d8d8;
+    text-align: center;
+  }
+  
+  .busca-categoria ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .busca-categoria ul li {
+    list-style: none;
+  }
+  
+  .busca-categoria ul li a {
+    text-decoration: none;
+  }
+  
+  .categoria_servicos {
+    margin-top: 20px;
+  }
 
+  .categoria_servicos p{
+    margin-bottom: 10px;
+  }
+  
+  
+  
 /*FIM DOBRA BUSCA*/
 
 /*INÍCIO DOBRA REGISTRO*/
 
-.registrar{
+.registrar {
     display: flex;
     padding: 40px;
     margin: 80px auto;
     align-items: center;
     justify-content: center;
     gap: 100px;
-    -webkit-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-    -moz-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-    box-shadow: 0px 0px 2px 1px rgba(138,138,138,0.84);
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    box-shadow: 0px 0px 2px 1px rgba(138, 138, 138, 0.84);
 }
 
-.registrar-pro{
+.registrar-pro {
     align-items: center;
-    flex-basis: 30%;
+    flex-basis: 40%;
     text-align: center;
     font-size: 1.1em;
     font-weight: 300;
 }
 
-.registrar-pro-btn{
+.registrar-pro-btn {
     display: flex;
     justify-content: center;
 }
 
-.registrar-pro p{
+.registrar-pro p {
     margin-bottom: 30px;
     align-items: center;
+    font-size: 1.3em;
+    font-weight: 300;
 }
 
-.registrar-pro-btn a{
+.registrar-pro-btn a {
     color: white;
-    background-color: rgb(3, 3, 133);
+    background-color: rgb(23, 23, 168);
     padding: 10px 10px;
     border-radius: 15px;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 400;
     display: flex;
     justify-content: center;
     width: 300px;
-    opacity: 0.9;
     border: 2px solid black;
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    transition: transform 0.2s ease-out, background-color 0.3s ease-out;
 }
 
-.registrar-pro-btn a:hover{
-    opacity: 1;
+.registrar-pro-btn a:hover {
+    background-color: rgb(3, 3, 133);
     transform: translateY(-5px);
 }
 
-.registrar-cli{
+.registrar-cli {
     align-items: center;
-    flex-basis: 30%;
+    flex-basis: 40%;
     text-align: center;
     font-size: 1.1em;
     font-weight: 300;
 }
 
-.registrar-cli-btn{
+.registrar-cli-btn {
     display: flex;
     justify-content: center;
 }
 
-.registrar-cli p{
+.registrar-cli p {
     margin-bottom: 30px;
     align-items: center;
+    font-size: 1.3em;
+    font-weight: 300;
 }
 
-.registrar-cli-btn a{
+.registrar-cli-btn a {
     color: black;
     background-color: #dedede;
     padding: 10px 10px;
     border-radius: 15px;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 400;
     display: flex;
     justify-content: center;
     width: 300px;
-    opacity: 0.9;
     border: 2px solid black;
-    transition: transform 0.2s ease-out, background-color 0.2s ease-out, opacity 0.2s ease-out;
+    transition: transform 0.2s ease-out, background-color 0.2s ease-out;
 }
 
-.registrar-cli-btn a:hover{
-    opacity: 1;
+.registrar-cli-btn a:hover {
     transition: .3s;
     background-color: #bbbbbb;
     transform: translateY(-5px);
@@ -258,7 +302,7 @@ footer {
 
 
 /*INICIO SESSÃO DE ARTIGOS*/
-.main_blog{
+.main_blog {
     max-width: calc(1300px - 40px);
     padding: 0 20px;
     margin: 0 auto;
@@ -267,54 +311,55 @@ footer {
     flex-wrap: wrap;
 }
 
-.main_blog_header{
+.main_blog_header {
     flex-basis: 100%;
     margin: 10px 0;
 }
 
-.main_blog_header p{
+.main_blog_header p {
     margin: 50px auto;
-    font-size: 1.1em;
+    font-size: 1.4em;
 }
 
-.main_blog_header h1{
-color:#333;
-margin-bottom: 5px;
-font-size: 1.8em;
+.main_blog_header h1 {
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 1.8em;
 }
 
-.main_blog article{
-flex-basis: calc(25% - 20px);
-margin-top: 10px;
-margin-bottom: 100px;
-opacity: 0.9;
-border-radius: 10px;
--webkit-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
--moz-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
+.main_blog article {
+    flex-basis: calc(25% - 20px);
+    margin-top: 10px;
+    margin-bottom: 100px;
+    opacity: 0.9;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
 }
 
 
-.main_blog article:hover{
-     opacity:1;
-     transition: 0.2s;
-    }
+.main_blog article:hover {
+    opacity: 1;
+    transition: 0.2s;
+}
 
-    
-.main_blog article p{
+
+.main_blog article p {
     margin: 1px 0;
-    font-size: 1.3em;
+    margin-bottom: 30px;
+    font-size: 1.5em;
     font-weight: 500;
     display: flex;
     justify-content: center;
 }
 
-.main_blog article a{
+.main_blog article a {
     display: flex;
     justify-content: center;
 }
 
-.main_blog article img{
+.main_blog article img {
     margin: 40px auto;
     background-color: #f5f5f5;
     border-radius: 21%;
@@ -322,28 +367,31 @@ box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
     padding: 20px 20px;
 }
 
-.category{
+.category {
     margin: 10px 0;
-    font-size: 0.875em;
-    color:#d36833;
+    font-size: 1em;
+    color: rgb(3, 3, 133);
+    font-weight: 600;
+    text-align: center;
 }
 
-.main_blog article h2{
+.main_blog article h2 {
     margin-bottom: 30px;
     font-weight: 400;
-    color:#333;
-    font-size: 1.2em;
+    color: #333;
+    font-size: 1.4em;
     padding: 10px;
     text-align: center;
 }
 
-.main_blog article h2 a{
-    color:#333;
+.main_blog article h2 a {
+    color: #333;
 }
+
 /*FIM SESSÃO DE ARTIGOS*/
 
 /*DOBRA OPÇÃO*/
-.main_course_content{
+.main_course_content {
     max-width: 1300px;
     margin: 0 auto;
     display: flex;
@@ -361,31 +409,32 @@ box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
     -webkit-border-radius: 5px;
     padding: 20px;
     transition: transform 0.4s ease;
-  }
-  
-  .main_course_content article:hover {
-    transform: scale(1.02);
-  }
-  
-  .main_course_content img {
-    opacity: 0.7;
-    transition: opacity 0.5s ease; /* Adicionado */
-  }
-  
-  .main_course_content article:hover img {
-    opacity: 1;
-  }
-  
-  
-  
+}
 
-.main_course_content article h2{
+.main_course_content article:hover {
+    transform: scale(1.02);
+}
+
+.main_course_content img {
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+    /* Adicionado */
+}
+
+.main_course_content article:hover img {
+    opacity: 1;
+}
+
+
+
+
+.main_course_content article h2 {
     font-size: 1.3em;
     color: #333;
     margin-bottom: 4px;
 }
 
-.main_course_content article p{
+.main_course_content article p {
     font-size: 0.9em;
     color: #333;
 }
@@ -394,59 +443,67 @@ box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
 
 /*INICIO DOBRA RODAPE*/
 
-.main_footer{
-    padding: 40px 0;
+.main_footer {
+    padding: 40px 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin: auto 0px;
     color: #333;
     background-color: #ebebeb;
-    -webkit-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-  -moz-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-  box-shadow: 0px 0px 2px 1px rgba(138,138,138,0.84);
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    box-shadow: 0px 0px 2px 1px rgba(138, 138, 138, 0.84);
 }
 
-.main_footer > header{
+.main_footer>header {
     flex-basis: 100%;
 }
-.main_footer > header h1{
-    font-size: 1.4em;
+
+.main_footer>header h1 {
+    font-size: 1.8em;
     margin-bottom: 40px;
 }
+
 /*
 .main_footer > article{
     flex-basis: 33%;
 }*/
 
-.main_footer > article h2{
+.main_footer>article h2 {
     margin-bottom: 20px;
+    font-size: 1.4em;
 }
 
-.main_footer > article ul li{
+.main_footer>article ul li {
     list-style: none;
     margin: 5px 0;
 }
 
-.main_footer > article ul li a{
-    color:#333;
-
+.main_footer>article ul li a {
+    color: #333;
+    font-size: 1.2em;
 }
 
-.main_footer > article ul li a:hover{
+.main_footer>article ul li a:hover {
     text-decoration: underline;
-    
+
 }
 
-.main_footer_our_pages , .main_footer_links{
+.main_footer_our_pages,
+.main_footer_links {
     flex-basis: 25%;
 }
 
-.main_footer_about{
+.main_footer_about {
     flex-basis: 50%;
-}  
+}
 
-.main_footer_rights{
+.main_footer_about p{
+    font-size: 1.2em;
+}
+
+.main_footer_rights {
     justify-content: center;
     padding: 27px 0;
     width: 100%;
@@ -456,6 +513,10 @@ box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
     font-size: 0.9em;
     color: #fff;
     font-weight: 300;
+}
+
+.main_footer_rights p{
+    font-size: 1.2em;
 }
 
 /*FIM DOBRA RODAPE*/

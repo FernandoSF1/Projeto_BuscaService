@@ -1,33 +1,57 @@
-.introducao h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.introducao_link h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+    margin: 70px auto;
+    margin-left: 40px;
     text-align: center;
 }
 
-.conteudo_quem{
-    margin: 0 100px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
+.conteudo_quem {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 50px;
+    margin-top: 20px;
     margin-bottom: 100px;
 }
 
-.conteudo_quem header{
-    padding: 0px 100px;
-    background-color: #f7f7f7;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-    -moz-box-shadow: 0px 0px 6px 3px rgba(138,138,138,0.84);
-    box-shadow: 0px 0px 2px 1px rgba(138,138,138,0.84);
+.titulo_link {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    margin-top: 50px;
 }
 
-.conteudo_quem header p{
-    font-size: 1.3em;
-    margin-bottom: 50px;
+.subtitulo,
+.conteudo_quem p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-.titulo_link{
-    margin: 30px auto;
-    font-size: 1.5em;
+.conteudo_quem header:last-child {
+    margin-bottom: 0;
+}
+
+.subtitulo {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.item-titulo {
+    font-weight: bold;
+    margin-top: 50px;
+}
+
+.item-descricao {
+    margin-bottom: 10px;
+}
+
+.item-lista li {
+    color: #555;
+    margin-bottom: 10px;
+    list-style-type: none;
 }
