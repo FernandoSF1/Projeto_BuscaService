@@ -99,44 +99,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['servico'])) {
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
-        <article>
-            <header>
-                <div class="busca-categoria">
-                    <h2>Busca por categoria de serviço</h2>
-                    <div class="busca-categoria-scroll">
-                        <ul class="busca-categoria-lista">
-                            <?php
-                            $servicesByCategory = [];
+<article>
+  <header>
+    <div class="busca-categoria">
+      <h2>Busca por categoria de serviço</h2>
+      <div class="busca-categoria-scroll">
+        <ul class="busca-categoria-lista">
+          <?php
+          $servicesByCategory = [];
 
-                            if (empty($rows)) {
-                                echo "<span class='nenhum_servico'>Nenhum serviço cadastrado no sistema.</span>";
-                            } else {
-                                foreach ($rows as $row) {
-                                    $categoria = $row['categoria'];
-                                    $nome = $row['nome'];
-                                    $servicesByCategory[$categoria][] = $nome;
-                                }
+          if (empty($rows)) {
+            echo "<span class='nenhum_servico'>Nenhum serviço cadastrado no sistema.</span>";
+          } else {
+            foreach ($rows as $row) {
+              $categoria = $row['categoria'];
+              $nome = $row['nome'];
+              $servicesByCategory[$categoria][] = $nome;
+            }
 
-                                foreach ($servicesByCategory as $categoria => $servicos) {
-                                    echo "<div class='categoria_servicos'>";
-                                    echo "<p><b>$categoria:</b></p>";
+            foreach ($servicesByCategory as $categoria => $servicos) {
+              echo "<div class='categoria_servicos'>";
+              echo "<p class='categoria-servico'><b>$categoria:</b></p>";
 
-                                    echo "<ul>";
+              echo "<ul>";
 
-                                    foreach ($servicos as $nome) {
-                                        echo "<li><a href='resultado.php?servico=" . urlencode($nome) . "'>$nome</a></li>";
-                                    }
+              foreach ($servicos as $nome) {
+                echo "<li><a href='resultado.php?servico=" . urlencode($nome) . "' class='nome-servico'>$nome</a></li>";
+              }
 
-                                    echo "</ul>";
-                                    echo "</div>";
-                                }
-                            }
-                            ?>
-                        </ul>
-                    </div>
-                </div>
-            </header>
-        </article>
+              echo "</ul>";
+              echo "</div>";
+            }
+          }
+          ?>
+        </ul>
+      </div>
+    </div>
+  </header>
+</article>
+
 
         <!--FIM DOBRA BUSCA-->
 

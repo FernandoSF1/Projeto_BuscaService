@@ -47,7 +47,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                         </header>
                     </article>
                     <article>
-                        <h2 align="center">Alterar dados</h2>
+                        <h2 align="center">Listar dados</h2>
                         <header>
 
                             <p align="center"><a href="gerenciamento_admin_list.php"><img src="assets/img/listar.png" width="350"></a></p>

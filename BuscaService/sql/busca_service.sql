@@ -25,13 +25,13 @@ CREATE TABLE cliente (
 
   INSERT INTO cliente (nome, email, senha, cpf, telefone, cep, estado, cidade, bairro, perfil, status)
   VALUES ('Admin','admin@email.com','202cb962ac59075b964b07152d234b70','123.123.123-12','(11)11111-1111','55555-555','UF','Cidade','Bairro','ADM',1),
-    ('Mariana', 'mariana@example.com', MD5('123456'), '111.222.333-44', '(11)98765-4321', '12345-678', 'SP', 'São Paulo', 'Bairro A', 1, 'CLI'),
-    ('Lucas', 'lucas@example.com', MD5('123456'), '222.333.444-55', '(22)87654-3210', '23456-789', 'RJ', 'Rio de Janeiro', 'Bairro B', 1, 'CLI'),
-    ('Ana Carolina', 'anacarolina@example.com', MD5('123456'), '333.444.555-66', '(33)76543-2109', '34567-890', 'MG', 'Belo Horizonte', 'Bairro C', 1, 'CLI'),
-    ('Rafael', 'rafael@example.com', MD5('123456'), '444.555.666-77', '(44)65432-1098', '45678-901', 'PR', 'Curitiba', 'Bairro D', 1, 'CLI'),
-    ('Carolina', 'carolina@example.com', MD5('123456'), '555.666.777-88', '(55)54321-0987', '56789-012', 'RS', 'Porto Alegre', 'Bairro E', 1, 'CLI'),
-    ('Fernanda', 'fernanda@example.com', MD5('123456'), '666.777.888-99', '(66)43210-9876', '67890-123', 'BA', 'Salvador', 'Bairro F', 1, 'CLI'),
-    ('Gustavo', 'gustavo@example.com', MD5('123456'), '777.888.999-00', '(77)32109-8765', '78901-234', 'PE', 'Recife', 'Bairro G', 1, 'CLI');
+    ('Mariana', 'mariana@example.com', MD5('123456'), '113.242.383-54', '(11)98765-4321', '12345-678', 'SP', 'São Paulo', 'Penha', 1, 'CLI'),
+    ('Lucas', 'lucas@example.com', MD5('123456'), '212.323.464-50', '(22)87654-3210', '23456-789', 'RJ', 'Rio de Janeiro', 'Jacarepaguá', 1, 'CLI'),
+    ('Ana Carolina', 'anacarolina@example.com', MD5('123456'), '334.414.565-76', '(33)76543-2109', '34567-890', 'MG', 'Belo Horizonte', 'Barreiro', 1, 'CLI'),
+    ('Rafael', 'rafael@example.com', MD5('123456'), '434.565.676-77', '(44)65432-1098', '45678-901', 'PR', 'Curitiba', 'Batel', 1, 'CLI'),
+    ('Carolina', 'carolina@example.com', MD5('123456'), '855.466.787-88', '(55)54321-0987', '56789-012', 'RS', 'Porto Alegre', 'Santana', 1, 'CLI'),
+    ('Fernanda', 'fernanda@example.com', MD5('123456'), '636.797.808-19', '(66)43210-9876', '67890-123', 'BA', 'Salvador', 'Candeal', 1, 'CLI'),
+    ('Gustavo', 'gustavo@example.com', MD5('123456'), '757.868.919-80', '(77)32109-8765', '78901-234', 'PE', 'Recife', 'Água Fria', 1, 'CLI');
 
 
 CREATE TABLE IF NOT EXISTS profissional(
@@ -61,13 +61,13 @@ CREATE TABLE IF NOT EXISTS profissional(
 
   INSERT INTO profissional (nome, titulo, email, senha, cpf, telefone, telefone2, cep, estado, cidade, bairro, fotoprin, descricaonegocio, fotosec, fotosec2, status, perfil)
 VALUES
-    ('Pedro Henrique', 'Título 1', 'pedro@example.com', MD5('12345'), '123.456.789-10', '(11)98765-4321', '(11)12345-6789', '12345-678', 'SP', 'São Paulo', 'Bairro 1', 'foto1.jpg', 'Descrição do negócio 1', 'foto1_sec.jpg', 'foto1_sec2.jpg', 1, 'PRO'),
-    ('João Silva', 'Título 2', 'joao@example.com', MD5('12345'), '234.567.890-12', '(22)87654-3210', '(22)54321-6789', '23456-789', 'RJ', 'Rio de Janeiro', 'Bairro 2', 'foto2.jpg', 'Descrição do negócio 2', 'foto2_sec.jpg', 'foto2_sec2.jpg', 1, 'PRO'),
-    ('Maria Souza', 'Título 3', 'maria@example.com', MD5('12345'), '345.678.901-23', '(33)76543-2109', '(33)98765-4321', '34567-890', 'MG', 'Belo Horizonte', 'Bairro 3', 'foto3.jpg', 'Descrição do negócio 3', 'foto3_sec.jpg', 'foto3_sec2.jpg', 1, 'PRO'),
-    ('Carlos Oliveira', 'Título 4', 'carlos@example.com', MD5('12345'), '456.789.012-34', '(44)65432-1098', '(44)87654-3210', '45678-901', 'PR', 'Curitiba', 'Bairro 4', 'foto4.jpg', 'Descrição do negócio 4', 'foto4_sec.jpg', 'foto4_sec2.jpg', 1, 'PRO'),
-    ('Ana Santos', 'Título 5', 'ana@example.com', MD5('12345'), '567.890.123-45', '(55)54321-0987', '(55)10987-6543', '56789-012', 'RS', 'Porto Alegre', 'Bairro 5', 'foto5.jpg', 'Descrição do negócio 5', 'foto5_sec.jpg', 'foto5_sec2.jpg', 1, 'PRO'),
-    ('Roberto Fernandes', 'Título 6', 'roberto@example.com', MD5('12345'), '678.901.234-56', '(66)43210-9876', '(66)09876-5432', '67890-123', 'BA', 'Salvador', 'Bairro 6', 'foto6.jpg', 'Descrição do negócio 6', 'foto6_sec.jpg', 'foto6_sec2.jpg', 1, 'PRO'),
-    ('Sandra Costa', 'Título 7', 'sandra@example.com', MD5('12345'), '789.012.345-67', '(77)32109-8765', '(77)76543-2109', '78901-234', 'PE', 'Recife', 'Bairro 7', 'foto7.jpg', 'Descrição do negócio 7', 'foto7_sec.jpg', 'foto7_sec2.jpg', 1, 'PRO');
+    ('Pedro Henrique', 'Pedrão dos Serviços', 'pedro@example.com', MD5('12345'), '123.456.789-10', '(11)98765-4321', '(11)12345-6789', '12345-678', 'SP', 'São Paulo', 'Lapa', 'foto1.jpg', 'Sou chamado de Pedrão e sou muito bom no que faço.', 'foto1_sec.jpg', 'foto1_sec2.jpg', 1, 'PRO'),
+    ('João Silva', 'Jô da Construção', 'joao@example.com', MD5('12345'), '234.567.890-12', '(22)87654-3210', '(22)54321-6789', '23456-789', 'RJ', 'Rio de Janeiro', 'Leblon', 'foto2.jpg', 'Trabalho a anos no ramo de construções.', 'foto2_sec.jpg', 'foto2_sec2.jpg', 1, 'PRO'),
+    ('Maria Souza', 'Serviços Mary', 'maria@example.com', MD5('12345'), '345.678.901-23', '(33)76543-2109', '(33)98765-4321', '34567-890', 'MG', 'Belo Horizonte', 'Lourdes', 'foto3.jpg', 'Sou muito boa no que faço!', 'foto3_sec.jpg', 'foto3_sec2.jpg', 1, 'PRO'),
+    ('Carlos Oliveira', 'Carlota - Serviços', 'carlos@example.com', MD5('12345'), '456.789.012-34', '(44)65432-1098', '(44)87654-3210', '45678-901', 'PR', 'Curitiba', 'Ecoville', 'foto4.jpg', 'Precisando de algum serviço? Ligue Carlota - Serviços!', 'foto4_sec.jpg', 'foto4_sec2.jpg', 1, 'PRO'),
+    ('Ana Santos', 'Help Services', 'ana@example.com', MD5('12345'), '567.890.123-45', '(55)54321-0987', '(55)10987-6543', '56789-012', 'RS', 'Porto Alegre', 'Jardim Botânico', 'foto5.jpg', 'Dedicação é o meu principal motivo.', 'foto5_sec.jpg', 'foto5_sec2.jpg', 1, 'PRO'),
+    ('Roberto Fernandes', 'Berto da Construção', 'roberto@example.com', MD5('12345'), '678.901.234-56', '(66)43210-9876', '(66)09876-5432', '67890-123', 'BA', 'Salvador', 'Brotas', 'foto6.jpg', 'Se tem uma coisa que gosto, é trabalhar. Me contate!', 'foto6_sec.jpg', 'foto6_sec2.jpg', 1, 'PRO'),
+    ('Sandra Costa', 'Entregue Saúde', 'sandra@example.com', MD5('12345'), '789.012.345-67', '(77)32109-8765', '(77)76543-2109', '78901-234', 'PE', 'Recife', 'Pina', 'foto7.jpg', 'Me chamo Sandra e sou experiente nessas áreas.', 'foto7_sec.jpg', 'foto7_sec2.jpg', 1, 'PRO');
 
 
 

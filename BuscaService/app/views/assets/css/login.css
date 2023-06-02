@@ -61,6 +61,12 @@
 }
 
 .div_login a {
-    font-size: 1;
+    font-size: 1em;
     margin: 10px;
+    color: #333;
+}
+
+.div_login a:hover {
+    border-bottom: 1px solid #333;
+    transition: 0.2s;
 }

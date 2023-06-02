@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         # se sim, redireciona para a pagina de admin com mensagem de sucesso.
         # se não, redireciona para a pagina de admin com mensagem de erro.
         if ($stmt->rowCount()) {
-            header('location: usuario_admin_listpro.php?success=Profissional excluído com sucesso!');
+            header('location: usuario_admin_listprocopy.php?success=Profissional excluído com sucesso!');
         } else {
-            header('location: usuario_admin_listpro.php?error=Erro ao excluir profissional!');
+            header('location: usuario_admin_listprocopy.php?error=Erro ao excluir profissional!');
         }
     }
 }
@@ -102,7 +102,7 @@ $dbh = null;
                                             <td><?= date('d/m/Y H:i', strtotime($row['dataregpro'])) ?></td>
 
                                             <td>
-                                                <a href="usuario_admin_updpro.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar</a>
+                                                <a href="usuario_admin_updprocopy.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar</a>
                                                 &nbsp;
                                                 <form action="" method="post">
                                                     <input type="hidden" name="idpro" value="<?= $row['idpro'] ?>" />

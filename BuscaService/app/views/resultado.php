@@ -12,7 +12,7 @@ $nomeServico = isset($_GET['servico']) ? $_GET['servico'] : '';
 $dbh = Conexao::getInstance();
 
 // Consulta SQL para recuperar os profissionais que oferecem o serviço pesquisado
-$query = "SELECT p.* FROM profissional p
+$query = "SELECT DISTINCT p.* FROM profissional p
           INNER JOIN profissional_has_servico ps ON p.idpro = ps.idpro
           INNER JOIN servico s ON ps.idserv = s.idserv
           WHERE s.nome LIKE :nomeServico";
@@ -60,7 +60,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <div class="card-left">
             <img src="perfil.jpg" alt="Foto do Perfil"> <!-- Substitua 'perfil.jpg' pelo caminho correto da imagem do perfil -->
             <h2><?php echo $row['titulo']; ?></h2>
-            <p><?php echo $row['estado'] . ', ' . $row['cidade'] . ' - ' . $row['bairro']; ?></p>
+            <p>Localidade: <?php echo $row['estado'] . ', ' . $row['cidade'] . ' - ' . $row['bairro']; ?></p>
             <a href="#">Ver Perfil</a>
           </div>
           <div class="card-right">

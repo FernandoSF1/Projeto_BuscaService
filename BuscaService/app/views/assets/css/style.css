@@ -17,7 +17,7 @@ footer {
     display: flex;
     justify-content: space-between;
     padding: 20px 40px;
-    background-color: #333333;
+    background-color: #2d3142;
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
@@ -41,16 +41,11 @@ footer {
     transform: scale(1.05);
 }
 
-.nomesite {
-    font-size: 1.5em;
-    font-weight: 300;
-    margin-right: 10px;
-}
-
 .imagem {
     border: 0px solid black;
     margin-right: 5px;
     margin-left: 5px;
+    padding: 10px;
 }
 
 
@@ -65,9 +60,9 @@ footer {
 .navmenu li {
     display: flex;
     align-items: center;
-  }  
+}
 
-.navmenu a {
+.navmenu_index {
     font-size: 1.2em;
     text-decoration: none;
     color: #ebebeb;
@@ -76,13 +71,76 @@ footer {
     transition: all 0.5s ease;
 }
 
-.navmenu a:hover {
+.navmenu_index:hover {
     color: lightblue;
-    background-color: #555555;
+    background-color: #262a38;
     border-bottom: 1px solid lightblue;
     transition: all 0.5s ease;
 }
 
+.nome_usu {
+    font-size: 1em;
+    font-weight: 300;
+    text-decoration: none;
+    color: #ebebeb;
+    padding: 7px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+}
+
+/* INÍCIO MENU SUSPENSO */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #262a38;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
+}
+
+.dropdown-menu li {
+    margin-bottom: 5px;
+}
+
+.dropdown-toggle:hover+.dropdown-menu,
+.dropdown-menu:hover {
+    display: block;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu.absolute {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    pointer-events: auto;
+}
+
+.dropdown-option {
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+}
+
+.dropdown-option a{
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #ebebeb;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+}
+
+.dropdown-option:hover{
+    color: lightblue;
+    background-color: #2d3142;
+    border-bottom: 1px solid lightblue;
+    transition: all 0.5s ease;
+}
+
+/* FIM MENU SUSPENSO */
 
 /*INÍCIO DOBRA BUSCA*/
 
@@ -149,60 +207,92 @@ footer {
     margin: 0 auto;
     border: 1px solid #ebebeb;
     border-radius: 15px;
-  }
-  
-  .busca-categoria-scroll {
+}
+
+.busca-categoria-scroll {
     overflow-y: auto;
     max-height: 300px;
     width: 100%;
-  }
-  
-  .busca-categoria-lista {
+}
+
+.busca-categoria-lista {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
-    gap: 70px; /* Reduzindo a distância entre as listas */
+    gap: 40px;
     margin: 0;
     padding: 0;
     font-size: 1.4em;
-  }
-  
-  .busca-categoria h2 {
+}
+
+.busca-categoria h2 {
     display: flex;
-    color: #000;
-    font-size: 1.8em;
+    color: #ebebeb;
+    margin-bottom: 30px;
+    font-size: 1.5em;
     font-weight: 500;
-    padding: 10px 280px;
-    background-color: #ebebeb;
+    padding: 10px 305px;
+    background-color: rgb(0, 73, 122);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     border: 1px solid #d8d8d8;
     text-align: center;
-  }
-  
-  .busca-categoria ul {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .busca-categoria ul li {
-    list-style: none;
-  }
-  
-  .busca-categoria ul li a {
-    text-decoration: none;
-  }
-  
-  .categoria_servicos {
-    margin-top: 20px;
-  }
+}
 
-  .categoria_servicos p{
+.busca-categoria-lista {
+    margin: auto auto;
+    padding: 30px 30px;
+}
+
+.busca-categoria ul li {
+    list-style: none;
+}
+
+.busca-categoria ul li a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.busca-categoria ul li a:hover {
+    color: #000000;
+}
+
+.categoria_servicos {
+    padding: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(138, 138, 138, 0.84);
+    box-shadow: 0px 0px 2px 1px rgba(138, 138, 138, 0.84);
+    transition: all 0.5s ease;
+}
+
+.categoria_servicos:hover {
+    background-color: #ebebeb;
+    transition: all 0.5s ease;
+}
+
+.categoria_servicos p {
     margin-bottom: 10px;
-  }
-  
-  
-  
+}
+
+.nome-servico {
+    font-weight: 400;
+    font-size: 1em;
+    transition: all 0.5s ease;
+}
+
+.nome-servico:hover {
+    border-bottom: 1px solid rgb(129, 162, 173);
+    transition: all 0.5s ease;
+}
+
+.categoria-servico {
+    color: rgb(0, 73, 122);
+}
+
+
+
 /*FIM DOBRA BUSCA*/
 
 /*INÍCIO DOBRA REGISTRO*/
@@ -499,7 +589,7 @@ footer {
     flex-basis: 50%;
 }
 
-.main_footer_about p{
+.main_footer_about p {
     font-size: 1.2em;
 }
 
@@ -508,14 +598,14 @@ footer {
     padding: 27px 0;
     width: 100%;
     text-align: center;
-    background-color: #333333;
+    background-color: #2d3142;
     border-top: 1px solid #000;
     font-size: 0.9em;
     color: #fff;
     font-weight: 300;
 }
 
-.main_footer_rights p{
+.main_footer_rights p {
     font-size: 1.2em;
 }
 

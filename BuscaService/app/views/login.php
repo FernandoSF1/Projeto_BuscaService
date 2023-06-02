@@ -1,28 +1,28 @@
 <?php
-# inclui a classe de conexao com o banco de dados.
+# inclui a classe de conexão com o banco de dados.
 require_once "../database/conexao.php";
 
-# verifica se os dados do formulario foram passados via método POST.
+# verifica se os dados do formulário foram passados via método POST.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    # cria duas variaveis (nome, password) para armazenar os dados passados via método POST.
-    $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
+    # cria duas variáveis (email, password) para armazenar os dados passados via método POST.
+    $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['senha']) ? md5($_POST['senha']) : '';
 
-    # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
+    # cria a variável $dbh que vai receber a conexão com o SGBD e banco de dados.
     $dbh = Conexao::getInstance();
 
-    # cria uma consulta banco de dados verificando se o usuario existe na tabela "cliente"
-    $queryCliente = "SELECT * FROM `busca_service`.`cliente` WHERE nome = :nome AND `senha` = :senha";
+    # cria uma consulta no banco de dados verificando se o usuário existe na tabela "cliente"
+    $queryCliente = "SELECT * FROM `busca_service`.`cliente` WHERE email = :email AND `senha` = :senha";
     $stmtCliente = $dbh->prepare($queryCliente);
-    $stmtCliente->bindParam(':nome', $nome);
+    $stmtCliente->bindParam(':email', $email);
     $stmtCliente->bindParam(':senha', $password);
     $stmtCliente->execute();
     $rowCliente = $stmtCliente->fetch(PDO::FETCH_ASSOC);
 
-    # cria uma consulta banco de dados verificando se o usuario existe na tabela "profissional"
-    $queryProfissional = "SELECT * FROM `busca_service`.`profissional` WHERE nome = :nome AND `senha` = :senha";
+    # cria uma consulta no banco de dados verificando se o usuário existe na tabela "profissional"
+    $queryProfissional = "SELECT * FROM `busca_service`.`profissional` WHERE email = :email AND `senha` = :senha";
     $stmtProfissional = $dbh->prepare($queryProfissional);
-    $stmtProfissional->bindParam(':nome', $nome);
+    $stmtProfissional->bindParam(':email', $email);
     $stmtProfissional->bindParam(':senha', $password);
     $stmtProfissional->execute();
     $rowProfissional = $stmtProfissional->fetch(PDO::FETCH_ASSOC);
@@ -32,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Usuário encontrado na tabela "cliente"
         $_SESSION['usuario'] = [
-            'nome' => $rowCliente['nome'],
+            'email' => $rowCliente['email'],
             'perfil' => $rowCliente['perfil'],
             'idcli' => $rowCliente['idcli'], // Adicione o ID do cliente à sessão
+            'nome' => $rowCliente['nome'] // Adicione o nome do cliente à sessão
         ];
         if ($rowCliente['perfil'] === 'ADM') {
             header('location: usuario_admin.php');
@@ -42,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('location: index.php');
         }
     } elseif ($rowProfissional) {
-        
+
         // Usuário encontrado na tabela "profissional"
         $_SESSION['usuario'] = [
-            'nome' => $rowProfissional['nome'],
+            'email' => $rowProfissional['email'],
             'perfil' => $rowProfissional['perfil'],
             'idpro' => $rowProfissional['idpro'], // Adicione o ID do profissional à sessão
+            'nome' => $rowProfissional['nome'] // Adicione o nome do profissional à sessão
         ];
         if ($rowProfissional['perfil'] === 'ADM') {
             header('location: usuario_admin.php');
@@ -60,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('location: index.php?error=Usuário ou senha inválidos.');
     }
 
-    # destroi a conexao com o banco de dados.
+    # destroi a conexão com o banco de dados.
     $dbh = null;
 }
 
@@ -72,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="div_login">
         <form action="index.php" method="post">
             <h1>Login</h1><br>
-            <input type="text" name="nome" placeholder="Nome" class="input" required autofocus>
+            <input type="email" name="email" placeholder="Digite seu e-mail" class="input" required autofocus>
             <br><br>
             <input type="password" name="senha" placeholder="Senha" class="input" required>
             <br><br>

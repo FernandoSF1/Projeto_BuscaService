@@ -8,22 +8,22 @@ require_once 'layouts/site/menu.php';
 require_once "../database/conexao.php";
 
 // Verificando se o usuário está logado como cliente
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'CLI') {
-    header("Location: index.php?error=Você precisa estar logado como cliente para ter acesso a este recurso");
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'PRO') {
+    header("Location: index.php?error=Você precisa estar logado como profissional para ter acesso a este recurso");
     exit;
 }
 
-# usa o ID do cliente que ficou armazenado na sessão, após o login
-$idcli = isset($_SESSION['usuario']['idcli']) ? $_SESSION['usuario']['idcli'] : 0;
+# usa o ID do profissional que ficou armazenado na sessão, após o login
+$idpro = isset($_SESSION['usuario']['idpro']) ? $_SESSION['usuario']['idpro'] : 0;
 
 # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
 $dbh = Conexao::getInstance();
 
 # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
 # filtrando pelo id do usuário.
-$query = "SELECT * FROM `busca_service`.`cliente` WHERE idcli=:idcli LIMIT 1";
+$query = "SELECT * FROM `busca_service`.`profissional` WHERE idpro=:idpro LIMIT 1";
 $stmt = $dbh->prepare($query);
-$stmt->bindParam(':idcli', $idcli);
+$stmt->bindParam(':idpro', $idpro);
 
 # executa a consulta banco de dados e aguarda o resultado.
 $stmt->execute();
@@ -73,7 +73,7 @@ $dbh = null;
 
 <body>
 <div class="container">
-    <h1 class="container_titulo">Perfil do Cliente</h1>
+    <h1>Perfil do Profissional</h1>
 
     <div class="dados">
         <div class="dados-pessoais_cli">
@@ -81,6 +81,12 @@ $dbh = null;
                 <label for="nome" class="label_perfil">Nome:</label>
                 <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
             </div>
+
+            <div class="campo campo-pessoal">
+                <label for="titulo" class="label_perfil">Título do seu negócio:</label>
+                <input type="text" id="titulo" class="input_perfil" value="<?= $row['titulo'] ?>" readonly>
+            </div>
+            
 
             <div class="campo campo-pessoal">
                 <label for="email" class="label_perfil">E-mail:</label>
@@ -98,8 +104,14 @@ $dbh = null;
             </div>
 
             <div class="campo campo-pessoal">
+                <label for="telefone2" class="label_perfil">Celular:</label>
+                <input type="text" id="telefone2" class="input_perfil" value="<?= $row['telefone2'] ?>" readonly>
+            </div>
+
+
+            <div class="campo campo-pessoal">
                 <label for="dataregcli" class="label_perfil">Data de Registro:</label>
-                <input type="text" id="data_registro" class="input_perfil" value="<?= date('d/m/Y', strtotime($row['dataregcli'])) ?>" readonly>
+                <input type="text" id="data_registro" class="input_perfil" value="<?= date('d/m/Y', strtotime($row['dataregpro'])) ?>" readonly>
             </div>
         </div>
 
@@ -126,7 +138,7 @@ $dbh = null;
         </div>
     </div>
 
-    <a href="update_cli.php?idcli=<?= $row['idcli'] ?>" class="btn" id="edit">Editar dados</a>&nbsp;
+    <a href="update_pro.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar dados</a>&nbsp;
 </div>
 </main>
 

@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # se sim, redireciona para a pagina de admin com mensagem de sucesso.
     # se não, redireciona para a pagina de cadastro com mensagem de erro.
     if ($stmt->rowCount()) {
-        header('location: perfil_cli.php?success=Cliente atualizado com sucesso!');
+        header('location: perfil_cli.php?success=Dados atualizados com sucesso!');
     } else {
         $error = $dbh->errorInfo();
         var_dump($error);
-        header('location: perfil_cli.php?error=Erro ao atualizar o cliente!');
+        header('location: perfil_cli.php?error=Erro ao atualizar os seus dados!');
     }
 
     # destroi a conexao com o banco de dados.
@@ -158,7 +158,7 @@ $dbh = null;
                     </fieldset>
                     <div class="btn_alinhamento">
                         <a href="perfil_cli.php">
-                            <button type="submit" id="submit" value="Enviar" name="salvar">Enviar</button>
+                            <button type="submit" id="submit" value="Enviar" name="salvar"  onclick="return confirm('Deseja realmente alterar algum dado?');">Enviar</button>
                         </a>
                         <a href="perfil_cli.php">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>

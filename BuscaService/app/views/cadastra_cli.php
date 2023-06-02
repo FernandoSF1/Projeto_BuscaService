@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <?php require_once 'layouts/cliente/menu.php'; ?>
-    <main class="bg_form">
+    <main>
         <div class="main_opc">
             <?php
             # verifca se existe uma mensagem de erro enviada via GET.
