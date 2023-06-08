@@ -57,23 +57,32 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($rows as $row): ?>
       <div class="card">
         <div class="card-content">
-          <div class="card-left">
-            <img src="perfil.jpg" alt="Foto do Perfil"> <!-- Substitua 'perfil.jpg' pelo caminho correto da imagem do perfil -->
-            <h2><?php echo $row['titulo']; ?></h2>
-            <p>Localidade: <?php echo $row['estado'] . ', ' . $row['cidade'] . ' - ' . $row['bairro']; ?></p>
-            <a href="#">Ver Perfil</a>
-          </div>
+        <div class="card-left">
+    <img src="perfil.jpg" alt="Foto do Perfil">
+    <h2><?php echo $row['titulo']; ?></h2>
+    <p>Localidade: <?php echo $row['estado'] . ', ' . $row['cidade'] . ' - ' . $row['bairro']; ?></p>
+
+    <!-- Formulário para enviar o ID do profissional -->
+    <form action="perfil_exibe_pro.php" method="get">
+        <?php
+        $idpro_encrypted = base64_encode($row['idpro']);
+        ?>
+        <input type="hidden" name="idpro" value="<?php echo $idpro_encrypted; ?>">
+        <button type="submit" class="card-button">Ver Perfil</button>
+    </form>
+</div>
+
           <div class="card-right">
             <p>Serviços oferecidos:
               <?php
                 // Consulta SQL para recuperar os serviços oferecidos pelo profissional
                 $queryServicos = "SELECT s.nome FROM servico s
                                   INNER JOIN profissional_has_servico ps ON s.idserv = ps.idserv
-                                  WHERE ps.idpro = :idProfissional
+                                  WHERE ps.idpro = :idpro
                                   ORDER BY s.nome = :nomeServico DESC, s.nome ASC";
 
                 $stmtServicos = $dbh->prepare($queryServicos);
-                $stmtServicos->bindValue(':idProfissional', $row['idpro']);
+                $stmtServicos->bindValue(':idpro', $row['idpro']);
                 $stmtServicos->bindValue(':nomeServico', $nomeServico);
                 $stmtServicos->execute();
                 $servicos = $stmtServicos->fetchAll(PDO::FETCH_COLUMN);

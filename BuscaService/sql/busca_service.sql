@@ -18,20 +18,21 @@ CREATE TABLE cliente (
   perfil VARCHAR(3) NOT NULL DEFAULT 'CLI' COMMENT 'ADM=Administrador\\nPRO=Profissional\\nCLI=Cliente',
   status TINYINT(1) NOT NULL DEFAULT 1 COMMENT '\"0\" = Inativo / \"1\" = Ativo',
   dataregcli DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  PRIMARY KEY (idcli)
+  PRIMARY KEY (idcli),
+  UNIQUE KEY unique_cpf_cli (cpf)
   );
 
   -- Inserindo dados na tabela cliente
 
   INSERT INTO cliente (nome, email, senha, cpf, telefone, cep, estado, cidade, bairro, perfil, status)
   VALUES ('Admin','admin@email.com','202cb962ac59075b964b07152d234b70','123.123.123-12','(11)11111-1111','55555-555','UF','Cidade','Bairro','ADM',1),
-    ('Mariana', 'mariana@example.com', MD5('123456'), '113.242.383-54', '(11)98765-4321', '12345-678', 'SP', 'São Paulo', 'Penha', 1, 'CLI'),
-    ('Lucas', 'lucas@example.com', MD5('123456'), '212.323.464-50', '(22)87654-3210', '23456-789', 'RJ', 'Rio de Janeiro', 'Jacarepaguá', 1, 'CLI'),
-    ('Ana Carolina', 'anacarolina@example.com', MD5('123456'), '334.414.565-76', '(33)76543-2109', '34567-890', 'MG', 'Belo Horizonte', 'Barreiro', 1, 'CLI'),
-    ('Rafael', 'rafael@example.com', MD5('123456'), '434.565.676-77', '(44)65432-1098', '45678-901', 'PR', 'Curitiba', 'Batel', 1, 'CLI'),
-    ('Carolina', 'carolina@example.com', MD5('123456'), '855.466.787-88', '(55)54321-0987', '56789-012', 'RS', 'Porto Alegre', 'Santana', 1, 'CLI'),
-    ('Fernanda', 'fernanda@example.com', MD5('123456'), '636.797.808-19', '(66)43210-9876', '67890-123', 'BA', 'Salvador', 'Candeal', 1, 'CLI'),
-    ('Gustavo', 'gustavo@example.com', MD5('123456'), '757.868.919-80', '(77)32109-8765', '78901-234', 'PE', 'Recife', 'Água Fria', 1, 'CLI');
+    ('Mariana', 'mariana@example.com', MD5('123456'), '113.242.383-54', '(11)98765-4321', '12345-678', 'SP', 'São Paulo', 'Penha', 'CLI', 1),
+    ('Lucas', 'lucas@example.com', MD5('123456'), '212.323.464-50', '(22)87654-3210', '23456-789', 'RJ', 'Rio de Janeiro', 'Jacarepaguá', 'CLI', 1),
+    ('Ana Carolina', 'anacarolina@example.com', MD5('123456'), '334.414.565-76', '(33)76543-2109', '34567-890', 'MG', 'Belo Horizonte', 'Barreiro', 'CLI', 1),
+    ('Rafael', 'rafael@example.com', MD5('123456'), '434.565.676-77', '(44)65432-1098', '45678-901', 'PR', 'Curitiba', 'Batel', 'CLI', 1),
+    ('Carolina', 'carolina@example.com', MD5('123456'), '855.466.787-88', '(55)54321-0987', '56789-012', 'RS', 'Porto Alegre', 'Santana', 'CLI', 1),
+    ('Fernanda', 'fernanda@example.com', MD5('123456'), '636.797.808-19', '(66)43210-9876', '67890-123', 'BA', 'Salvador', 'Candeal', 'CLI', 1),
+    ('Gustavo', 'gustavo@example.com', MD5('123456'), '757.868.919-80', '(77)32109-8765', '78901-234', 'PE', 'Recife', 'Água Fria', 'CLI', 1);
 
 
 CREATE TABLE IF NOT EXISTS profissional(
@@ -54,7 +55,8 @@ CREATE TABLE IF NOT EXISTS profissional(
   perfil VARCHAR(3) NOT NULL DEFAULT 'PRO' COMMENT 'ADM=Administrador\\nPRO=Profissional\\nCLI=Cliente',
   status TINYINT(1) NOT NULL DEFAULT 1 COMMENT '\"0\" = Inativo / \"1\" = Ativo',
   dataregpro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  PRIMARY KEY (idpro)
+  PRIMARY KEY (idpro),
+  UNIQUE KEY unique_cpf_pro (cpf)
   );
 
  -- Inserindo dados na tabela profissional
@@ -77,18 +79,15 @@ CREATE TABLE servico(
   categoria VARCHAR(45) NOT NULL,
   status TINYINT(1) NOT NULL DEFAULT 1 COMMENT '\"0\" = Inativo / \"1\" = Ativo',
   dataregserv DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  idcli INT(11) NULL,
-  PRIMARY KEY (idserv),  
-    FOREIGN KEY (idcli)
-    REFERENCES cliente (idcli)
+  PRIMARY KEY (idserv)
     );
 
  -- Inserindo dados na tabela servico
 
     INSERT INTO servico (nome, categoria, status)
-VALUES
+    VALUES
     ('Pedreiro', 'Construção', 1),
-    ('Pintor', 'Construção', 1),
+    ('Limpador de Terrenos', 'Construção', 1),
     ('Encanador', 'Construção', 1),
     ('Eletricista', 'Construção', 1),
     ('Cabeleireiro', 'Beleza', 1),
@@ -99,32 +98,68 @@ VALUES
     ('Psicólogo', 'Saúde', 1),
     ('Fisioterapeuta', 'Saúde', 1),
     ('Nutricionista', 'Saúde', 1),
-    ('Técnico de Informática', 'Manutenção', 1),
     ('Instalação de Câmeras de Segurança', 'Manutenção', 1),
     ('Reparo de Telhados', 'Manutenção', 1),
-    ('Reparo de Portões Eletrônicos', 'Manutenção', 1);
+    ('Reparo de Portões Eletrônicos', 'Manutenção', 1),
+    ('Reparo de Ar-Condicionado', 'Manutenção', 1),
+    ('Técnico de Informática', 'Informática', 1),
+    ('Desenvolvedor Web', 'Informática', 1),
+    ('Conserto de Celulares', 'Informática', 1),
+    ('Designer Gráfico', 'Informática', 1),
+    ('Pintor', 'Reformas', 1),
+    ('Azulejista', 'Reformas', 1),
+    ('Marceneiro', 'Reformas', 1),
+    ('Serralheiro', 'Reformas', 1),
+    ('Mecânico Automotivo', 'Automotivo', 1),
+    ('Lavagem e Polimento de Carros', 'Automotivo', 1),
+    ('Troca de Óleo', 'Automotivo', 1),
+    ('Funilaria e Pintura', 'Automotivo', 1),
+    ('Limpeza Residencial', 'Limpeza', 1),
+    ('Limpeza Comercial', 'Limpeza', 1),
+    ('Limpeza de Carpetes e Estofados', 'Limpeza', 1),
+    ('Limpeza Pós-Obra', 'Limpeza', 1);
 
 
-CREATE TABLE IF NOT EXISTS pagamento(
-  idpag INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS avaliacao (
+  idava INT(11) NOT NULL AUTO_INCREMENT,
+  pontuacao INT(11) NOT NULL,
   data DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  valor DECIMAL(9,2) NOT NULL,
-  numero INT(11) NOT NULL,
-  link VARCHAR(255) NOT NULL,
+  comentario VARCHAR(255),
   idcli INT(11) NOT NULL,
-  PRIMARY KEY (idpag),
-  FOREIGN KEY (idcli)  REFERENCES cliente (idcli)
-  );
+  idpro INT(11) NOT NULL,
+  PRIMARY KEY (idava),
+  FOREIGN KEY (idcli)
+    REFERENCES cliente (idcli)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (idpro)
+    REFERENCES profissional (idpro)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT unique_avaliacao_cliente_profissional UNIQUE (idcli, idpro)
+);
 
-CREATE TABLE profissional_has_servico(
+ -- Inserir dados na tabela avaliacao
+
+  -- INSERT INTO avaliacao (pontuacao, comentario, idcli, idpro)
+  -- VALUES (4, 'Ótimo profissional, recomendo!', 2, 1),
+  --        (3, 'Trabalho mais ou menos, mas recomendo.', 3, 1);
+  
+
+  CREATE TABLE profissional_has_servico (
   idpro INT(11) NOT NULL,
   idserv INT(11) NOT NULL,
   PRIMARY KEY (idpro, idserv),
-	FOREIGN KEY (idpro)
-    REFERENCES profissional (idpro),
-   FOREIGN KEY (idserv)
+  FOREIGN KEY (idpro)
+    REFERENCES profissional (idpro)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (idserv)
     REFERENCES servico (idserv)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
+
 
  -- Inserindo dados na tabela profissional_has_servico
 

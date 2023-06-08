@@ -45,90 +45,96 @@ $dbh = null;
 
 <?php
 
-    // Verifica se existe uma mensagem de sucesso enviada via GET
-    if (isset($_GET['success'])) {
-        $successMessage = $_GET['success'];
-        $title = '';
+// Verifica se existe uma mensagem de sucesso enviada via GET
+if (isset($_GET['success'])) {
+    $successMessage = $_GET['success'];
+    $title = '';
 
-        // Verifica o valor de $_GET['success'] para definir o título correspondente
-        if ($successMessage === 'cliente') {
-            $title = 'Cadastro de Cliente';
-        } elseif ($successMessage === 'profissional') {
-            $title = 'Cadastro de Profissional';
-        } else {
-            $title = 'Sucesso'; // Valor padrão para o título
-        }
-
-    ?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: '<?= $title ?>',
-                text: '<?= $successMessage ?>',
-            })
-        </script>
-    <?php
+    // Verifica o valor de $_GET['success'] para definir o título correspondente
+    if ($successMessage === 'cliente') {
+        $title = 'Cadastro de Cliente';
+    } elseif ($successMessage === 'profissional') {
+        $title = 'Cadastro de Profissional';
+    } else {
+        $title = 'Sucesso'; // Valor padrão para o título
     }
-    ?>
+
+?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '<?= $title ?>',
+            text: '<?= $successMessage ?>',
+        })
+    </script>
+<?php
+}
+?>
 
 <body>
-<div class="container">
-    <h1 class="container_titulo">Perfil do Cliente</h1>
+    <div class="container">
+        <h1 class="container_titulo">Perfil do Cliente</h1>
+        <!-- Botão: Editar dados -->
+        <a href="update_cli.php?idcli=<?= base64_encode($row['idcli']) ?>" class="perfil-btn" id="edit-perfil">Editar dados</a>
 
-    <div class="dados">
-        <div class="dados-pessoais_cli">
-            <div class="campo campo-pessoal">
-                <label for="nome" class="label_perfil">Nome:</label>
-                <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
+        <div class="dados">
+            <div class="dados-pessoais_cli">
+                <div class="campo campo-pessoal">
+                    <label for="nome" class="label_perfil">Nome:</label>
+                    <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <label for="email" class="label_perfil">E-mail:</label>
+                    <input type="text" id="email" class="input_perfil" value="<?= $row['email'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <label for="cpf" class="label_perfil">CPF:</label>
+                    <input type="text" id="cpf" class="input_perfil" value="<?= $row['cpf'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <label for="telefone" class="label_perfil">Celular:</label>
+                    <input type="text" id="telefone" class="input_perfil" value="<?= $row['telefone'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <label for="dataregcli" class="label_perfil">Data de Registro:</label>
+                    <input type="text" id="data_registro" class="input_perfil" value="<?= date('d/m/Y', strtotime($row['dataregcli'])) ?>" readonly>
+                </div>
             </div>
 
-            <div class="campo campo-pessoal">
-                <label for="email" class="label_perfil">E-mail:</label>
-                <input type="text" id="email" class="input_perfil" value="<?= $row['email'] ?>" readonly>
-            </div>
+            <div class="dados dados-endereco">
+                <div class="campo campo-endereco">
+                    <label for="cep" class="label_perfil">CEP:</label>
+                    <input type="text" id="cep" class="input_perfil" value="<?= $row['cep'] ?>" readonly>
+                </div>
 
-            <div class="campo campo-pessoal">
-                <label for="cpf" class="label_perfil">CPF:</label>
-                <input type="text" id="cpf" class="input_perfil" value="<?= $row['cpf'] ?>" readonly>
-            </div>
+                <div class="campo campo-endereco">
+                    <label for="estado" class="label_perfil">Estado:</label>
+                    <input type="text" id="estado" class="input_perfil" value="<?= $row['estado'] ?>" readonly>
+                </div>
 
-            <div class="campo campo-pessoal">
-                <label for="telefone" class="label_perfil">Celular:</label>
-                <input type="text" id="telefone" class="input_perfil" value="<?= $row['telefone'] ?>" readonly>
-            </div>
+                <div class="campo campo-endereco">
+                    <label for="cidade" class="label_perfil">Cidade:</label>
+                    <input type="text" id="cidade" class="input_perfil" value="<?= $row['cidade'] ?>" readonly>
+                </div>
 
-            <div class="campo campo-pessoal">
-                <label for="dataregcli" class="label_perfil">Data de Registro:</label>
-                <input type="text" id="data_registro" class="input_perfil" value="<?= date('d/m/Y', strtotime($row['dataregcli'])) ?>" readonly>
+                <div class="campo campo-endereco">
+                    <label for="bairro" class="label_perfil">Bairro:</label>
+                    <input type="text" id="bairro" class="input_perfil" value="<?= $row['bairro'] ?>" readonly>
+                </div>
             </div>
         </div>
 
-        <div class="dados dados-endereco">
-            <div class="campo campo-endereco">
-                <label for="cep" class="label_perfil">CEP:</label>
-                <input type="text" id="cep" class="input_perfil" value="<?= $row['cep'] ?>" readonly>
-            </div>
-
-            <div class="campo campo-endereco">
-                <label for="estado" class="label_perfil">Estado:</label>
-                <input type="text" id="estado" class="input_perfil" value="<?= $row['estado'] ?>" readonly>
-            </div>
-
-            <div class="campo campo-endereco">
-                <label for="cidade" class="label_perfil">Cidade:</label>
-                <input type="text" id="cidade" class="input_perfil" value="<?= $row['cidade'] ?>" readonly>
-            </div>
-
-            <div class="campo campo-endereco">
-                <label for="bairro" class="label_perfil">Bairro:</label>
-                <input type="text" id="bairro" class="input_perfil" value="<?= $row['bairro'] ?>" readonly>
-            </div>
+        <!-- Tópico: Histórico de avaliações enviadas -->
+        <div class="historico-avaliacoes">
+            <h2>Histórico de avaliações enviadas</h2>
+            <a href="historico_ava.php?idcli=<?= base64_encode($row['idcli']) ?>" class="btn_historico">Ver avaliações</a>
         </div>
     </div>
-
-    <a href="update_cli.php?idcli=<?= $row['idcli'] ?>" class="btn" id="edit">Editar dados</a>&nbsp;
-</div>
-</main>
+</body>
 
 <!--INÍCIO DOBRA RODAPÉ-->
 

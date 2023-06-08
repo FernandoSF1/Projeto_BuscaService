@@ -160,6 +160,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <script src="assets/js/cpf.js">
             //formata o cpf
         </script>
+        <script src="assets/js/email.js">
+            //formata o email
+        </script>
 
     </main>
 

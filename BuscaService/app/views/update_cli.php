@@ -12,8 +12,19 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'CLI') {
     exit;
 }
 
-# usa o ID do cliente que ficou armazenado na sessão, após o login
-$idcli = isset($_SESSION['usuario']['idcli']) ? $_SESSION['usuario']['idcli'] : 0;
+// Verifica se o ID do cliente está definido na sessão
+if (isset($_SESSION['usuario']['idcli'])) {
+    $idcli = $_SESSION['usuario']['idcli'];
+} else {
+    // Verifica se o parâmetro GET 'idcli' está presente
+    if (isset($_GET['idcli'])) {
+        // Decodifica o valor do parâmetro GET usando base64_decode
+        $idcli = base64_decode($_GET['idcli']);
+    } else {
+        $idcli = 0; // Define um valor padrão caso nenhum ID seja encontrado
+    }
+}
+
 
 # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
 $dbh = Conexao::getInstance();
@@ -100,7 +111,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Cliente',
+                        title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
                     })
                 </script>

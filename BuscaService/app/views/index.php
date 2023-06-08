@@ -15,128 +15,134 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['servico'])) {
 }
 ?>
 
+
+<?php
+// Verifica se existe uma mensagem de erro enviada via GET
+if (isset($_GET['error'])) {
+?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Acesso Negado',
+            text: '<?= $_GET['error'] ?>',
+        })
+    </script>
+<?php
+}
+
+// Verifica se existe uma mensagem de sucesso enviada via GET
+if (isset($_GET['success'])) {
+    $successMessage = $_GET['success'];
+    $title = '';
+
+    // Verifica o valor de $_GET['success'] para definir o título correspondente
+    if ($successMessage === 'cliente') {
+        $title = 'Cadastro de Cliente';
+    } elseif ($successMessage === 'profissional') {
+        $title = 'Cadastro de Profissional';
+    } else {
+        $title = 'Sucesso'; // Valor padrão para o título
+    }
+
+?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '<?= $title ?>',
+            text: '<?= $successMessage ?>',
+        })
+    </script>
+<?php
+}
+?>
+
+<!--FIM DOBRA CABEÇALHO-->
+
+<!--INÍCIO DOBRA BUSCA-->
 <main>
-    <?php
-    // Verifica se existe uma mensagem de erro enviada via GET
-    if (isset($_GET['error'])) {
-    ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Acesso Negado',
-                text: '<?= $_GET['error'] ?>',
-            })
-        </script>
-    <?php
-    }
-
-    // Verifica se existe uma mensagem de sucesso enviada via GET
-    if (isset($_GET['success'])) {
-        $successMessage = $_GET['success'];
-        $title = '';
-
-        // Verifica o valor de $_GET['success'] para definir o título correspondente
-        if ($successMessage === 'cliente') {
-            $title = 'Cadastro de Cliente';
-        } elseif ($successMessage === 'profissional') {
-            $title = 'Cadastro de Profissional';
-        } else {
-            $title = 'Sucesso'; // Valor padrão para o título
-        }
-
-    ?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: '<?= $title ?>',
-                text: '<?= $successMessage ?>',
-            })
-        </script>
-    <?php
-    }
-    ?>
-
-    <!--FIM DOBRA CABEÇALHO-->
-
-    <!--INÍCIO DOBRA BUSCA-->
     <section>
-        <article class="introducao">
-            <header>
-                <h1>Encontre os serviços que está buscando!</h1>
-            </header>
-        </article>
+        <div class="introducao_fundo">
+            <article class="introducao">
+                <header>
+                    <h1>Encontre os serviços que esteja precisando!</h1>
+                </header>
+            </article>
 
-        <article>
-            <header>
-                <div class="busca">
-                    <div>
-                        <form action="resultado.php" method="get" class="main-busca">
-                            <input type="text" name="servico" class="busca-txt" placeholder="Pesquisar">
-                            <button type="submit" class="busca-btn">
-                                <img src="assets/img/lupa.png" alt="Lupa" width="25">
-                            </button>
-                        </form>
+            <article>
+                <header>
+                    <div class="busca">
+                        <div>
+                            <form action="resultado.php" method="get" class="main-busca">
+                                <input type="text" name="servico" class="busca-txt" placeholder="Pesquisar">
+                                <button type="submit" class="busca-btn">
+                                    <img src="assets/img/lupa.png" alt="Lupa" width="25">
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </header>
-        </article>
+                </header>
+            </article>
 
-        <?php
-        require_once 'login.php';
-        require_once "../database/conexao.php";
 
-        // Cria a variável $dbh que vai receber a conexão com o SGBD e banco de dados.
-        $dbh = Conexao::getInstance();
+            <?php
+            require_once 'login.php';
+            require_once "../database/conexao.php";
 
-        // Consulta SQL para recuperar as categorias e serviços com profissionais associados
-        $query = "SELECT s.categoria, s.nome
+            // Cria a variável $dbh que vai receber a conexão com o SGBD e banco de dados.
+            $dbh = Conexao::getInstance();
+
+            // Consulta SQL para recuperar as categorias e serviços com profissionais associados
+            $query = "SELECT s.categoria, s.nome
           FROM servico s
           INNER JOIN profissional_has_servico ps ON s.idserv = ps.idserv
           GROUP BY s.categoria, s.nome
           ORDER BY s.categoria, s.nome";
-        $stmt = $dbh->prepare($query);
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
+            $stmt = $dbh->prepare($query);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            ?>
 
-<article>
-  <header>
-    <div class="busca-categoria">
-      <h2>Busca por categoria de serviço</h2>
-      <div class="busca-categoria-scroll">
-        <ul class="busca-categoria-lista">
-          <?php
-          $servicesByCategory = [];
+            <article>
+                <header>
+                    <div class="busca-categoria-titulo-wrapper">
+                        <h2 class="busca-categoria-titulo">Busca por categoria de serviço</h2>
+                    </div>
+                    <div class="busca-categoria">
+                        <div class="busca-categoria-scroll">
+                            <ul class="busca-categoria-lista">
+                                <?php
+                                $servicesByCategory = [];
 
-          if (empty($rows)) {
-            echo "<span class='nenhum_servico'>Nenhum serviço cadastrado no sistema.</span>";
-          } else {
-            foreach ($rows as $row) {
-              $categoria = $row['categoria'];
-              $nome = $row['nome'];
-              $servicesByCategory[$categoria][] = $nome;
-            }
+                                if (empty($rows)) {
+                                    echo "<span class='nenhum_servico'>Nenhum serviço cadastrado no sistema.</span>";
+                                } else {
+                                    foreach ($rows as $row) {
+                                        $categoria = $row['categoria'];
+                                        $nome = $row['nome'];
+                                        $servicesByCategory[$categoria][] = $nome;
+                                    }
 
-            foreach ($servicesByCategory as $categoria => $servicos) {
-              echo "<div class='categoria_servicos'>";
-              echo "<p class='categoria-servico'><b>$categoria:</b></p>";
+                                    foreach ($servicesByCategory as $categoria => $servicos) {
+                                        echo "<div class='categoria_servicos'>";
+                                        echo "<p class='categoria-servico'><b>$categoria:</b></p>";
 
-              echo "<ul>";
+                                        echo "<ul>";
 
-              foreach ($servicos as $nome) {
-                echo "<li><a href='resultado.php?servico=" . urlencode($nome) . "' class='nome-servico'>$nome</a></li>";
-              }
+                                        foreach ($servicos as $nome) {
+                                            echo "<li><a href='resultado.php?servico=" . urlencode($nome) . "' class='nome-servico'>$nome</a></li>";
+                                        }
 
-              echo "</ul>";
-              echo "</div>";
-            }
-          }
-          ?>
-        </ul>
-      </div>
-    </div>
-  </header>
-</article>
+                                        echo "</ul>";
+                                        echo "</div>";
+                                    }
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+            </article>
+        </div>
 
 
         <!--FIM DOBRA BUSCA-->
@@ -201,9 +207,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['servico'])) {
                 Registre o seu negócio no site e conquiste mais clientes!</a></h2>
         </article>
     </section>
-
-    <!--FIM SESSÃO SESSÃO DE ARTIGOS-->
 </main>
+<!--FIM SESSÃO SESSÃO DE ARTIGOS-->
+
 
 <!-- inclui o arquivo de rodape do site -->
 <?php require_once 'layouts/site/footer.php'; ?>

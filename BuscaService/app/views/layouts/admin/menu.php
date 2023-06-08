@@ -1,52 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/boot.css" type="text/css">
-    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
-    <link rel="stylesheet" href="assets/css/fonticon.css" type="text/css">
-    <link rel="stylesheet" href="assets/css/login.css" type="text/css">
-    <link rel="stylesheet" href="assets/css/lista.css" type="text/css">
-    <link rel="stylesheet" href="assets/css/formulario.css" type="text/css">
-
-    <script type="text/javascript" src="assets/js/modal.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="assets/css/modal.css" rel="stylesheet">
-    <title>Busca Service</title>
-</head>
-
-<body>
-
 
     <!--INÍCIO DOBRA CABEÇALHO-->
     <section>
         <header class="navbar">
-            <div class="main-navbar">
+        <div class="main-navbar">
                 <a class="main-navbar-logo-nome" href="index.php">
-                    <img class="imagem " src="assets/img/logo.png" alt="Busca Service" title="Busca Service" width="80">
-
-                    <h1 class="nomesite">Busca Service</h1>
+                    <img class="imagem " src="assets/img/logomarca20_bs.png" alt="Busca Service" title="Busca Service" width="350">
                 </a>
 
                 <nav>
     <ul class="navmenu">
-        <li><a href="index.php">Página Inicial</a></li>
+        <li><a href="index.php" class='navmenu_index'>Página Inicial</a></li>
 
         <?php
         # verifica se existe sessão de usuário e se ele é administrador.
         # se não for o primeiro caso, verifica se a sessão existe.
         # por último, adiciona somente o link para o login se a sessão não existir.
         if (isset($_SESSION['usuario']) && $_SESSION['usuario']['perfil'] == 'ADM') {
-            echo "<li><a href='usuario_admin.php'>Menu</a></li>";
-            $nomeConta = $_SESSION['usuario']['nome'];
-            echo "<li><a href='usuario_admin.php'>$nomeConta</a></li>";
-            echo "<li><a href='logout.php'>Sair</a></li>";
+            echo "<li><a href='usuario_admin.php' class='navmenu_index'>Menu</a></li>";
+            if (isset($_SESSION['usuario']['nome'])) {
+                $nomeCompleto = $_SESSION['usuario']['nome'];
+                $nomeArray = explode(' ', $nomeCompleto);
+                $primeiroNome = $nomeArray[0];
+            } else {
+                $primeiroNome = '';
+            }
+            echo "<li><a href='usuario_admin.php' class='navmenu_index'>Bem-vindo, <span class='nome_usu'>$primeiroNome</span></a></li>";
+            echo "<li><a href='logout.php' class='navmenu_index'>Sair</a></li>";
         }
         ?>
     </ul>

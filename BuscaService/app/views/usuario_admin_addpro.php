@@ -310,6 +310,9 @@ $dbh = null;
         <script src="assets/js/min_checkbox.js">
             //formata o cpf
         </script>
+        <script src="assets/js/email.js">
+            //formata o email
+        </script>
 
     </main>
 

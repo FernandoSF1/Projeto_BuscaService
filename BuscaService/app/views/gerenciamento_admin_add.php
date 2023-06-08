@@ -4,7 +4,6 @@ session_start();
 
 # inclui os arquivos header, menu e login.
 require_once 'layouts/site/header.php';
-require_once 'layouts/site/menu.php';
 
 # verifica se existe sessão de usuario e se ele é administrador.
 # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
@@ -19,6 +18,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
 
 <!--1ª DOBRA-->
 <main>
+    <?php require_once 'layouts/admin/menu.php'; ?>
 
     <!--INÍCIO MENU LATERAL-->
     <section class="main_header_lista">

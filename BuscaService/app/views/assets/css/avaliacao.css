@@ -1,0 +1,15 @@
+/* INÍCIO AVALIAÇÃO */
+.estrelas input[type="radio"] {
+    display: none;
+  }
+  
+  .estrelas label {
+    display: inline-block;
+    background-image: url('assets/img/estrela.png');
+    background-size: cover;
+  }
+  
+  .estrelas input[type="radio"]:checked + label {
+    background-image: url('assets/img/estrela-preenchida.png'); /* Imagem para estrela preenchida */
+  }
+  /* FIM AVALIAÇÃO */

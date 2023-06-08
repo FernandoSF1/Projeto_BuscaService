@@ -10,6 +10,74 @@
     justify-content: center;
     gap: 50px;
     box-sizing: border-box;
+    position: relative;
+}
+
+.container_titulo {
+    font-size: 1.8em;
+}
+
+.perfil-btn,
+.perfil-btn-link {
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+}
+
+[id^="edit-cli-ava"],
+.perfil-btn-link {
+    /* Estilização para o botão de "Editar avaliação" */
+    background-color: rgb(0, 73, 122);
+    padding: 10px 20px;
+    width: 210px;
+    display: flex;
+    justify-content: center;
+}
+
+#delete-cli-ava {
+    /* Estilização para o botão de "Excluir avaliação" */
+    background-color: rgb(158, 0, 0);
+    padding: 10px 20px;
+    width: 210px;
+    display: flex;
+    justify-content: center;
+}
+
+.perfil-btn:hover,
+.perfil-btn-link:hover {
+    opacity: 1;
+    transition: 0.2s;
+}
+
+
+#edit-perfil {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: rgb(0, 73, 122);
+    padding: 15px;
+}
+
+.avaliacao-botoes {
+    display: flex;
+    gap: 10px; /* Adicione o espaçamento desejado entre os botões */
+    justify-content: center;
+    margin: 20px auto;
+    flex-wrap: wrap;
+  }
+
+  .avaliacao-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.avaliacao-link:hover {
+    text-decoration: underline;
 }
 
 .dados {
@@ -29,12 +97,74 @@
 .dados-endereco {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Alterado */
-    justify-content: flex-start; /* Adicionado */
+    align-items: center;
+    justify-content: flex-start;
     flex-basis: 50%;
 }
 
-.campo {
+.avaliacoes {
+    flex-basis: 100%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.avaliacoes>h2 {
+    flex-basis: 100%;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.avaliacao-item {
+    margin: 20px 30px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1.2em;
+}
+
+.avaliacao-nome {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.avaliacao-data {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #333
+}
+
+.avaliacao-negocio {
+    font-size: 1.4em;
+    color: rgb(0, 73, 122);
+    /* Adicionado */
+    margin-bottom: 20px;
+}
+
+.avaliacao-titulo {
+    font-weight: bold;
+}
+
+
+.avaliacao-estrelas {
+    margin-bottom: 5px;
+}
+
+.avaliacao-pontuacao {
+    margin-right: 10px;
+}
+
+.avaliacao-comentario {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    padding: 20px 10px;
+    border: 1px solid #ebebeb;
+}
+
+.avaliacao-form {
+    margin-top: 20px;
+}
+
+.campo-avaliacao {
     margin-bottom: 10px;
 }
 
@@ -44,7 +174,11 @@
     margin-bottom: 10px;
 }
 
-.input_perfil[type="text"] {
+.input_perfil[type="text"],
+.input_perfil[type="number"],
+.input_perfil[type="email"],
+.input_perfil[type="tel"],
+textarea {
     padding: 5px;
     width: 300px;
     border-radius: 3px;
@@ -52,7 +186,33 @@
     background-color: #fff;
 }
 
-.container_titulo {
+.historico-avaliacoes {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.historico-avaliacoes-titulo {
+    display: flex;
     font-size: 1.8em;
-    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 70px auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_historico {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn_historico:hover {
+    background-color: #45a049;
 }

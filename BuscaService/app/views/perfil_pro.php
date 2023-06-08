@@ -73,7 +73,7 @@ $dbh = null;
 
 <body>
 <div class="container">
-    <h1>Perfil do Profissional</h1>
+    <h1 class="container_titulo">Perfil do Profissional</h1>
 
     <div class="dados">
         <div class="dados-pessoais_cli">

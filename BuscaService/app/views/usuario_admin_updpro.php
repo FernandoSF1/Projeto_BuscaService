@@ -109,6 +109,25 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 # destroi a conexao com o banco de dados.
 $dbh = null;
 
+
+# cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
+$dbh = Conexao::getInstance();
+# cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
+# ordenando pelo campo perfil e nome.
+$query = "SELECT * FROM `busca_service`.`servico` ORDER BY categoria, nome";
+$stmt = $dbh->prepare($query);
+
+# executa a consulta banco de dados e aguarda o resultado.
+$stmt->execute();
+
+
+# Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
+# se não existir retorna null
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+# destroi a conexao com o banco de dados.
+$dbh = null;
+
 ?>
 
 <body>
@@ -139,7 +158,7 @@ $dbh = null;
                             </div>
 
                             <div class="inputBox">
-                                <input type="text" name="titulo" id="titulo" class="inputUser" required autofocus value="<?= isset($row) ? $row['titulo'] : '' ?>">>
+                                <input type="text" name="titulo" id="titulo" class="inputUser" required autofocus value="<?= isset($row) ? $row['titulo'] : '' ?>">
                                 <label for="titulo" class="labelInput">Título (seu nome ou do negócio):</label>
                             </div>
 
@@ -184,6 +203,86 @@ $dbh = null;
                                 <input type="text" name="bairro" id="bairro" class="inputUser" required>
                                 <label for="bairro" class="labelInput">Bairro:</label>
                             </div>
+                        </div>
+
+
+                        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
+                        <div class="seleciona_servicos">
+
+                            <div class="servicos_lista">
+
+                                <?php
+                                $servicesByCategory = [];
+
+
+                                if (isset($servicesByCategory['null'])) {
+                                    echo "<spam class='nenhum_servico'>Nenhum serviço cadastrado no sistema.<spam>";
+                                } else {
+                                    foreach ($rows as $row) {
+                                        $categoria = $row['categoria'];
+                                        $idserv = $row['idserv']; // Obtém o ID do serviço e armazena na variável $idserv
+                                        $nome = $row['nome'];
+                                        $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome); // Armazena o ID e o nome do serviço
+                                    }
+
+                                    // Exibe as categorias e serviços
+                                    foreach ($servicesByCategory as $categoria => $servicos) {
+                                        echo "<div class='categoria_servicos'>";
+                                        echo "<p><b>$categoria:</b></p>"; // Exibe o nome da categoria
+
+                                        echo "<ul>"; // Abre uma lista não ordenada para os serviços
+
+                                        foreach ($servicos as $servico) {
+                                            $idserv = $servico['idserv'];
+                                            $nome = $servico['nome'];
+                                            echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv'> <label for='servico_$idserv'>$nome</label></li>"; // Exibe o serviço com o ID como valor
+                                        }
+
+                                        echo "</ul>"; // Fecha a lista não ordenada
+                                        echo "</div>";
+                                    }
+                                }
+                                ?>
+
+                            </div>
+                        </div>
+                        <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
+
+
+
+                        <div class="inputBox">
+                            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*" required>
+                                <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_perfil"></span>
+                            </p>
+                            <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
+                            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui
+                                (opcional):</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho1"></span>
+                            </p>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho
+                                (opcional):</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho2"></span>
+                            </p>
                         </div>
 
                         <div class="inputBox">
@@ -239,6 +338,9 @@ $dbh = null;
         </script>
         <script src="assets/js/cpf.js">
             //formata o cpf
+        </script>
+        <script src="assets/js/email.js">
+            //formata o email
         </script>
 
     </main>

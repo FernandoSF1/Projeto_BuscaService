@@ -25,6 +25,9 @@ $stmt->execute();
 # Obtém os IDs dos serviços marcados em um array
 $servicosMarcados = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
+// $teste = array_search('16', $servicosMarcados);
+// echo '<pre>'; var_dump($servicosMarcados, $teste); exit;
+
 # verifica se os dados do formulario foram enviados via POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
@@ -38,15 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cidade = isset($_POST['cidade']) ? $_POST['cidade'] : '';
     $bairro = isset($_POST['bairro']) ? $_POST['bairro'] : '';
     $fotoprin = isset($_FILES['fotoprin']) ? $_FILES['fotoprin'] : null;
-    $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : '';
+    $descricaonegocio = isset($_POST['descricaonegocio']) ? $_POST['descricaonegocio'] : '';
     $fotosec = $_FILES['fotosec'] ?? null;
     $fotosec2 = $_FILES['fotosec2'] ?? null;
     $perfil = isset($_POST['perfil']) ? $_POST['perfil'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 0;
 
 
-    // Insere os dados do profissional na tabela 'profissional' preciso colocar os valores dos ids?
-    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricao` = :descricao, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
+    // Insere os dados do profissional na tabela 'profissional'
+    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
                     WHERE idpro = :idpro";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':nome', $nome);
@@ -60,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':bairro', $bairro);
     $stmt->bindParam(':fotoprin', $fotoprin);
-    $stmt->bindParam(':descricao', $descricao);
+    $stmt->bindParam(':descricaonegocio', $descricaonegocio);
     $stmt->bindParam(':fotosec', $fotosec);
     $stmt->bindParam(':fotosec2', $fotosec2);
     $stmt->bindParam(':perfil', $perfil);
@@ -76,6 +79,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['servico']) && is_array($_POST['servico'])) {
             $servicosSelecionados = $_POST['servico'];
 
+            # Remove os serviços não selecionados
+    $servicosRemovidos = array_diff($servicosMarcados, $servicosSelecionados);
+    // echo '<pre>'; var_dump($servicosRemovidos); exit;
+    
+    if (!empty($servicosRemovidos)) {
+        # Remove as associações do profissional com os serviços não selecionados
+        $placeholders = rtrim(str_repeat('?, ', count($servicosRemovidos)), ', ');
+        $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro AND idserv IN ($placeholders)";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':idpro', $idpro);
+        $stmt->execute($servicosRemovidos);
+    }
+    
+    # Atualiza os serviços marcados com os selecionados
+    $servicosAtualizados = array_unique(array_merge($servicosMarcados, $servicosSelecionados));
+    $servicosAtualizados = array_filter($servicosAtualizados);
+    
+    # Remove as associações duplicadas
+    $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':idpro', $idpro);
+    $stmt->execute();
+    
+    # Insere as novas associações do profissional com os serviços
+    $placeholders = rtrim(str_repeat('?, ', count($servicosAtualizados)), ', ');
+    $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, $placeholders)";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':idpro', $idpro);
+    $stmt->execute($servicosAtualizados);
+
             # Consulta todos os serviços disponíveis
             $query = "SELECT * FROM `busca_service`.`servico`";
             $stmt = $dbh->prepare($query);
@@ -85,9 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        header('location: usuario_admin_listpro.php?success=Profissional atualizado com sucesso!');
+        header('location: usuario_admin_listprocopy.php?success=Profissional atualizado com sucesso!');
     } else {
-        header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
+        header('location: usuario_admin_updprocopy.php?error=Erro ao atualizar o profissional!');
     }
 }
 
@@ -105,6 +138,7 @@ $stmt->execute();
 # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
 # se não existir retorna null
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
 # destroi a conexao com o banco de dados.
 $dbh = null;
@@ -190,36 +224,39 @@ $dbh = null;
 <div class="seleciona_servicos">
     <div class="servicos_lista">
         <?php
-        $dbh = Conexao::getInstance();
-        $query = "SELECT * FROM `busca_service`.`servico`";
-        $stmt = $dbh->prepare($query);
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $servicesByCategory = [];
-        
-        foreach ($rows as $row) {
-            $categoria = $row['categoria'];
-            $idserv = $row['idserv'];
-            $nome = $row['nome'];
-            $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome);
+    $dbh = Conexao::getInstance();
+    $query = "SELECT * FROM `busca_service`.`servico`";
+    $stmt = $dbh->prepare($query);
+    $stmt->execute();
+    $rowsServicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // echo '<pre>'; var_dump($rowsServicos); exit;
+
+    $servicesByCategory = [];
+
+    foreach ($rowsServicos as $rowServico) {
+        $categoria = $rowServico['categoria'];
+        $idserv = $rowServico['idserv'];
+        $nome = $rowServico['nome'];
+        $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome);
+    }
+
+    foreach ($servicesByCategory as $categoria => $servicos) {
+        echo "<div class='categoria_servicos'>";
+        echo "<p><b>$categoria:</b></p>";
+        echo "<ul>";
+
+        foreach ($servicos as $servico) {
+            $idserv = $servico['idserv'];
+            $nome = $servico['nome'];
+
+            $checked = in_array($idserv, $servicosMarcados) ? 'checked' : '';
+            echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv' $checked> <label for='servico_$idserv'>$nome</label></li>";
         }
-        
-        foreach ($servicesByCategory as $categoria => $servicos) {
-            echo "<div class='categoria_servicos'>";
-            echo "<p><b>$categoria:</b></p>";
-            echo "<ul>";
-            
-            foreach ($servicos as $servico) {
-                $idserv = $servico['idserv'];
-                $nome = $servico['nome'];
-                echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv'> <label for='servico_$idserv'>$nome</label></li>";
-            }
-            
-            echo "</ul>";
-            echo "</div>";
-        }
-        ?>
+
+        echo "</ul>";
+        echo "</div>";
+    }
+    ?>
     </div>
 </div>
 
@@ -237,7 +274,7 @@ $dbh = null;
 
         <div class="inputBox">
             <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
+            <textarea class="descricao" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
         </div>
 
         <div class="inputBox">
@@ -260,7 +297,7 @@ $dbh = null;
             </p>
         </div>
 
-                        <div class="inputBox">
+                       <div class="inputBox">
                             <label for="perfil" id="perfilLabel">Perfil</label><br>
                             <select name="perfil" id="perfil"><br><br>
                                 <option value="CLI" <?= isset($row) && $row['perfil'] == 'CLI' ? 'selected' : '' ?>>
@@ -270,7 +307,7 @@ $dbh = null;
                                 <option value="ADM" <?= isset($row) && $row['perfil'] == 'ADM' ? 'selected' : '' ?>>
                                     Administrador</option>
                             </select>
-                        </div><br>
+                        </div>
 
                         <div class="inputBox">
                             <label for="status" class="statusLabel">Status</label><br>
@@ -287,10 +324,10 @@ $dbh = null;
 
                     </fieldset>
                     <div class="btn_alinhamento">
-                        <a href="usuario_admin.php">
+                        <a href="usuario_admin_listprocopy.php?idpro=<?php echo $idpro; ?>">
                             <button type="submit" id="submit" value="Enviar" name="salvar">Enviar</button>
                         </a>
-                        <a href="usuario_admin_listcli.php">
+                        <a href="usuario_admin_listprocopy.php">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>
                         </a>
                     </div>

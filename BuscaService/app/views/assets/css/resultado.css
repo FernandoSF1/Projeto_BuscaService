@@ -116,7 +116,7 @@
     margin-bottom: 5px;
   }
   
-  .card a {
+  .card-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: rgb(23, 23, 168);
@@ -129,10 +129,11 @@
     transition: background-color 0.3s ease-out;
   }
   
-  .card a:hover {
+  .card-button:hover {
     background-color: rgb(3, 3, 133);
     transition: 0.2s;
   }
+  
   
   /* Media queries */
   @media (max-width: 768px) {

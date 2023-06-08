@@ -26,6 +26,7 @@ footer {
 
 .main-navbar-logo-nome {
     display: flex;
+    background-color: #33374b;
     align-items: center;
     text-decoration: none;
     color: #ebebeb;
@@ -135,7 +136,7 @@ footer {
 
 .dropdown-option:hover{
     color: lightblue;
-    background-color: #2d3142;
+    background-color: #33374b;
     border-bottom: 1px solid lightblue;
     transition: all 0.5s ease;
 }
@@ -143,6 +144,28 @@ footer {
 /* FIM MENU SUSPENSO */
 
 /*INÍCIO DOBRA BUSCA*/
+
+.introducao_fundo {
+    width: 100%;
+    background-image: linear-gradient(rgba(45, 49, 66, 1),
+     rgba(45, 49, 66, 1),
+     rgba(45, 49, 66, 0.9),
+     rgba(45, 49, 66, 0.6),
+     rgba(45, 49, 66, 0.2),
+     rgba(45, 49, 66, 0)), url('../img/fundo.PNG');
+    background-color: #2d3142;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 100px 0;
+    position: relative;
+}
+    .introducao_fundo .introducao{
+        max-width: 1300px;
+        margin:0 auto;
+    }
+
 
 .introducao {
     font-size: 2em;
@@ -152,7 +175,12 @@ footer {
 
 .introducao h1 {
     text-align: center;
-    margin-top: 70px;
+    color: #ebebeb;
+    font-size: 1.4em;
+}
+
+.introducao article{
+    margin-bottom: 50px;
 }
 
 .main-busca {
@@ -198,15 +226,37 @@ footer {
     align-items: center;
 }
 
+.busca-categoria-titulo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0px;
+  }
+  
+  .busca-categoria-titulo {
+    color: #ebebeb;
+    font-size: 1.5em;
+    font-weight: 500;
+    background-color: rgb(0, 73, 122);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: 1px solid #d8d8d8;
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+
 .busca-categoria {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #fff;
     width: 70%;
     margin: 0 auto;
     border: 1px solid #ebebeb;
-    border-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 
 .busca-categoria-scroll {
@@ -220,23 +270,12 @@ footer {
     flex-wrap: wrap;
     list-style: none;
     gap: 40px;
-    margin: 0;
-    padding: 0;
     font-size: 1.4em;
 }
 
-.busca-categoria h2 {
-    display: flex;
-    color: #ebebeb;
-    margin-bottom: 30px;
-    font-size: 1.5em;
-    font-weight: 500;
-    padding: 10px 305px;
-    background-color: rgb(0, 73, 122);
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border: 1px solid #d8d8d8;
-    text-align: center;
+.busca-categoria > .busca-categoria-scroll {
+    margin-top: 0px;
+    padding-top: 0;
 }
 
 .busca-categoria-lista {
@@ -300,7 +339,7 @@ footer {
 .registrar {
     display: flex;
     padding: 40px;
-    margin: 80px auto;
+    margin-bottom: 80px;
     align-items: center;
     justify-content: center;
     gap: 100px;
