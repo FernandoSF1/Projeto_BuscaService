@@ -24,9 +24,9 @@
                         }
 
                         if ($_SESSION['usuario']['perfil'] == 'CLI') {
-                            echo "<li><a href='perfil_cli.php' class='navmenu_index'>Bem-vindo, <span class='nome_usu'>$primeiroNome</span></a></li>";
+                            echo "<li><a href='perfil_cli.php' class='navmenu_index'>Bem-vindo(a), <span class='nome_usu'>$primeiroNome</span></a></li>";
                         } elseif ($_SESSION['usuario']['perfil'] == 'PRO') {
-                            echo "<li><a href='perfil_pro.php' class='navmenu_index'>Bem-vindo, <span class='nome_usu'>$primeiroNome</span></a></li>";
+                            echo "<li><a href='perfil_pro.php' class='navmenu_index'>Bem-vindo(a), <span class='nome_usu'>$primeiroNome</span></a></li>";
                         }
 
                         echo "<li><a href='logout.php' class='navmenu_index'>Sair</a></li>";

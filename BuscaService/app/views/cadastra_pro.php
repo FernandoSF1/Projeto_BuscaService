@@ -4,6 +4,8 @@ session_start();
 
 # inclui o arquivo header e a classe de conexão com o banco de dados.
 require_once 'layouts/site/header.php';
+require_once 'layouts/site/menu.php';
+require_once 'login.php';
 require_once "../database/conexao.php";
 
 # verifica se os dados do formulario foram enviados via POST 
@@ -101,7 +103,6 @@ $dbh = null;
 ?>
 
 <body>
-    <?php require_once 'layouts/profissional/menu.php'; ?>
     <main class="bg_form">
         <div class="main_opc">
             <?php

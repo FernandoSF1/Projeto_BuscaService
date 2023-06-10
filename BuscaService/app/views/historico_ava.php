@@ -20,6 +20,7 @@ if (isset($_SESSION['idcli'])) {
     $idcli = 0;
 }
 
+
 # verifica se os dados do formulario foram enviados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # recupera o id do enviado por post para delete ou update.
@@ -71,21 +72,22 @@ if ($stmt->rowCount() > 0) {
     echo '<h2 class="historico-avaliacoes-titulo">Histórico de avaliações enviadas</h2>';
 
     while ($avaliacao = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        //echo '<pre>'; var_dump($avaliacao); exit;
+
         // Criptografa o ID do profissional
         $idproCriptografado = base64_encode($avaliacao['idpro']);
+        // Criptografa o ID da avaliação
+        $idavaCriptografado = base64_encode($avaliacao['idava']);
+
 
         // Exibe as informações da avaliação
         echo '<div class="avaliacao-item">';
         echo '<p class="avaliacao-negocio">Perfil do profissional: <a class="avaliacao-link" href="perfil_exibe_pro.php?idpro=' . $idproCriptografado . '">' . $avaliacao['titulo_negocio'] . '</a></p>';
         echo '<p class="avaliacao-nome">' . $avaliacao['nome_cliente'] . '</p>';
 
-
-        // Formata a data no formato dd/mm/aaaa
-        $dataFormatada = date('d/m/Y', strtotime($avaliacao['data']));
-        // Formata a hora no formato hh:mm
-        $horaFormatada = date('H:i', strtotime($avaliacao['data']));
-
-        echo '<p class="avaliacao-data">' . $dataFormatada . ' às ' . $horaFormatada . '</p>';
+        // Formata a data e hora
+        $dataFormatada = date('d/m/Y \à\s H:i', strtotime($avaliacao['data']));
+        echo '<p class="avaliacao-data">' . $dataFormatada . '</p>';
 
         echo '<div class="avaliacao-estrelas">';
         echo '<span class="avaliacao-pontuacao">';
@@ -99,14 +101,16 @@ if ($stmt->rowCount() > 0) {
         }
 
         echo '</div>';
-
         echo '</span>';
         echo '</div>';
         echo '<p class="avaliacao-comentario">' . $avaliacao['comentario'] . '</p>';
 
         // Botões de editar e apagar
         echo '<div class="avaliacao-botoes">';
+        echo '<a href="update_ava.php?idava=' . $idavaCriptografado . '&idpro=' . $idproCriptografado . '">';
         echo '<button class="perfil-btn" name="botao" id="edit-cli-ava' . $avaliacao['idava'] . '" value="editar">Editar avaliação</button>';
+        echo '</a>';
+
         echo '<form method="POST" onsubmit="return confirm(\'Deseja excluir a avaliação?\');" action="">';
         echo '<input type="hidden" name="idava" value="' . $avaliacao['idava'] . '">';
         echo '<button class="perfil-btn" name="botao" id="delete-cli-ava" value="deletar">Excluir avaliação</button>';
@@ -115,7 +119,6 @@ if ($stmt->rowCount() > 0) {
 
         echo '</div>';
     }
-
     echo '</div>'; // Fecha a div "historico-avaliacoes"
 } else {
     echo '<p>Nenhuma avaliação encontrada.</p>';

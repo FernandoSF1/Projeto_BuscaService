@@ -25,6 +25,7 @@ try {
     $stmt->bindParam(':idpro', $idpro);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    //echo '<per>';var_dump($row);exit;
 } catch (PDOException $e) {
     // Tratar o erro do primeiro fetch
     echo "Erro no primeiro fetch: " . $e->getMessage();
@@ -72,6 +73,11 @@ if (isset($_GET['success'])) {
         <div class="dados">
             <div class="dados-pessoais_cli">
                 <div class="campo campo-pessoal">
+                    <label for="" class="label_perfil">Imagem do perfil:</label>
+                    <img src="<?= $row['fotoprin'] ?>" alt="Imagem perfil" style="width:180px;height:150px;">
+                </div>
+
+                <div class="campo campo-pessoal">
                     <label for="nome" class="label_perfil">Nome:</label>
                     <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
                 </div>
@@ -108,10 +114,25 @@ if (isset($_GET['success'])) {
                     <input type="text" id="bairro" class="input_perfil" value="<?= $row['bairro'] ?>" readonly>
                 </div>
             </div>
+            <div>
+    <h2>Imagens do seu trabalho</h2>
+    <?php if (!empty($row['fotosec'])): ?>
+        <div class="campo campo-pessoal">
+            <img src="<?= $row['fotosec'] ?>" alt="imagem" style="width:180px;height:150px;">
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($row['fotosec2'])): ?>
+        <div class="campo campo-pessoal">
+            <img src="<?= $row['fotosec2'] ?>" alt="Imagem" style="width:180px;height:150px;">
+        </div>
+    <?php endif; ?>
+</div>
+
         </div>
 
         <div class="avaliacoes">
-            <h2>Avaliações</h2>
+            <h3>Avaliações</h3>
 
             <?php
             # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
@@ -160,15 +181,9 @@ if (isset($_GET['success'])) {
             }
             ?>
 
-
-
-
-
-
-
             <!-- Código do formulário de avaliação -->
             <div class="avaliacao-form">
-                <h2>Fazer uma Avaliação</h2>
+                <h4>Fazer uma Avaliação</h4>
                 <form action="cadastra_avaliacao.php" method="POST">
                     <div class="campo-avaliacao">
                         <label for="pontuacao" class="label_perfil">Pontuação:</label>

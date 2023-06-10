@@ -46,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fotosec2 = $_FILES['fotosec2'] ?? null;
     $perfil = isset($_POST['perfil']) ? $_POST['perfil'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 0;
-
+    $listaServicos = $_POST['servico'];
+    
 
     // Insere os dados do profissional na tabela 'profissional'
     $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
@@ -70,58 +71,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':status', $status);
     $stmt->bindParam(':idpro', $idpro);
 
-
     $stmt->execute();
-
-    // Verifica se a quantidade de registros inseridos é maior que zero
-    if ($stmt->rowCount()) {
-        // Verifica se foram selecionados serviços no formulário
-        if (isset($_POST['servico']) && is_array($_POST['servico'])) {
-            $servicosSelecionados = $_POST['servico'];
-
-            # Remove os serviços não selecionados
-    $servicosRemovidos = array_diff($servicosMarcados, $servicosSelecionados);
-    // echo '<pre>'; var_dump($servicosRemovidos); exit;
     
-    if (!empty($servicosRemovidos)) {
-        # Remove as associações do profissional com os serviços não selecionados
-        $placeholders = rtrim(str_repeat('?, ', count($servicosRemovidos)), ', ');
-        $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro AND idserv IN ($placeholders)";
-        $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':idpro', $idpro);
-        $stmt->execute($servicosRemovidos);
-    }
-    
-    # Atualiza os serviços marcados com os selecionados
-    $servicosAtualizados = array_unique(array_merge($servicosMarcados, $servicosSelecionados));
-    $servicosAtualizados = array_filter($servicosAtualizados);
-    
-    # Remove as associações duplicadas
     $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':idpro', $idpro);
     $stmt->execute();
+
+    foreach($listaServicos as $servicoInserir) {
+        $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, :idserv)";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':idpro', $idpro);
+        $stmt->bindParam(':idserv', $servicoInserir);
+        $stmt->execute();
+    }
     
-    # Insere as novas associações do profissional com os serviços
-    $placeholders = rtrim(str_repeat('?, ', count($servicosAtualizados)), ', ');
-    $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, $placeholders)";
-    $stmt = $dbh->prepare($query);
-    $stmt->bindParam(':idpro', $idpro);
-    $stmt->execute($servicosAtualizados);
-
-            # Consulta todos os serviços disponíveis
-            $query = "SELECT * FROM `busca_service`.`servico`";
-            $stmt = $dbh->prepare($query);
-            $stmt->execute();
-
-            # Obtém todos os serviços em um array
-            $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-
+    if ($stmt->rowCount()) {
         header('location: usuario_admin_listprocopy.php?success=Profissional atualizado com sucesso!');
     } else {
         header('location: usuario_admin_updprocopy.php?error=Erro ao atualizar o profissional!');
     }
+    
+    
+    //     // Verifica se foram selecionados serviços no formulário
+    //     if (isset($_POST['servico']) && is_array($_POST['servico'])) {
+    //         $servicosSelecionados = $_POST['servico'];
+
+    //         # Remove os serviços não selecionados
+    //     $servicosRemovidos = array_diff($servicosMarcados, $servicosSelecionados);
+    //     // echo '<pre>'; var_dump($servicosRemovidos); exit;
+        
+    //     if (!empty($servicosRemovidos)) {
+    //         # Remove as associações do profissional com os serviços não selecionados
+    //         $placeholders = rtrim(str_repeat('?, ', count($servicosRemovidos)), ', ');
+    //         $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro AND idserv IN ($placeholders)";
+    //         $stmt = $dbh->prepare($query);
+    //         $stmt->bindParam(':idpro', $idpro);
+    //         $stmt->execute($servicosRemovidos);
+    //     }
+    
+    // # Atualiza os serviços marcados com os selecionados
+    // $servicosAtualizados = array_unique(array_merge($servicosMarcados, $servicosSelecionados));
+    // $servicosAtualizados = array_filter($servicosAtualizados);
+    
+    // # Remove as associações duplicadas
+    // $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
+    // $stmt = $dbh->prepare($query);
+    // $stmt->bindParam(':idpro', $idpro);
+    // $stmt->execute();
+    
+    // # Insere as novas associações do profissional com os serviços
+    // $placeholders = rtrim(str_repeat('?, ', count($servicosAtualizados)), ', ');
+
+    // $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, $placeholders)";
+    // $stmt = $dbh->prepare($query);
+    // $stmt->bindParam(':idpro', $idpro);
+    // $stmt->execute($servicosAtualizados);
+
+    //         # Consulta todos os serviços disponíveis
+    //         $query = "SELECT * FROM `busca_service`.`servico`";
+    //         $stmt = $dbh->prepare($query);
+    //         $stmt->execute();
+
+    //         # Obtém todos os serviços em um array
+    //         $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     }
+
+    //     header('location: usuario_admin_listprocopy.php?success=Profissional atualizado com sucesso!');
+    // } else {
+    //     header('location: usuario_admin_updprocopy.php?error=Erro ao atualizar o profissional!');
+    // }
 }
 
 

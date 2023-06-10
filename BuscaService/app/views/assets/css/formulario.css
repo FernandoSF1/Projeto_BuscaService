@@ -204,10 +204,9 @@
         .servicos_lista {
             display: flex;
             margin: 10px 10px;
-            gap: 5px;
+            gap: 20px;
             flex-wrap: wrap;
             border: 1px solid #bebebe;
-            justify-content: space-between;
             background-color: #fff;
             border-radius: 5px;
             border: 1px solid #656c75;

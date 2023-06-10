@@ -4,6 +4,8 @@ session_start();
 
 # inclui o arquivo header e a classe de conexão com o banco de dados.
 require_once 'layouts/site/header.php';
+require_once 'layouts/site/menu.php';
+require_once 'login.php';
 require_once "../database/conexao.php";
 
 
@@ -60,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <body>
-    <?php require_once 'layouts/cliente/menu.php'; ?>
     <main>
         <div class="main_opc">
             <?php
