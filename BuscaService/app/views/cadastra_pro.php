@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fotosec2 = $_FILES['fotosec2'] ?? null;
     $status = isset($_POST['status']) ? $_POST['status'] : 1;
 
+    # envio de imagens
+    require_once 'cadastra_imagem.php';
 
     # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
     $dbh = Conexao::getInstance();
@@ -46,39 +48,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':estado', $estado);
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':bairro', $bairro);
-    $stmt->bindParam(':fotoprin', $fotoprin);
+    $stmt->bindParam(':fotoprin', $destino_fotoprin);
     $stmt->bindParam(':descricaonegocio', $descricao);
-    $stmt->bindParam(':fotosec', $fotosec);
-    $stmt->bindParam(':fotosec2', $fotosec2);
+    $stmt->bindParam(':fotosec', $destino_fotosec);
+    $stmt->bindParam(':fotosec2', $destino_fotosec2);
     $stmt->bindParam(':status', $status);
 
     $stmt->execute();
 
-// Obtém o ID do profissional inserido
-$idpro = $dbh->lastInsertId();
+    // Obtém o ID do profissional inserido
+    $idpro = $dbh->lastInsertId();
 
-// Verifica se a quantidade de registros inseridos é maior que zero
-if ($stmt->rowCount()) {
-    // Verifica se foram selecionados serviços no formulário
-    if (isset($_POST['servico']) && is_array($_POST['servico'])) {
-        $servicosSelecionados = $_POST['servico'];
+    // Verifica se a quantidade de registros inseridos é maior que zero
+    if ($stmt->rowCount()) {
+        // Verifica se foram selecionados serviços no formulário
+        if (isset($_POST['servico']) && is_array($_POST['servico'])) {
+            $servicosSelecionados = $_POST['servico'];
 
-        // Insere as relações entre o profissional e os serviços na tabela 'profissional_has_servico'
-        $query = "INSERT INTO `busca_service`.`profissional_has_servico` (`idpro`, `idserv`) VALUES (:idpro, :idserv)";
-        $stmt = $dbh->prepare($query);
+            // Insere as relações entre o profissional e os serviços na tabela 'profissional_has_servico'
+            $query = "INSERT INTO `busca_service`.`profissional_has_servico` (`idpro`, `idserv`) VALUES (:idpro, :idserv)";
+            $stmt = $dbh->prepare($query);
 
-        foreach ($servicosSelecionados as $idserv) {
-            $stmt->bindValue(':idpro', $idpro); // Atribui o ID do profissional
-            $stmt->bindValue(':idserv', $idserv);
-            $stmt->execute();
+            foreach ($servicosSelecionados as $idserv) {
+                $stmt->bindValue(':idpro', $idpro); // Atribui o ID do profissional
+                $stmt->bindValue(':idserv', $idserv);
+                $stmt->execute();
+            }
         }
+
+        header('location: index.php?success=Profissional inserido com sucesso!');
+    } else {
+        header('location: cadastra_pro.php?error=Erro ao inserir o profissional!');
     }
-
-    header('location: index.php?success=Profissional inserido com sucesso!');
-} else {
-    header('location: cadastra_pro.php?error=Erro ao inserir o profissional!');
-}
-
 }
 
 
@@ -106,170 +107,184 @@ $dbh = null;
     <main class="bg_form">
         <div class="main_opc">
             <?php
-            # verifca se existe uma mensagem de erro enviada via GET.
-            # se sim, exibe a mensagem enviada no cabeçalho.
-            if (isset($_GET['error'])) { ?>
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Profissional',
+                        title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
-                    })
+                    });
                 </script>
-            <?php } ?>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <section>
-            <form action="" method="post" class="box" enctype="multipart/form-data" id="formulario_img">
-    <fieldset class="main_form">
-        <legend><b>Registrar-me como profissional</b></legend>
-        <br>
+                <form action="" method="post" class="box" enctype="multipart/form-data" id="formulario_img">
+                    <fieldset class="main_form">
+                        <legend><b>Registrar-me como profissional</b></legend>
+                        <br>
 
-        <div class="dadosPessoais">
-            <div class="inputBox">
-                <input type="text" name="nome" id="nome" class="inputUser" required>
-                <label for="nome" class="labelInput">Nome completo:</label>
-            </div>
+                        <div class="dadosPessoais">
+                            <div class="inputBox">
+                                <input type="text" name="nome" id="nome" class="inputUser" required>
+                                <label for="nome" class="labelInput">Nome completo:</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="text" name="titulo" id="titulo" class="inputUser" required>
-                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="text" name="titulo" id="titulo" class="inputUser" required>
+                                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="email" name="email" id="email" class="inputUser" required>
-                <label for="email" class="labelInput">E-mail:</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="email" name="email" id="email" class="inputUser" required>
+                                <label for="email" class="labelInput">E-mail:</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="password" name="senha" id="senha" class="inputUser" required>
-                <label for="senha" class="labelInput">Senha:</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="password" name="senha" id="senha" class="inputUser" required>
+                                <label for="senha" class="labelInput">Senha:</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="text" name="cpf" id="cpf" class="inputUser" required>
-                <label for="cpf" class="labelInput">CPF:</label>
-            </div>
-            <br>
+                            <div class="inputBox">
+                                <input type="text" name="cpf" id="cpf" class="inputUser" required>
+                                <label for="cpf" class="labelInput">CPF:</label>
+                            </div>
+                            <br>
 
-            <div class="inputBox">
-                <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required>
-                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required>
+                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required>
-                <label for="telefone-geral" class="labelInput">Telefone:</label>
-            </div>
-        </div>
+                            <div class="inputBox">
+                                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required>
+                                <label for="telefone-geral" class="labelInput">Telefone:</label>
+                            </div>
+                        </div>
 
-        <div class="endereco">
-            <div class="inputBox">
-                <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required>
-                <label for="cep" class="labelInput">CEP:</label><br>
-            </div>
+                        <div class="endereco">
+                            <div class="inputBox">
+                                <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required>
+                                <label for="cep" class="labelInput">CEP:</label><br>
+                            </div>
 
-            <div class="inputBox">
-                <input type="text" name="estado" id="estado" class="inputUser" required>
-                <label for="uf" class="labelInput">Estado:</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="text" name="estado" id="estado" class="inputUser" required>
+                                <label for="uf" class="labelInput">Estado:</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="text" name="cidade" id="cidade" class="inputUser" required>
-                <label for="cidade" class="labelInput">Cidade:</label>
-            </div>
+                            <div class="inputBox">
+                                <input type="text" name="cidade" id="cidade" class="inputUser" required>
+                                <label for="cidade" class="labelInput">Cidade:</label>
+                            </div>
 
-            <div class="inputBox">
-                <input type="text" name="bairro" id="bairro" class="inputUser" required>
-                <label for="bairro" class="labelInput">Bairro:</label>
-            </div>
-        </div>
+                            <div class="inputBox">
+                                <input type="text" name="bairro" id="bairro" class="inputUser" required>
+                                <label for="bairro" class="labelInput">Bairro:</label>
+                            </div>
+                        </div>
 
-        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
-        <div class="seleciona_servicos">
+                        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
+                        <div class="seleciona_servicos">
 
-            <div class="servicos_lista">
+                            <div class="servicos_lista">
 
-                <?php
-                $servicesByCategory = [];
-                
+                                <?php
+                                $servicesByCategory = [];
 
-                if(isset($servicesByCategory['null'])){
-                    echo "<spam class='nenhum_servico'>Nenhum serviço cadastrado no sistema.<spam>";
-                } else{
-                foreach ($rows as $row) {
-                    $categoria = $row['categoria'];
-                    $idserv = $row['idserv']; // Obtém o ID do serviço e armazena na variável $idserv
-                    $nome = $row['nome'];
-                    $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome); // Armazena o ID e o nome do serviço
-                }
-                
-                // Exibe as categorias e serviços
-                foreach ($servicesByCategory as $categoria => $servicos) {
-                    echo "<div class='categoria_servicos'>";
-                    echo "<p><b>$categoria:</b></p>"; // Exibe o nome da categoria
-                
-                    echo "<ul>"; // Abre uma lista não ordenada para os serviços
-                
-                    foreach ($servicos as $servico) {
-                        $idserv = $servico['idserv'];
-                        $nome = $servico['nome'];
-                        echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv'> <label for='servico_$idserv'>$nome</label></li>"; // Exibe o serviço com o ID como valor
-                    }
-                
-                    echo "</ul>"; // Fecha a lista não ordenada
-                    echo "</div>";
-                }
-                }
-                ?>
 
-            </div>
-        </div>
-        <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
+                                if (isset($servicesByCategory['null'])) {
+                                    echo "<spam class='nenhum_servico'>Nenhum serviço cadastrado no sistema.<spam>";
+                                } else {
+                                    foreach ($rows as $row) {
+                                        $categoria = $row['categoria'];
+                                        $idserv = $row['idserv']; // Obtém o ID do serviço e armazena na variável $idserv
+                                        $nome = $row['nome'];
+                                        $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome); // Armazena o ID e o nome do serviço
+                                    }
 
-        <div class="inputBox">
-            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
-            <p><br><br>
-                <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*" required>
-                <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
-                <span id="arquivo_selecionado_perfil"></span>
-            </p>
-            <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
-        </div>
+                                    // Exibe as categorias e serviços
+                                    foreach ($servicesByCategory as $categoria => $servicos) {
+                                        echo "<div class='categoria_servicos'>";
+                                        echo "<p><b>$categoria:</b></p>"; // Exibe o nome da categoria
 
-        <div class="inputBox">
-            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
-        </div>
+                                        echo "<ul>"; // Abre uma lista não ordenada para os serviços
 
-        <div class="inputBox">
-            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui
-                (opcional):</label>
-            <p><br><br>
-                <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
-                <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
-                <span id="arquivo_selecionado_trabalho1"></span>
-            </p>
-        </div>
+                                        foreach ($servicos as $servico) {
+                                            $idserv = $servico['idserv'];
+                                            $nome = $servico['nome'];
+                                            echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv'> <label for='servico_$idserv'>$nome</label></li>"; // Exibe o serviço com o ID como valor
+                                        }
 
-        <div class="inputBox">
-            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho
-                (opcional):</label>
-            <p><br><br>
-                <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
-                <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
-                <span id="arquivo_selecionado_trabalho2"></span>
-            </p>
-        </div>
-        <br><br>
+                                        echo "</ul>"; // Fecha a lista não ordenada
+                                        echo "</div>";
+                                    }
+                                }
+                                ?>
 
-    </fieldset>
-    <div class="btn_alinhamento">
-        <button type="submit" id="submit" value="Enviar" name="salvar">Enviar</button>
-        </a>
-        <a href="index.php">
-            <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>
-        </a>
-    </div>
-</form>
+                            </div>
+                        </div>
+                        <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
+
+                        <div class="inputBox">
+                            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*" required>
+                                <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_perfil"></span>
+                            </p>
+                            <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
+                            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui
+                                (opcional):</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho1"></span>
+                            </p>
+                        </div>
+
+                        <div class="inputBox">
+                            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho
+                                (opcional):</label>
+                            <p><br><br>
+                                <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho2"></span>
+                            </p>
+                        </div>
+                        <br><br>
+
+                    </fieldset>
+                    <div class="btn_alinhamento">
+                        <button type="submit" id="submit" value="Enviar" name="salvar">Enviar</button>
+                        </a>
+                        <a href="index.php">
+                            <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>
+                        </a>
+                    </div>
+                </form>
 
             </section>
         </div>

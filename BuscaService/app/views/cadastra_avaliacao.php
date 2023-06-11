@@ -35,15 +35,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $idpro_encrypted = base64_encode($idpro);
 
-if ($stmt->execute()) {
-    $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&success=Avaliação cadastrada com sucesso.";
-    header('Location: ' . $url);
-} else {
-    $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&error=Erro ao enviar avaliação.";
-    header('Location: ' . $url);
-}
-   
+    if ($stmt->execute()) {
+        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&success=Avaliação cadastrada com sucesso.";
+        header('Location: ' . $url);
+    } else {
+        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&error=Erro ao enviar avaliação.";
+        header('Location: ' . $url);
+    }
+
 
     $dbh = null;
+}
+?>
+
+<?php
+# Verifica se existe uma mensagem de erro enviada via GET
+if (isset($_GET['error'])) {
+?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: '<?= $_GET['error'] ?>',
+        });
+    </script>
+<?php
+}
+# Verifica se existe uma mensagem de sucesso enviada via GET
+elseif (isset($_GET['success'])) {
+?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso',
+            text: '<?= $_GET['success'] ?>',
+        });
+    </script>
+<?php
 }
 ?>

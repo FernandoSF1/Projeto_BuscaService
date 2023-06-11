@@ -80,8 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <br><br>
             <button class="button">Enviar</button>
         </form>
-        <h2><a href="#">Esqueci minha senha</a></h2><br>
-        <h2><a href="#">Não tem uma conta? Registre-se agora mesmo!</a></h2>
     </div>
 
 </div>

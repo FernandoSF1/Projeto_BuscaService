@@ -70,6 +70,7 @@ footer {
     padding: 7px;
     border-radius: 5px;
     transition: all 0.5s ease;
+    cursor: pointer; /* Adicione esta linha */
 }
 
 .navmenu_index:hover {
@@ -141,6 +142,13 @@ footer {
     transition: all 0.5s ease;
 }
 
+.dropdown:hover .navmenu_index {
+    color: lightblue;
+    background-color: #262a38;
+    border-bottom: 1px solid lightblue;
+    transition: all 0.5s ease;
+}
+
 /* FIM MENU SUSPENSO */
 
 /*INÍCIO DOBRA BUSCA*/
@@ -196,6 +204,17 @@ footer {
     max-width: 1300px;
     width: 900px;
     margin: 0 auto;
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(102, 102, 102, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(102, 102, 102, 0.84);
+    box-shadow: 0px 0px 6px 1px rgba(102, 102, 102, 0.84);
+    transition: 0.2s all ease-out;
+}
+
+.main-busca:hover{
+    transition: 0.2s;
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(136, 136, 136, 0.84);
+    -moz-box-shadow: 0px 0px 6px 3px rgba(136, 136, 136, 0.84);
+    box-shadow: 0px 0px 6px 3px rgba(136, 136, 136, 0.84);
 }
 
 .busca-txt {
@@ -217,6 +236,13 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 0.2s all ease-out;
+}
+
+.busca-btn:hover{
+    transition: 0.2s;
+    scale: 1.04;
+    background: rgb(143, 177, 211);
 }
 
 .busca {
@@ -271,7 +297,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
-    gap: 40px;
+    gap: 20px;
     font-size: 1.4em;
 }
 

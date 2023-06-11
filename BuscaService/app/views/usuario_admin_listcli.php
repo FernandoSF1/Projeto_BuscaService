@@ -64,7 +64,32 @@ $dbh = null;
 
     <main class="bg_form">
         <div class="main_opc">
-
+            <?php
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: '<?= $_GET['error'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <div class="main_stage">
                 <div class="main_stage_content">
 
@@ -106,7 +131,7 @@ $dbh = null;
                                                 &nbsp;
                                                 <form action="" method="post">
                                                     <input type="hidden" name="idcli" value="<?= $row['idcli'] ?>" />
-                                                    <button class="btn" name="botao" id="delete" value="deletar" onclick="return confirm('Deseja excluir o usuário?');">Apagar</button>
+                                                    <button class="btn" name="botao" id="delete" value="deletar" onclick="return confirm('Deseja realmente excluir este cliente?');">Apagar</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -3,7 +3,7 @@
             color: rgb(0, 0, 0);
             position: relative;
             padding: 15px;
-            width: 50%;
+            width: 60%;
         }
 
         .box fieldset {
@@ -191,8 +191,8 @@
         }
 
         .categoria_servicos {
-            padding-left: 15px;
-            padding-right: 15px;
+            width: 45%;
+            margin: 10px auto;
         }
 
         .categoria_servicos ul {

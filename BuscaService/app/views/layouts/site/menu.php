@@ -8,6 +8,7 @@
 
             <nav>
                 <ul class="navmenu">
+                    <li><a href="index.php" class="navmenu_index">Início</a></li>
                     <li><a href="quem_somos.php" class="navmenu_index">Quem somos</a></li>
                     <li><a href="contato.php" class="navmenu_index">Contato</a></li>
                     <?php
@@ -32,10 +33,10 @@
                         echo "<li><a href='logout.php' class='navmenu_index'>Sair</a></li>";
                     } else {
                         echo "<li class='dropdown'>";
-                        echo "<a href='' class='navmenu_index dropdown-toggle'>Registre-se</a>";
+                        echo "<span class='navmenu_index dropdown-toggle'>Registre-se</span>";
                         echo "<ul class='dropdown-menu absolute'>";
-                        echo "<li class='dropdown-option'><a href='cadastra_cli.php'>Cliente</a></li>";
-                        echo "<li class='dropdown-option'><a href='cadastra_pro.php'>Profissional</a></li>";
+                        echo "<li class='dropdown-option'><a href='cadastra_cli.php'>Como cliente</a></li>";
+                        echo "<li class='dropdown-option'><a href='cadastra_pro.php'>Como profissional</a></li>";
                         echo "</ul>";
                         echo "</li>";
                         echo "<li><a href='#' class='navmenu_index modal-link'>Faça seu login</a>";

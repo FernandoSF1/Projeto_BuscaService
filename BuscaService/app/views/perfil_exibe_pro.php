@@ -39,28 +39,27 @@ $dbh = null;
 
 
 <?php
-
-// Verifica se existe uma mensagem de sucesso enviada via GET
-if (isset($_GET['success'])) {
-    $successMessage = $_GET['success'];
-    $title = '';
-
-    // Verifica o valor de $_GET['success'] para definir o título correspondente
-    if ($successMessage === 'cliente') {
-        $title = 'Cadastro de Cliente';
-    } elseif ($successMessage === 'profissional') {
-        $title = 'Cadastro de Profissional';
-    } else {
-        $title = 'Sucesso'; // Valor padrão para o título
-    }
-
+# Verifica se existe uma mensagem de erro enviada via GET
+if (isset($_GET['error'])) {
+?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: '<?= $_GET['error'] ?>',
+        });
+    </script>
+<?php
+}
+# Verifica se existe uma mensagem de sucesso enviada via GET
+elseif (isset($_GET['success'])) {
 ?>
     <script>
         Swal.fire({
             icon: 'success',
-            title: '<?= $title ?>',
-            text: '<?= $successMessage ?>',
-        })
+            title: 'Sucesso',
+            text: '<?= $_GET['success'] ?>',
+        });
     </script>
 <?php
 }
@@ -74,12 +73,7 @@ if (isset($_GET['success'])) {
             <div class="dados-pessoais_cli">
                 <div class="campo campo-pessoal">
                     <label for="" class="label_perfil">Imagem do perfil:</label>
-                    <img src="<?= $row['fotoprin'] ?>" alt="Imagem perfil" style="width:180px;height:150px;">
-                </div>
-
-                <div class="campo campo-pessoal">
-                    <label for="nome" class="label_perfil">Nome:</label>
-                    <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
+                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil" style="width:160px;height:150px;">
                 </div>
 
                 <div class="campo campo-pessoal">
@@ -88,13 +82,15 @@ if (isset($_GET['success'])) {
                 </div>
 
                 <div class="campo campo-pessoal">
-                    <label for="telefone" class="label_perfil">Celular:</label>
-                    <input type="text" id="telefone" class="input_perfil" value="<?= $row['telefone'] ?>" readonly>
+                    <label for="nome" class="label_perfil">Nome do profissional:</label>
+                    <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
                 </div>
 
                 <div class="campo campo-pessoal">
-                    <label for="telefone2" class="label_perfil">Celular:</label>
-                    <input type="text" id="telefone2" class="input_perfil" value="<?= $row['telefone2'] ?>" readonly>
+                    <h2 class="descricao_titulo">Sobre:</h2>
+                    <div class="descricao_negocio">
+                        <p><?php echo $row['descricaonegocio']; ?></p>
+                    </div>
                 </div>
             </div>
 
@@ -113,23 +109,51 @@ if (isset($_GET['success'])) {
                     <label for="bairro" class="label_perfil">Bairro:</label>
                     <input type="text" id="bairro" class="input_perfil" value="<?= $row['bairro'] ?>" readonly>
                 </div>
+
+                <div class="campo campo-pessoal">
+                    <label for="telefone" class="label_perfil">Telefones de Contato:</label>
+                    <input type="text" id="telefone" class="input_perfil" value="<?= $row['telefone'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <input type="text" id="telefone2" class="input_perfil" value="<?= $row['telefone2'] ?>" readonly>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <a href="#" onclick="openWhatsApp()">
+                        <img src="assets/img/whatsapp.png" alt="WhatsApp" width="400">
+                    </a>
+                </div>
+
+                <script>
+                    function openWhatsApp() {
+                        var telefone = document.getElementById("telefone").value;
+                        var telefoneLimpo = telefone.replace(/[^\d]/g, ""); // Remover caracteres não numéricos
+                        var telefoneCompleto = "55" + telefoneLimpo;
+                        var url = "https://api.whatsapp.com/send?phone=" + telefoneCompleto;
+                        window.open(url, "_blank");
+                    }
+                </script>
             </div>
-            <div>
-    <h2>Imagens do seu trabalho</h2>
-    <?php if (!empty($row['fotosec'])): ?>
-        <div class="campo campo-pessoal">
-            <img src="<?= $row['fotosec'] ?>" alt="imagem" style="width:180px;height:150px;">
         </div>
-    <?php endif; ?>
 
-    <?php if (!empty($row['fotosec2'])): ?>
-        <div class="campo campo-pessoal">
-            <img src="<?= $row['fotosec2'] ?>" alt="Imagem" style="width:180px;height:150px;">
-        </div>
-    <?php endif; ?>
-</div>
+        <section class="imagens_trabalho">
+            <h2 class="imagens_trabalho_titulo">Galeria de imagens</h2>
+            <div class="imagens_trabalho_img">
+                <?php if (!empty($row['fotosec'])) : ?>
+                    <div class="campo campo-pessoal">
+                        <img src="<?= $row['fotosec'] ?>" class="imagens_perfil" alt="imagem" style="width:160px;height:150px;">
+                    </div>
+                <?php endif; ?>
 
-        </div>
+                <?php if (!empty($row['fotosec2'])) : ?>
+                    <div class="campo campo-pessoal">
+                        <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil" alt="Imagem" style="width:160px;height:150px;">
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+
 
         <div class="avaliacoes">
             <h3>Avaliações</h3>

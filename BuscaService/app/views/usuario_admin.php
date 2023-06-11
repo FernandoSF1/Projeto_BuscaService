@@ -18,17 +18,31 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main>
         <?php
-        # verifca se existe uma mensagem de sucesso enviada via GET.
-        # se sim, exibe a mensagem enviada no cabeçalho.
-        if (isset($_GET['success'])) { ?>
+        # Verifica se existe uma mensagem de erro enviada via GET
+        if (isset($_GET['error'])) {
+        ?>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: '<?= $_GET['error'] ?>',
+                });
+            </script>
+        <?php
+        }
+        # Verifica se existe uma mensagem de sucesso enviada via GET
+        elseif (isset($_GET['success'])) {
+        ?>
             <script>
                 Swal.fire({
                     icon: 'success',
-                    title: 'Usuários',
+                    title: 'Sucesso',
                     text: '<?= $_GET['success'] ?>',
-                })
+                });
             </script>
-        <?php } ?>
+        <?php
+        }
+        ?>
         <div class="main_opc">
 
             <section class="main_course" id="escola">

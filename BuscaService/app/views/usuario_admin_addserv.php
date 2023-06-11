@@ -65,17 +65,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main class="bg_form">
         <div class="main_opc">
             <?php
-            # verifca se existe uma mensagem de erro enviada via GET.
-            # se sim, exibe a mensagem enviada no cabeçalho.
-            if (isset($_GET['error'])) { ?>
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Serviços',
+                        title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
-                    })
+                    });
                 </script>
-            <?php } ?>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <section>
                 <form action="" method="post" class="box">
                     <fieldset>

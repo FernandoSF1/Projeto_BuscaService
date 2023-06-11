@@ -44,28 +44,27 @@ $dbh = null;
 ?>
 
 <?php
-
-// Verifica se existe uma mensagem de sucesso enviada via GET
-if (isset($_GET['success'])) {
-    $successMessage = $_GET['success'];
-    $title = '';
-
-    // Verifica o valor de $_GET['success'] para definir o título correspondente
-    if ($successMessage === 'cliente') {
-        $title = 'Cadastro de Cliente';
-    } elseif ($successMessage === 'profissional') {
-        $title = 'Cadastro de Profissional';
-    } else {
-        $title = 'Sucesso'; // Valor padrão para o título
-    }
-
+# Verifica se existe uma mensagem de erro enviada via GET
+if (isset($_GET['error'])) {
+?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: '<?= $_GET['error'] ?>',
+        });
+    </script>
+<?php
+}
+# Verifica se existe uma mensagem de sucesso enviada via GET
+elseif (isset($_GET['success'])) {
 ?>
     <script>
         Swal.fire({
             icon: 'success',
-            title: '<?= $title ?>',
-            text: '<?= $successMessage ?>',
-        })
+            title: 'Sucesso',
+            text: '<?= $_GET['success'] ?>',
+        });
     </script>
 <?php
 }

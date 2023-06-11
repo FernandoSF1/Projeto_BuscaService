@@ -125,27 +125,31 @@ if ($stmt->rowCount() > 0) {
 }
 ?>
 
-<script>
-    <?php
-    $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
-    $successMessage = isset($_GET['success']) ? $_GET['success'] : '';
-
-    if (!empty($errorMessage)) {
-        echo "Swal.fire({
+<?php
+# Verifica se existe uma mensagem de erro enviada via GET
+if (isset($_GET['error'])) {
+?>
+    <script>
+        Swal.fire({
             icon: 'error',
             title: 'Erro',
-            text: '{$errorMessage}'
-        });";
-    }
-
-    if (!empty($successMessage)) {
-        echo "Swal.fire({
+            text: '<?= $_GET['error'] ?>',
+        });
+    </script>
+<?php
+}
+# Verifica se existe uma mensagem de sucesso enviada via GET
+elseif (isset($_GET['success'])) {
+?>
+    <script>
+        Swal.fire({
             icon: 'success',
             title: 'Sucesso',
-            text: '{$successMessage}'
-        });";
-    }
-    ?>
-</script>
+            text: '<?= $_GET['success'] ?>',
+        });
+    </script>
+<?php
+}
+?>
 
 <?php require_once 'layouts/site/footer.php'; ?>

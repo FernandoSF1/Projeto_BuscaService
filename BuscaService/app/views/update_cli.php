@@ -4,6 +4,7 @@ session_start();
 
 # inclui o arquivo header e a classe de conexão com o banco de dados.
 require_once 'layouts/site/header.php';
+require_once 'layouts/site/menu.php';
 require_once "../database/conexao.php";
 
 // Verificando se o usuário está logado como cliente
@@ -101,21 +102,34 @@ $dbh = null;
 ?>
 
 <body>
-    <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
         <div class="main_opc">
             <?php
-            # verifca se existe uma mensagem de erro enviada via GET.
-            # se sim, exibe a mensagem enviada no cabeçalho.
-            if (isset($_GET['error'])) { ?>
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
-                    })
+                    });
                 </script>
-            <?php } ?>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <section>
                 <form action="" method="post" class="box">
                     <fieldset>
@@ -169,7 +183,7 @@ $dbh = null;
                     </fieldset>
                     <div class="btn_alinhamento">
                         <a href="perfil_cli.php">
-                            <button type="submit" id="submit" value="Enviar" name="salvar"  onclick="return confirm('Deseja realmente alterar algum dado?');">Enviar</button>
+                            <button type="submit" id="submit" value="Enviar" name="salvar" onclick="return confirm('Deseja realmente alterar algum dado?');">Enviar</button>
                         </a>
                         <a href="perfil_cli.php">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>

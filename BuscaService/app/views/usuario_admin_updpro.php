@@ -9,10 +9,6 @@ require_once "../database/conexao.php";
 # verifica se existe sessão de usuario e se ele é administrador.
 # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
 # sai da pagina.
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
-    header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
-    exit;
-}
 
 # verifica se uma variavel id foi passada via GET 
 $idpro = isset($_GET['idpro']) ? $_GET['idpro'] : 0;
@@ -20,12 +16,23 @@ $idpro = isset($_GET['idpro']) ? $_GET['idpro'] : 0;
 # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
 $dbh = Conexao::getInstance();
 
+# Consulta os serviços marcados pelo profissional
+$query = "SELECT idserv FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':idpro', $idpro);
+$stmt->execute();
+
+# Obtém os IDs dos serviços marcados em um array
+$servicosMarcados = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+// $teste = array_search('16', $servicosMarcados);
+// echo '<pre>'; var_dump($servicosMarcados, $teste); exit;
+
 # verifica se os dados do formulario foram enviados via POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
     $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $password = isset($_POST['senha']) ? md5($_POST['senha']) : 'USU';
     $cpf = isset($_POST['cpf']) ? $_POST['cpf'] : '';
     $telefone = isset($_POST['telefone']) ? $_POST['telefone'] : '';
     $telefone2 = $_POST['telefone2'] ?? '';
@@ -34,20 +41,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cidade = isset($_POST['cidade']) ? $_POST['cidade'] : '';
     $bairro = isset($_POST['bairro']) ? $_POST['bairro'] : '';
     $fotoprin = isset($_FILES['fotoprin']) ? $_FILES['fotoprin'] : null;
-    $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : '';
+    $descricaonegocio = isset($_POST['descricaonegocio']) ? $_POST['descricaonegocio'] : '';
     $fotosec = $_FILES['fotosec'] ?? null;
     $fotosec2 = $_FILES['fotosec2'] ?? null;
+    $perfil = isset($_POST['perfil']) ? $_POST['perfil'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 0;
+    $listaServicos = $_POST['servico'];
 
 
-    // Insere os dados do profissional na tabela 'profissional' preciso colocar os valores dos ids?
-    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `senha` = :senha, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricao` = :descricao, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `status` = :status 
+    // Insere os dados do profissional na tabela 'profissional'
+    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
                     WHERE idpro = :idpro";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':titulo', $titulo);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':senha', $password);
     $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':telefone2', $telefone2);
@@ -56,39 +64,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':bairro', $bairro);
     $stmt->bindParam(':fotoprin', $fotoprin);
-    $stmt->bindParam(':descricao', $descricao);
+    $stmt->bindParam(':descricaonegocio', $descricaonegocio);
     $stmt->bindParam(':fotosec', $fotosec);
     $stmt->bindParam(':fotosec2', $fotosec2);
+    $stmt->bindParam(':perfil', $perfil);
     $stmt->bindParam(':status', $status);
     $stmt->bindParam(':idpro', $idpro);
 
-
     $stmt->execute();
 
-    // Obtém o ID do profissional inserido
-    $idpro = $dbh->lastInsertId();
+    $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':idpro', $idpro);
+    $stmt->execute();
 
-    // Verifica se a quantidade de registros inseridos é maior que zero
+    foreach ($listaServicos as $servicoInserir) {
+        $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, :idserv)";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':idpro', $idpro);
+        $stmt->bindParam(':idserv', $servicoInserir);
+        $stmt->execute();
+    }
+
     if ($stmt->rowCount()) {
-        // Verifica se foram selecionados serviços no formulário
-        if (isset($_POST['servico']) && is_array($_POST['servico'])) {
-            $servicosSelecionados = $_POST['servico'];
-
-            // Insere as relações entre o profissional e os serviços na tabela 'profissional_has_servico'
-            $query = "INSERT INTO `busca_service`.`profissional_has_servico` (`idpro`, `idserv`) VALUES (:idpro, :idserv)";
-            $stmt = $dbh->prepare($query);
-
-            foreach ($servicosSelecionados as $idserv) {
-                $stmt->bindValue(':idpro', $idpro); // Atribui o ID do profissional
-                $stmt->bindValue(':idserv', $idserv);
-                $stmt->execute();
-            }
-        }
-
         header('location: usuario_admin_listpro.php?success=Profissional atualizado com sucesso!');
     } else {
         header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
     }
+
+
+    //     // Verifica se foram selecionados serviços no formulário
+    //     if (isset($_POST['servico']) && is_array($_POST['servico'])) {
+    //         $servicosSelecionados = $_POST['servico'];
+
+    //         # Remove os serviços não selecionados
+    //     $servicosRemovidos = array_diff($servicosMarcados, $servicosSelecionados);
+    //     // echo '<pre>'; var_dump($servicosRemovidos); exit;
+
+    //     if (!empty($servicosRemovidos)) {
+    //         # Remove as associações do profissional com os serviços não selecionados
+    //         $placeholders = rtrim(str_repeat('?, ', count($servicosRemovidos)), ', ');
+    //         $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro AND idserv IN ($placeholders)";
+    //         $stmt = $dbh->prepare($query);
+    //         $stmt->bindParam(':idpro', $idpro);
+    //         $stmt->execute($servicosRemovidos);
+    //     }
+
+    // # Atualiza os serviços marcados com os selecionados
+    // $servicosAtualizados = array_unique(array_merge($servicosMarcados, $servicosSelecionados));
+    // $servicosAtualizados = array_filter($servicosAtualizados);
+
+    // # Remove as associações duplicadas
+    // $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
+    // $stmt = $dbh->prepare($query);
+    // $stmt->bindParam(':idpro', $idpro);
+    // $stmt->execute();
+
+    // # Insere as novas associações do profissional com os serviços
+    // $placeholders = rtrim(str_repeat('?, ', count($servicosAtualizados)), ', ');
+
+    // $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, $placeholders)";
+    // $stmt = $dbh->prepare($query);
+    // $stmt->bindParam(':idpro', $idpro);
+    // $stmt->execute($servicosAtualizados);
+
+    //         # Consulta todos os serviços disponíveis
+    //         $query = "SELECT * FROM `busca_service`.`servico`";
+    //         $stmt = $dbh->prepare($query);
+    //         $stmt->execute();
+
+    //         # Obtém todos os serviços em um array
+    //         $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     }
+
+    //     header('location: usuario_admin_listpro.php?success=Profissional atualizado com sucesso!');
+    // } else {
+    //     header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
+    // }
 }
 
 
@@ -104,26 +156,8 @@ $stmt->execute();
 
 # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
 # se não existir retorna null
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-# destroi a conexao com o banco de dados.
-$dbh = null;
-
-
-# cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
-$dbh = Conexao::getInstance();
-# cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
-# ordenando pelo campo perfil e nome.
-$query = "SELECT * FROM `busca_service`.`servico` ORDER BY categoria, nome";
-$stmt = $dbh->prepare($query);
-
-# executa a consulta banco de dados e aguarda o resultado.
-$stmt->execute();
-
-
-# Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
-# se não existir retorna null
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 # destroi a conexao com o banco de dados.
 $dbh = null;
@@ -135,17 +169,31 @@ $dbh = null;
     <main class="bg_form">
         <div class="main_opc">
             <?php
-            # verifca se existe uma mensagem de erro enviada via GET.
-            # se sim, exibe a mensagem enviada no cabeçalho.
-            if (isset($_GET['error'])) { ?>
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Profissional',
+                        title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
-                    })
+                    });
                 </script>
-            <?php } ?>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <section>
                 <form action="" method="post" class="box">
                     <fieldset>
@@ -173,82 +221,79 @@ $dbh = null;
                             </div>
 
                             <div class="inputBox">
-                                <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required>
+                                <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required autofocus value="<?= isset($row) ? $row['telefone'] : '' ?>">
                                 <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
                             </div>
 
                             <div class="inputBox">
-                                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required>
+                                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required autofocus value="<?= isset($row) ? $row['telefone2'] : '' ?>">
                                 <label for="telefone-geral" class="labelInput">Telefone:</label>
                             </div>
                         </div>
 
                         <div class="endereco">
                             <div class="inputBox">
-                                <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required>
+                                <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" autofocus value="<?= isset($row) ? $row['cep'] : '' ?>">
                                 <label for="cep" class="labelInput">CEP:</label><br>
                             </div>
 
                             <div class="inputBox">
-                                <input type="text" name="estado" id="estado" class="inputUser" required>
+                                <input type="text" name="estado" id="estado" class="inputUser" autofocus value="<?= isset($row) ? $row['estado'] : '' ?>">
                                 <label for="uf" class="labelInput">Estado:</label>
                             </div>
 
                             <div class="inputBox">
-                                <input type="text" name="cidade" id="cidade" class="inputUser" required>
+                                <input type="text" name="cidade" id="cidade" class="inputUser" autofocus value="<?= isset($row) ? $row['cidade'] : '' ?>">
                                 <label for="cidade" class="labelInput">Cidade:</label>
                             </div>
 
                             <div class="inputBox">
-                                <input type="text" name="bairro" id="bairro" class="inputUser" required>
+                                <input type="text" name="bairro" id="bairro" class="inputUser" autofocus value="<?= isset($row) ? $row['bairro'] : '' ?>">
                                 <label for="bairro" class="labelInput">Bairro:</label>
                             </div>
                         </div>
 
-
                         <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
                         <div class="seleciona_servicos">
-
                             <div class="servicos_lista">
-
                                 <?php
+                                $dbh = Conexao::getInstance();
+                                $query = "SELECT * FROM `busca_service`.`servico`";
+                                $stmt = $dbh->prepare($query);
+                                $stmt->execute();
+                                $rowsServicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                // echo '<pre>'; var_dump($rowsServicos); exit;
+
                                 $servicesByCategory = [];
 
+                                foreach ($rowsServicos as $rowServico) {
+                                    $categoria = $rowServico['categoria'];
+                                    $idserv = $rowServico['idserv'];
+                                    $nome = $rowServico['nome'];
+                                    $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome);
+                                }
 
-                                if (isset($servicesByCategory['null'])) {
-                                    echo "<spam class='nenhum_servico'>Nenhum serviço cadastrado no sistema.<spam>";
-                                } else {
-                                    foreach ($rows as $row) {
-                                        $categoria = $row['categoria'];
-                                        $idserv = $row['idserv']; // Obtém o ID do serviço e armazena na variável $idserv
-                                        $nome = $row['nome'];
-                                        $servicesByCategory[$categoria][] = array('idserv' => $idserv, 'nome' => $nome); // Armazena o ID e o nome do serviço
+                                foreach ($servicesByCategory as $categoria => $servicos) {
+                                    echo "<div class='categoria_servicos'>";
+                                    echo "<p><b>$categoria:</b></p>";
+                                    echo "<ul>";
+
+                                    foreach ($servicos as $servico) {
+                                        $idserv = $servico['idserv'];
+                                        $nome = $servico['nome'];
+
+                                        $checked = in_array($idserv, $servicosMarcados) ? 'checked' : '';
+                                        echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv' $checked> <label for='servico_$idserv'>$nome</label></li>";
                                     }
 
-                                    // Exibe as categorias e serviços
-                                    foreach ($servicesByCategory as $categoria => $servicos) {
-                                        echo "<div class='categoria_servicos'>";
-                                        echo "<p><b>$categoria:</b></p>"; // Exibe o nome da categoria
-
-                                        echo "<ul>"; // Abre uma lista não ordenada para os serviços
-
-                                        foreach ($servicos as $servico) {
-                                            $idserv = $servico['idserv'];
-                                            $nome = $servico['nome'];
-                                            echo "<li><input type='checkbox' name='servico[]' value='$idserv' id='servico_$idserv'> <label for='servico_$idserv'>$nome</label></li>"; // Exibe o serviço com o ID como valor
-                                        }
-
-                                        echo "</ul>"; // Fecha a lista não ordenada
-                                        echo "</div>";
-                                    }
+                                    echo "</ul>";
+                                    echo "</div>";
                                 }
                                 ?>
-
                             </div>
                         </div>
+
                         <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
-
-
 
                         <div class="inputBox">
                             <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
@@ -262,7 +307,7 @@ $dbh = null;
 
                         <div class="inputBox">
                             <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-                            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
+                            <textarea class="descricao" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
                         </div>
 
                         <div class="inputBox">
@@ -295,7 +340,7 @@ $dbh = null;
                                 <option value="ADM" <?= isset($row) && $row['perfil'] == 'ADM' ? 'selected' : '' ?>>
                                     Administrador</option>
                             </select>
-                        </div><br>
+                        </div>
 
                         <div class="inputBox">
                             <label for="status" class="statusLabel">Status</label><br>
@@ -312,10 +357,10 @@ $dbh = null;
 
                     </fieldset>
                     <div class="btn_alinhamento">
-                        <a href="usuario_admin.php">
+                        <a href="usuario_admin_listpro.php?idpro=<?php echo $idpro; ?>">
                             <button type="submit" id="submit" value="Enviar" name="salvar">Enviar</button>
                         </a>
-                        <a href="usuario_admin_listcli.php">
+                        <a href="usuario_admin_listpro.php">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>
                         </a>
                     </div>
@@ -338,9 +383,6 @@ $dbh = null;
         </script>
         <script src="assets/js/cpf.js">
             //formata o cpf
-        </script>
-        <script src="assets/js/email.js">
-            //formata o email
         </script>
 
     </main>

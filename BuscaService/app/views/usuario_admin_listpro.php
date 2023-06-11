@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         # se sim, redireciona para a pagina de admin com mensagem de sucesso.
         # se não, redireciona para a pagina de admin com mensagem de erro.
         if ($stmt->rowCount()) {
-            header('location: usuario_admin_listprocopy.php?success=Profissional excluído com sucesso!');
+            header('location: usuario_admin_listpro.php?success=Profissional excluído com sucesso!');
         } else {
-            header('location: usuario_admin_listprocopy.php?error=Erro ao excluir profissional!');
+            header('location: usuario_admin_listpro.php?error=Erro ao excluir profissional!');
         }
     }
 }
@@ -64,7 +64,32 @@ $dbh = null;
 
     <main class="bg_form">
         <div class="main_opc">
-
+            <?php
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: '<?= $_GET['error'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <div class="main_stage">
                 <div class="main_stage_content">
 
@@ -102,11 +127,11 @@ $dbh = null;
                                             <td><?= date('d/m/Y H:i', strtotime($row['dataregpro'])) ?></td>
 
                                             <td>
-                                                <a href="usuario_admin_updprocopy.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar</a>
+                                                <a href="usuario_admin_updpro.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar</a>
                                                 &nbsp;
                                                 <form action="" method="post">
                                                     <input type="hidden" name="idpro" value="<?= $row['idpro'] ?>" />
-                                                    <button class="btn" name="botao" id="delete" value="deletar" onclick="return confirm('Deseja excluir o profissional?');">Apagar</button>
+                                                    <button class="btn" name="botao" id="delete" value="deletar" onclick="return confirm('Deseja realmente excluir este profissional?');">Apagar</button>
                                                 </form>
                                             </td>
                                         </tr>

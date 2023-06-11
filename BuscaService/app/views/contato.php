@@ -29,7 +29,7 @@ require_once 'login.php';
         </div>
       </div>
 
-      <form id="form_contato" method="POST" action="contato/sucesso" data-customvalidate="true" autocomplete="off" novalidate>
+      <form id="form_contato" method="POST" action="" data-customvalidate="true" autocomplete="off" novalidate>
         <input type="hidden" name="source" value="Formulário de Contato" />
         <input type="hidden" name="hash" value="80f3e07940c9e3c2888735b2a279092e" />
 

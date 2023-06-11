@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'layouts/site/header.php';
+require_once 'layouts/site/menu.php';
 require_once "../database/conexao.php";
 
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'CLI') {
@@ -36,11 +37,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 //echo '<pre>'; var_dump($row); exit;
 
 
-// if ($row === false) {
-//     // A consulta não retornou resultados, faça algo para lidar com isso
-//     header('location: update_ava.php?error=Erro ao obter a avaliação!');
-//     exit;
-// }
+if ($row === false) {
+    // A consulta não retornou resultados, faça algo para lidar com isso
+    header('location: update_ava.php?error=Erro ao obter a avaliação!');
+    exit;
+}
 
 
 
@@ -77,19 +78,34 @@ $dbh = null;
 ?>
 
 <body>
-    <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
         <div class="main_opc">
             <?php
-            if (isset($_GET['error'])) { ?>
+            # Verifica se existe uma mensagem de erro enviada via GET
+            if (isset($_GET['error'])) {
+            ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Cliente',
+                        title: 'Erro',
                         text: '<?= $_GET['error'] ?>',
-                    })
+                    });
                 </script>
-            <?php } ?>
+            <?php
+            }
+            # Verifica se existe uma mensagem de sucesso enviada via GET
+            elseif (isset($_GET['success'])) {
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: '<?= $_GET['success'] ?>',
+                    });
+                </script>
+            <?php
+            }
+            ?>
             <section>
                 <form action="update_ava.php?idava=<?php echo urlencode($idavaCriptografado); ?>&idpro=<?php echo urlencode($idproCriptografado); ?>" method="post" class="box">
 
@@ -147,10 +163,10 @@ $dbh = null;
 
                     </fieldset>
                     <div class="btn_alinhamento">
-                        <a href="historico_ava.php?">
+                        <a href="historico_ava.php">
                             <button type="submit" id="submit" value="Enviar" name="salvar" onclick="return confirm('Deseja realmente alterar a avaliação?');">Enviar</button>
                         </a>
-                        <a href="historico_ava.php?">
+                        <a href="historico_ava.php?idcli=<?= base64_encode($idcli) ?>">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>
                         </a>
 
