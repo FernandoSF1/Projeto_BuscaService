@@ -2,16 +2,6 @@
 # para trabalhar com sessões sempre iniciamos com session_start.
 session_start();
 
-/* comando que está dando erro:
-    INSERT INTO busca_service.servico (nome, categoria, status) 
-    VALUES ('Pedreiro', 'Construção', 1); 
-    
-    erro:
-    #1452 - Cannot add or update a child row: a foreign key constraint fails (`busca_service`.`servico`, CONSTRAINT `fk_servico_cliente1` FOREIGN KEY (`cliente_idcli`) REFERENCES `cliente` (`idcli`) ON DELETE NO ACTION ON UPDATE NO ACTION)
-    */
-
-
-
 # inclui o arquivo header e a classe de conexão com o banco de dados.
 require_once 'layouts/site/header.php';
 require_once "../database/conexao.php";

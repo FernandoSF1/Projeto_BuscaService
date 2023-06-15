@@ -15,7 +15,9 @@ $dbh = Conexao::getInstance();
 $query = "SELECT DISTINCT p.* FROM profissional p
           INNER JOIN profissional_has_servico ps ON p.idpro = ps.idpro
           INNER JOIN servico s ON ps.idserv = s.idserv
-          WHERE s.nome LIKE :nomeServico";
+          LEFT JOIN avaliacao a ON p.idpro = a.idpro
+          WHERE s.nome LIKE :nomeServico AND p.status = 1
+          ORDER BY a.pontuacao DESC";
 
 $stmt = $dbh->prepare($query);
 $stmt->bindValue(':nomeServico', '%' . $nomeServico . '%');
@@ -71,11 +73,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
       <?php if (count($rows) > 0) : ?>
         <div class="encontrados">
-          <p>Encontramos <span><?php echo count($rows); ?></span> profissionais para serviços de <span><?php echo $nomeServico; ?></span> em <span>(bairro, cidade - estado)</span></p>
+          <p>Encontramos <span><?php echo count($rows); ?></span> profissionais para serviços de <span><?php echo $nomeServico; ?></span></p>
         </div>
       <?php else : ?>
         <div class="nao-encontrados">
-          <p>Não encontramos profissionais que ofereçam o serviço de <span><?php echo $nomeServico; ?></span> em <span>(bairro, cidade - estado)</span></p>
+          <p>Não encontramos profissionais que ofereçam o serviço de <span><?php echo $nomeServico; ?></p>
         </div>
       <?php endif; ?>
     </header>

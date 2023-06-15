@@ -115,7 +115,7 @@ $dbh = null;
                             <h2>Nota atual da avaliação: <?php echo $pontuacaoAvaAtual; ?></h2>
                             <?php
                             $estrelaPreenchida = 'assets/img/estrela.png';
-                            $estrelaVazia = 'assets/img/estrela_vazia.png';
+                            $estrelaVazia = 'assets/img/estrela_vazia2.png';
 
                             for ($i = 1; $i <= 5; $i++) {
                                 $imagemEstrela = ($i <= $pontuacaoAvaAtual) ? $estrelaPreenchida : $estrelaVazia;
@@ -129,15 +129,15 @@ $dbh = null;
                                     <label for="pontuacao" class="label_perfil">Pontuação:</label>
                                     <div class="estrelas">
                                         <input type="radio" id="pontuacao1" name="pontuacao" value="1" required <?php if ($row['pontuacao'] == '1') echo 'checked'; ?>>
-                                        <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao2" name="pontuacao" value="2" required <?php if ($row['pontuacao'] == '2') echo 'checked'; ?>>
-                                        <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao3" name="pontuacao" value="3" required <?php if ($row['pontuacao'] == '3') echo 'checked'; ?>>
-                                        <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao4" name="pontuacao" value="4" required <?php if ($row['pontuacao'] == '4') echo 'checked'; ?>>
-                                        <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao5" name="pontuacao" value="5" required <?php if ($row['pontuacao'] == '5') echo 'checked'; ?>>
-                                        <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                     </div>
                                 </div>
                                 <div class="campo-avaliacao">
@@ -153,7 +153,7 @@ $dbh = null;
                                             if (i < pontuacao) {
                                                 estrelas[i].src = 'assets/img/estrela.png';
                                             } else {
-                                                estrelas[i].src = 'assets/img/estrela_vazia.png';
+                                                estrelas[i].src = 'assets/img/estrela_vazia2.png';
                                             }
                                         }
                                     }
@@ -164,7 +164,7 @@ $dbh = null;
                     </fieldset>
                     <div class="btn_alinhamento">
                         <a href="historico_ava.php">
-                            <button type="submit" id="submit" value="Enviar" name="salvar" onclick="return confirm('Deseja realmente alterar a avaliação?');">Enviar</button>
+                            <button type="submit" id="submit" value="Enviar" name="salvar" onclick="return confirm('Deseja realmente alterar esta avaliação?');">Enviar</button>
                         </a>
                         <a href="historico_ava.php?idcli=<?= base64_encode($idcli) ?>">
                             <button type="button" id="cancel" value="Cancelar" name="cancelar">Cancelar</button>

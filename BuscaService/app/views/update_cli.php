@@ -40,12 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estado = isset($_POST['estado']) ? $_POST['estado'] : '';
     $cidade = isset($_POST['cidade']) ? $_POST['cidade'] : '';
     $bairro = isset($_POST['bairro']) ? $_POST['bairro'] : '';
-    $perfil = isset($_POST['perfil']) ? $_POST['perfil'] : '';
-    $status = isset($_POST['status']) ? $_POST['status'] : 0;
+
 
     # cria uma consulta banco de dados atualizando um usuario existente. 
     # usando como parametros os campos nome e password.
-    $query = "UPDATE `busca_service`.`cliente` SET `nome` = :nome, `email` = :email, `telefone` = :telefone, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `perfil` = :perfil, `status` = :status 
+    $query = "UPDATE `busca_service`.`cliente` SET `nome` = :nome, `email` = :email, `telefone` = :telefone, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro 
                     WHERE idcli = :idcli";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':nome', $nome);
@@ -55,21 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':estado', $estado);
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':bairro', $bairro);
-    $stmt->bindParam(':perfil', $perfil);
-    $stmt->bindParam(':status', $status);
     $stmt->bindParam(':idcli', $idcli);
 
     # executa a consulta banco de dados para inserir o resultado.
     $stmt->execute();
 
     # verifica se a quantidade de registros inseridos é maior que zero.
-    # se sim, redireciona para a pagina de admin com mensagem de sucesso.
+    # se sim, redireciona para a pagina de perfil com mensagem de sucesso.
     # se não, redireciona para a pagina de cadastro com mensagem de erro.
     if ($stmt->rowCount()) {
         header('location: perfil_cli.php?success=Dados atualizados com sucesso!');
+        $_SESSION['usuario']['nome'] = $nome;
     } else {
-        $error = $dbh->errorInfo();
-        var_dump($error);
+        // $error = $dbh->errorInfo();
+        // var_dump($error);
         header('location: perfil_cli.php?error=Erro ao atualizar os seus dados!');
     }
 

@@ -9,6 +9,10 @@ require_once "../database/conexao.php";
 # verifica se existe sessão de usuario e se ele é administrador.
 # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
 # sai da pagina.
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+    header("Location: index.php?error=Você não tem permissão para acessar esse recurso");
+    exit;
+}
 
 # verifica se uma variavel id foi passada via GET 
 $idpro = isset($_GET['idpro']) ? $_GET['idpro'] : 0;
@@ -40,14 +44,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estado = isset($_POST['estado']) ? $_POST['estado'] : '';
     $cidade = isset($_POST['cidade']) ? $_POST['cidade'] : '';
     $bairro = isset($_POST['bairro']) ? $_POST['bairro'] : '';
-    $fotoprin = isset($_FILES['fotoprin']) ? $_FILES['fotoprin'] : null;
     $descricaonegocio = isset($_POST['descricaonegocio']) ? $_POST['descricaonegocio'] : '';
-    $fotosec = $_FILES['fotosec'] ?? null;
-    $fotosec2 = $_FILES['fotosec2'] ?? null;
     $perfil = isset($_POST['perfil']) ? $_POST['perfil'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 0;
     $listaServicos = $_POST['servico'];
 
+
+    # cria uma consulta no banco de dados buscando todos os dados da tabela profissional
+# filtrando pelo id do profissional.
+$query = "SELECT * FROM `busca_service`.`profissional` WHERE idpro=:idpro LIMIT 1";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':idpro', $idpro);
+
+# executa a consulta no banco de dados e aguarda o resultado.
+$stmt->execute();
+
+# Faz um fetch para trazer os dados existentes, se existirem, em um array na variável $row.
+# se não existir, retorna null
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+# Verificar se a imagem atual do $row está vazia e se o campo 'fotoprin' está vazio
+if (empty($row['fotoprin']) && empty($_FILES['fotoprin']['name'])) {
+    # Se ambos estiverem vazios, exiba uma mensagem de erro e interrompa o processamento do formulário
+    echo "Por favor, selecione uma imagem para o perfil.";
+    return;
+}
+
+// CADASTRO DE IMAGENS
+
+# Verificar o campo 'fotoprin'
+if (!empty($_FILES['fotoprin']['name'])) {
+    require_once 'update_fotoprin.php';
+    # Atualize o valor de $destino_fotoprin aqui, com base na lógica do script 'update_fotoprin.php'
+} else {
+    $destino_fotoprin = $row['fotoprin'];
+}
+
+# Repita a mesma lógica para os campos 'fotosec' e 'fotosec2'
+if (!empty($_FILES['fotosec']['name'])) {
+    require_once 'update_fotosec.php';
+    # Atualize o valor de $destino_fotosec aqui
+} else {
+    $destino_fotosec = $row['fotosec'];
+}
+
+if (!empty($_FILES['fotosec2']['name'])) {
+    require_once 'update_fotosec2.php';
+    # Atualize o valor de $destino_fotosec2 aqui
+} else {
+    $destino_fotosec2 = $row['fotosec2'];
+}
+
+    // ...
 
     // Insere os dados do profissional na tabela 'profissional'
     $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
@@ -63,10 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':estado', $estado);
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':bairro', $bairro);
-    $stmt->bindParam(':fotoprin', $fotoprin);
+    $stmt->bindParam(':fotoprin', $destino_fotoprin);
     $stmt->bindParam(':descricaonegocio', $descricaonegocio);
-    $stmt->bindParam(':fotosec', $fotosec);
-    $stmt->bindParam(':fotosec2', $fotosec2);
+    $stmt->bindParam(':fotosec', $destino_fotosec);
+    $stmt->bindParam(':fotosec2', $destino_fotosec2);
     $stmt->bindParam(':perfil', $perfil);
     $stmt->bindParam(':status', $status);
     $stmt->bindParam(':idpro', $idpro);
@@ -91,56 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
     }
-
-
-    //     // Verifica se foram selecionados serviços no formulário
-    //     if (isset($_POST['servico']) && is_array($_POST['servico'])) {
-    //         $servicosSelecionados = $_POST['servico'];
-
-    //         # Remove os serviços não selecionados
-    //     $servicosRemovidos = array_diff($servicosMarcados, $servicosSelecionados);
-    //     // echo '<pre>'; var_dump($servicosRemovidos); exit;
-
-    //     if (!empty($servicosRemovidos)) {
-    //         # Remove as associações do profissional com os serviços não selecionados
-    //         $placeholders = rtrim(str_repeat('?, ', count($servicosRemovidos)), ', ');
-    //         $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro AND idserv IN ($placeholders)";
-    //         $stmt = $dbh->prepare($query);
-    //         $stmt->bindParam(':idpro', $idpro);
-    //         $stmt->execute($servicosRemovidos);
-    //     }
-
-    // # Atualiza os serviços marcados com os selecionados
-    // $servicosAtualizados = array_unique(array_merge($servicosMarcados, $servicosSelecionados));
-    // $servicosAtualizados = array_filter($servicosAtualizados);
-
-    // # Remove as associações duplicadas
-    // $query = "DELETE FROM `busca_service`.`profissional_has_servico` WHERE idpro=:idpro";
-    // $stmt = $dbh->prepare($query);
-    // $stmt->bindParam(':idpro', $idpro);
-    // $stmt->execute();
-
-    // # Insere as novas associações do profissional com os serviços
-    // $placeholders = rtrim(str_repeat('?, ', count($servicosAtualizados)), ', ');
-
-    // $query = "INSERT INTO `busca_service`.`profissional_has_servico` (idpro, idserv) VALUES (:idpro, $placeholders)";
-    // $stmt = $dbh->prepare($query);
-    // $stmt->bindParam(':idpro', $idpro);
-    // $stmt->execute($servicosAtualizados);
-
-    //         # Consulta todos os serviços disponíveis
-    //         $query = "SELECT * FROM `busca_service`.`servico`";
-    //         $stmt = $dbh->prepare($query);
-    //         $stmt->execute();
-
-    //         # Obtém todos os serviços em um array
-    //         $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    //     }
-
-    //     header('location: usuario_admin_listpro.php?success=Profissional atualizado com sucesso!');
-    // } else {
-    //     header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
-    // }
 }
 
 
@@ -157,7 +155,7 @@ $stmt->execute();
 # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
 # se não existir retorna null
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+//echo "<pre>";var_dump($row);exit;
 
 # destroi a conexao com o banco de dados.
 $dbh = null;
@@ -195,7 +193,7 @@ $dbh = null;
             }
             ?>
             <section>
-                <form action="" method="post" class="box">
+                <form action="" method="post" class="box" enctype="multipart/form-data" id="formulario_img">
                     <fieldset>
                         <legend><b>Atualizar Profissional</b></legend>
 
@@ -296,14 +294,20 @@ $dbh = null;
                         <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
 
                         <div class="inputBox">
-                            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
-                            <p><br><br>
-                                <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*" required>
-                                <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
-                                <span id="arquivo_selecionado_perfil"></span>
-                            </p>
-                            <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
-                        </div>
+    <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
+    <p><br><br>
+        <?php
+        if (!empty($row['fotoprin'])) {
+            echo '<img src="' . $row['fotoprin'] . '" alt="Imagem do perfil" style="width: 50px; height: 50px;">';
+        }
+        ?>
+        <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*">
+        <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
+        <span id="arquivo_selecionado_perfil"></span>
+    </p>
+    <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
+</div>
+
 
                         <div class="inputBox">
                             <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
@@ -311,24 +315,34 @@ $dbh = null;
                         </div>
 
                         <div class="inputBox">
-                            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui
-                                (opcional):</label>
-                            <p><br><br>
-                                <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
-                                <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
-                                <span id="arquivo_selecionado_trabalho1"></span>
-                            </p>
-                        </div>
+    <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui (opcional):</label>
+    <p><br><br>
+        <?php
+        if (!empty($row['fotosec'])) {
+            echo '<img src="' . $row['fotosec'] . '" alt="Primeira imagem do trabalho" style="width: 50px; height: 50px;">';
+        }
+        ?>
+        <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
+        <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
+        <span id="arquivo_selecionado_trabalho1"></span>
+    </p>
+</div>
 
-                        <div class="inputBox">
-                            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho
-                                (opcional):</label>
-                            <p><br><br>
-                                <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
-                                <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
-                                <span id="arquivo_selecionado_trabalho2"></span>
-                            </p>
-                        </div>
+
+<div class="inputBox">
+    <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho (opcional):</label>
+    <p><br><br>
+        <?php
+        if (!empty($row['fotosec2'])) {
+            echo '<img src="' . $row['fotosec2'] . '" alt="Segunda imagem do trabalho" style="width: 50px; height: 50px;">';
+        }
+        ?>
+        <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
+        <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
+        <span id="arquivo_selecionado_trabalho2"></span>
+    </p>
+</div>
+
 
                         <div class="inputBox">
                             <label for="perfil" id="perfilLabel">Perfil</label><br>
@@ -383,6 +397,15 @@ $dbh = null;
         </script>
         <script src="assets/js/cpf.js">
             //formata o cpf
+        </script>
+        <script src="assets/js/exibir_file.js">
+            //exibir nome do arquivo selecionado
+        </script>
+        <script src="assets/js/min_checkbox.js">
+            //formata o cpf
+        </script>
+        <script src="assets/js/email.js">
+            //formata o email
         </script>
 
     </main>

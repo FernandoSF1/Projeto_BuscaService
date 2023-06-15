@@ -2,7 +2,7 @@
 # para trabalhar com sessões sempre iniciamos com session_start.
 session_start();
 
-# inclui o arquivo header e a classe de conexão com o banco de dados.
+// Incluindo os arquivos de cabeçalho
 require_once 'layouts/site/header.php';
 require_once 'layouts/site/menu.php';
 require_once 'login.php';

@@ -96,7 +96,7 @@ if ($stmt->rowCount() > 0) {
 
         // Exibe as estrelas correspondentes à pontuação
         for ($i = 1; $i <= 5; $i++) {
-            $starImage = ($i <= $avaliacao['pontuacao']) ? 'assets/img/estrela.png' : 'assets/img/estrela_vazia.png';
+            $starImage = ($i <= $avaliacao['pontuacao']) ? 'assets/img/estrela.png' : 'assets/img/estrela_vazia2.png';
             echo '<img src="' . $starImage . '" alt="Estrela" style="width: 25px; height: 25px;">';
         }
 

@@ -10,7 +10,7 @@ require_once "../database/conexao.php";
 # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
 # sai da pagina.
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
-    header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
+    header("Location: index.php?error=Você não tem permissão para acessar esse recurso");
     exit;
 }
 

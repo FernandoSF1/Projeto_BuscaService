@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <br><br>
             <input type="password" name="senha" placeholder="Senha" class="input" required>
             <br><br>
-            <button class="button">Enviar</button>
+            <button class="button">Fazer login</button>
         </form>
     </div>
 

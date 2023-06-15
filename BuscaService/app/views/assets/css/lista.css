@@ -118,6 +118,17 @@
   background-color: #fff;
 }
 
+.titulo_pro_link{
+  font-weight: bold;
+  text-decoration: none;
+  color: rgb(0, 73, 122);
+  font-size: 1.2em;
+}
+
+.titulo_pro_link:hover {
+  text-decoration: underline;
+}
+
 .listagem_info {
   display: flex;
   text-align: center;

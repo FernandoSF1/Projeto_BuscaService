@@ -27,7 +27,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                     <li class="item_sidebar"><a href="usuario_admin_listcli.php">Clientes</a></li>
                     <li class="item_sidebar"><a href="usuario_admin_listpro.php">Profissionais</a></li>
                     <li class="item_sidebar"><a href="usuario_admin_listserv.php">Serviços</a></li>
-                    <li class="item_sidebar"><a href="usuario_admin_addserv.php">Pagamentos</a></li>
+                    <li class="item_sidebar"><a href="usuario_admin_listava.php">Avaliações</a></li>
                     <!--<li><a href="#">Avaliações</a></li>-->
                 </ul>
             </nav>

@@ -17,8 +17,8 @@
                         echo "<li><a href='logout.php' class='navmenu_index'>Sair</a></li>";
                     } else if (isset($_SESSION['usuario']) && isset($_SESSION['usuario']['perfil'])) {
                         if (isset($_SESSION['usuario']['nome'])) {
-                            $nomeCompleto = $_SESSION['usuario']['nome'];
-                            $nomeArray = explode(' ', $nomeCompleto);
+                            $nomeCliente = isset($_SESSION['usuario']['nome']) ? $_SESSION['usuario']['nome'] : '';
+                            $nomeArray = explode(' ', $nomeCliente);
                             $primeiroNome = $nomeArray[0];
                         } else {
                             $primeiroNome = '';

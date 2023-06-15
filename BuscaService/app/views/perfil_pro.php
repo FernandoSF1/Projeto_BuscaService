@@ -73,9 +73,17 @@ elseif (isset($_GET['success'])) {
 <body>
     <div class="container">
         <h1 class="container_titulo">Perfil do Profissional</h1>
+        <!-- Botão: Editar dados -->
+        <a href="update_pro.php?idpro=<?= base64_encode($row['idpro']) ?>" class="perfil-btn" id="edit-perfil">Editar dados</a>
 
         <div class="dados">
             <div class="dados-pessoais_cli">
+                
+                <div class="campo campo-pessoal">
+                    <label for="" class="label_perfil">Imagem do perfil:</label>
+                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil" style="width:200px;height:190px;">
+                </div>
+
                 <div class="campo campo-pessoal">
                     <label for="nome" class="label_perfil">Nome:</label>
                     <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
@@ -137,7 +145,22 @@ elseif (isset($_GET['success'])) {
             </div>
         </div>
 
-        <a href="update_pro.php?idpro=<?= $row['idpro'] ?>" class="btn" id="edit">Editar dados</a>&nbsp;
+        <section class="imagens_trabalho">
+            <h2 class="imagens_trabalho_titulo">Galeria de imagens</h2>
+            <div class="imagens_trabalho_img">
+                <?php if (!empty($row['fotosec'])) : ?>
+                    <div class="campo campo-pessoal">
+                        <img src="<?= $row['fotosec'] ?>" class="imagens_perfil" alt="imagem" style="width:230px;height:220px;">
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($row['fotosec2'])) : ?>
+                    <div class="campo campo-pessoal">
+                        <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil" alt="Imagem" style="width:230px;height:220px;">
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
     </div>
     </main>
 

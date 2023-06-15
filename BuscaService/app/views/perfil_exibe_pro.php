@@ -2,9 +2,10 @@
 // Iniciando a sessão
 session_start();
 
-// Incluindo o arquivo de cabeçalho
+// Incluindo os arquivos de cabeçalho
 require_once 'layouts/site/header.php';
 require_once 'layouts/site/menu.php';
+require_once 'login.php';
 require_once "../database/conexao.php";
 
 $idpro_encrypted = isset($_GET['idpro']) ? $_GET['idpro'] : '';
@@ -71,9 +72,10 @@ elseif (isset($_GET['success'])) {
 
         <div class="dados">
             <div class="dados-pessoais_cli">
+                
                 <div class="campo campo-pessoal">
                     <label for="" class="label_perfil">Imagem do perfil:</label>
-                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil" style="width:160px;height:150px;">
+                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil" style="width:200px;height:190px;">
                 </div>
 
                 <div class="campo campo-pessoal">
@@ -129,11 +131,21 @@ elseif (isset($_GET['success'])) {
                     function openWhatsApp() {
                         var telefone = document.getElementById("telefone").value;
                         var telefoneLimpo = telefone.replace(/[^\d]/g, ""); // Remover caracteres não numéricos
+                        var telefoneCompleto = "55" + 61982629675;
+                        var mensagem = "Olá, vi o seu perfil no site Busca Service. Vamos conversar?";
+                        var url = "https://api.whatsapp.com/send?phone=" + telefoneCompleto + "&text=" + encodeURIComponent(mensagem);
+                        window.open(url, "_blank");
+                    }
+                </script>
+                <!-- <script>
+                    function openWhatsApp() {
+                        var telefone = document.getElementById("telefone").value;
+                        var telefoneLimpo = telefone.replace(/[^\d]/g, ""); // Remover caracteres não numéricos
                         var telefoneCompleto = "55" + telefoneLimpo;
                         var url = "https://api.whatsapp.com/send?phone=" + telefoneCompleto;
                         window.open(url, "_blank");
                     }
-                </script>
+                </script> -->
             </div>
         </div>
 
@@ -142,13 +154,13 @@ elseif (isset($_GET['success'])) {
             <div class="imagens_trabalho_img">
                 <?php if (!empty($row['fotosec'])) : ?>
                     <div class="campo campo-pessoal">
-                        <img src="<?= $row['fotosec'] ?>" class="imagens_perfil" alt="imagem" style="width:160px;height:150px;">
+                        <img src="<?= $row['fotosec'] ?>" class="imagens_perfil" alt="imagem" style="width:230px;height:220px;">
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty($row['fotosec2'])) : ?>
                     <div class="campo campo-pessoal">
-                        <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil" alt="Imagem" style="width:160px;height:150px;">
+                        <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil" alt="Imagem" style="width:230px;height:220px;">
                     </div>
                 <?php endif; ?>
             </div>
@@ -190,7 +202,7 @@ elseif (isset($_GET['success'])) {
 
                     // Exibe as estrelas correspondentes à pontuação
                     for ($i = 1; $i <= 5; $i++) {
-                        $starImage = ($i <= $avaliacao['pontuacao']) ? 'assets/img/estrela.png' : 'assets/img/estrela_vazia.png';
+                        $starImage = ($i <= $avaliacao['pontuacao']) ? 'assets/img/estrela.png' : 'assets/img/estrela_vazia2.png';
                         echo '<img src="' . $starImage . '" style="width: 25px; height: 25px;">';
                     }
                     echo '</div>';
@@ -213,15 +225,15 @@ elseif (isset($_GET['success'])) {
                         <label for="pontuacao" class="label_perfil">Pontuação:</label>
                         <div class="estrelas">
                             <input type="radio" id="pontuacao1" name="pontuacao" value="1" required>
-                            <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao2" name="pontuacao" value="2" required>
-                            <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao3" name="pontuacao" value="3" required>
-                            <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao4" name="pontuacao" value="4" required>
-                            <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao5" name="pontuacao" value="5" required>
-                            <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="hidden" name="idpro" value="<?php echo $row['idpro']; ?>">
                         </div>
                     </div>
@@ -242,7 +254,7 @@ elseif (isset($_GET['success'])) {
                         if (i < pontuacao) {
                             estrelas[i].src = 'assets/img/estrela.png';
                         } else {
-                            estrelas[i].src = 'assets/img/estrela_vazia.png';
+                            estrelas[i].src = 'assets/img/estrela_vazia2.png';
                         }
                     }
                 }
