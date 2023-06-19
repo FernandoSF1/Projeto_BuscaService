@@ -27,7 +27,7 @@
             text-align: center;
             background-color: rgb(3, 3, 133);
             border-radius: 8px;
-            font-size: 1.5em;
+            font-size: 2em;
             color: #dedede;
         }
 
@@ -58,14 +58,20 @@
             border: none;
             border: 1px solid #949494;
             background-color: #fff;
-            height: 30px;
+            height: 35px;
             border-radius: 5px;
             outline: none;
             color: black;
-            font-size: 1em;
+            font-size: 1.1em;
             width: 100%;
             letter-spacing: 2px;
             font-weight: 300;
+        }
+
+        .asterisk{
+            font-size: 0.9em;
+            color: rgb(158, 0, 0);
+            margin-left: 5px;
         }
 
         .labelInput {
@@ -74,7 +80,17 @@
             left: 0px;
             margin-bottom: 10px;
             pointer-events: none;
+            top: -23px;
+            font-size: 1.2em;
+            color: rgb(3, 3, 133);
+            font-weight: 600;
             transition: .5s;
+        }
+
+        .labelInput2{
+            font-size: 1.2em;
+            color: rgb(3, 3, 133);
+            font-weight: 600;
         }
 
         .fileInput {
@@ -85,6 +101,8 @@
         .fileInputLabel {
             background-color: #4CAF50;
             /* Cor de fundo do botão */
+            font-weight: 500;
+            font-size: 1em;
             color: white;
             /* Cor do texto do botão */
             padding: 10px 10px;
@@ -100,12 +118,16 @@
             /* Cor de fundo do botão ao passar o mouse */
         }
 
-        .inputUser:focus~.labelInput,
-        .inputUser:valid~.labelInput {
-            top: -20px;
-            font-size: 0.95em;
-            color: rgb(3, 3, 133);
-            font-weight: 600;
+        #arquivo_selecionado_perfil{
+            font-size: 1.1em;
+        }
+
+        #arquivo_selecionado_trabalho1{
+            font-size: 1.1em;
+        }
+
+        #arquivo_selecionado_trabalho2{
+            font-size: 1.1em;
         }
 
         .select-wrapper {
@@ -113,8 +135,8 @@
         }
 
         .active {
-            top: -20px;
-            font-size: 0.95em;
+            top: -23px;
+            font-size: 1.2em;
             color: rgb(3, 3, 133);
             font-weight: 600;
         }
@@ -125,7 +147,7 @@
             border: none;
             padding: 15px;
             color: white;
-            font-size: 1em;
+            font-size: 1.2em;
             cursor: pointer;
             border-radius: 10px;
             align-items: center;
@@ -140,7 +162,7 @@
             border: none;
             padding: 15px;
             color: white;
-            font-size: 1em;
+            font-size: 1.2em;
             cursor: pointer;
             border-radius: 10px;
             align-items: center;
@@ -192,6 +214,7 @@
 
         .categoria_servicos {
             width: 45%;
+            font-size: 1.1em;
             margin: 10px auto;
         }
 
@@ -220,7 +243,6 @@
         .servicos_oferecidos {
             display: flex;
             margin-left: 30px;
-            font-weight: 500;
         }
 
         .servicos_lista ul {
@@ -236,11 +258,11 @@
 
         /*FIM MENU DE SERVIÇOS*/
 
-        .descricao {
+        .descricao_form {
             width: 100%;
             height: 150px;
             padding: 10px;
-            font-size: 14px;
+            font-size: 1.1em;
             border: 1px solid #bebebe;
             border-radius: 4px;
             resize: vertical;

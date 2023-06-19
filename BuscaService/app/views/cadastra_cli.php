@@ -8,7 +8,11 @@ require_once 'layouts/site/menu.php';
 require_once 'login.php';
 require_once "../database/conexao.php";
 
-
+# Verifica se o usuário está logado
+if (isset($_SESSION['usuario'])) {
+    header("Location: index.php?error=Você já está logado em uma conta registrada!");
+    exit;
+}
 
 # verifica se os dados do formulario foram enviados via POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -63,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <main>
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -71,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -99,49 +104,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             <div class="inputBox">
                                 <input type="text" name="nome" id="nome" class="inputUser" required>
-                                <label for="nome" class="labelInput">Nome</label>
+                                <label for="nome" class="labelInput">Nome:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="email" name="email" id="email" class="inputUser" required>
-                                <label for="email" class="labelInput">E-mail:</label>
+                                <label for="email" class="labelInput">E-mail:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="password" name="senha" id="senha" class="inputUser" required>
-                                <label for="senha" class="labelInput">Senha:</label>
+                                <label for="senha" class="labelInput">Senha:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cpf" id="cpf" class="inputUser" required>
-                                <label for="cpf" class="labelInput">CPF:</label>
+                                <label for="cpf" class="labelInput">CPF:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="tel" name="telefone-whatsapp" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required>
-                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
+                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):<span class="asterisk">*</span></label>
                             </div>
                         </div>
 
                         <div class="endereco">
                             <div class="inputBox">
                                 <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required>
-                                <label for="cep" class="labelInput">CEP:</label><br>
+                                <label for="cep" class="labelInput">CEP:<span class="asterisk">*</span></label><br>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="estado" id="estado" class="inputUser" required>
-                                <label for="uf" class="labelInput">Estado:</label>
+                                <label for="uf" class="labelInput">Estado:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cidade" id="cidade" class="inputUser" required>
-                                <label for="cidade" class="labelInput">Cidade:</label>
+                                <label for="cidade" class="labelInput">Cidade:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="bairro" id="bairro" class="inputUser" required>
-                                <label for="bairro" class="labelInput">Bairro:</label>
+                                <label for="bairro" class="labelInput">Bairro:<span class="asterisk">*</span></label>
                             </div><br><br>
                         </div>
 

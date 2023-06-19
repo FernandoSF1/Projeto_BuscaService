@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # se sim, redireciona para a pagina de admin com mensagem de sucesso.
     # se não, redireciona para a pagina de cadastro com mensagem de erro.
     if ($stmt->rowCount()) {
-        header('location: usuario_admin.php?success=Servico inserido com sucesso!');
+        header('location: usuario_admin.php?success=Serviço inserido com sucesso!');
     } else {
-        header('location: usuario_admin_addserv.php?error=Erro ao inserir servico!');
+        header('location: usuario_admin_addserv.php?error=Erro ao inserir serviço!');
     }
 
     # destroi a conexao com o banco de dados.
@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -88,23 +89,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <div class="inputBox">
                             <input type="text" name="nome" id="nome" class="inputUser" required>
-                            <label for="nome" class="labelInput">Nome</label>
+                            <label for="nome" class="labelInput">Nome do serviço:<span class="asterisk">*</span></label>
                         </div>
+                        
                         <div class="inputBox">
                             <input type="text" name="categoria" id="categoria" class="inputUser" required>
-                            <label for="categoria" class="labelInput">Categoria</label>
-                        </div>
+                            <label for="categoria" class="labelInput">Categoria:<span class="asterisk">*</span></label>
+                        </div><br>
+
                         <div class="inputBox">
-                            <label for="status" class="labelInput">Status</label><br>
+                            <label for="status" class="labelInput">Status:<span class="asterisk">*</span></label>
                             <div class="select-wrapper">
-                                <select name="status" id="status">
+                                <select name="status" id="status" class="inputUser" required>
                                     <option value="1">Ativo</option>
                                     <option value="0">Inativo</option>
                                 </select>
                                 <span class="select-icon"></span>
                             </div>
-                        </div>
-                        <br><br>
+                        </div><br><br>
 
                     </fieldset>
                     <div class="btn_alinhamento">

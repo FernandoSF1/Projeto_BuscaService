@@ -108,6 +108,7 @@ $dbh = null;
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -116,7 +117,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -144,64 +145,64 @@ $dbh = null;
                         <div class="dadosPessoais">
                             <div class="inputBox">
                                 <input type="text" name="nome" id="nome" class="inputUser" required>
-                                <label for="nome" class="labelInput">Nome completo:</label>
+                                <label for="nome" class="labelInput">Nome:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="titulo" id="titulo" class="inputUser" required>
-                                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):</label>
+                                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="email" name="email" id="email" class="inputUser" required>
-                                <label for="email" class="labelInput">E-mail:</label>
+                                <label for="email" class="labelInput">E-mail:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="password" name="senha" id="senha" class="inputUser" required>
-                                <label for="senha" class="labelInput">Senha:</label>
+                                <label for="senha" class="labelInput">Senha:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cpf" id="cpf" class="inputUser" required>
-                                <label for="cpf" class="labelInput">CPF:</label>
+                                <label for="cpf" class="labelInput">CPF:<span class="asterisk">*</span></label>
                             </div>
                             <br>
 
                             <div class="inputBox">
                                 <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required>
-                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
+                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
-                                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required>
-                                <label for="telefone-geral" class="labelInput">Telefone:</label>
+                                <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14">
+                                <label for="telefone-geral" class="labelInput">Outro telefone: (opcional)</label>
                             </div>
                         </div>
 
                         <div class="endereco">
                             <div class="inputBox">
                                 <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required>
-                                <label for="cep" class="labelInput">CEP:</label><br>
+                                <label for="cep" class="labelInput">CEP:<span class="asterisk">*</span></label><br>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="estado" id="estado" class="inputUser" required>
-                                <label for="uf" class="labelInput">Estado:</label>
+                                <label for="uf" class="labelInput">Estado:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cidade" id="cidade" class="inputUser" required>
-                                <label for="cidade" class="labelInput">Cidade:</label>
+                                <label for="cidade" class="labelInput">Cidade:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="bairro" id="bairro" class="inputUser" required>
-                                <label for="bairro" class="labelInput">Bairro:</label>
+                                <label for="bairro" class="labelInput">Bairro:<span class="asterisk">*</span></label>
                             </div>
                         </div>
 
-                        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
+                        <label for="servicos" class="servicos_oferecidos labelInput2">Serviços oferecidos:<span class="asterisk">*</span></label>
                         <div class="seleciona_servicos">
 
                             <div class="servicos_lista">
@@ -244,8 +245,8 @@ $dbh = null;
                         <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
 
                         <div class="inputBox">
-                            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
-                            <p><br><br>
+                            <label for="fotoprin" class="labelInput2">Imagem do perfil:<span class="asterisk">*</span></label>
+                            <p><br>
                                 <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*" required>
                                 <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
                                 <span id="arquivo_selecionado_perfil"></span>
@@ -254,14 +255,13 @@ $dbh = null;
                         </div>
 
                         <div class="inputBox">
-                            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-                            <textarea class="descricao" id="field_conteudo" name="descricao" rows="6" required></textarea>
+                            <label for="field_conteudo" class="labelInput2">Fale um pouco sobre você ou sobre o seu negócio:<span class="asterisk">*</span></label><br>
+                            <textarea class="descricao_form" id="field_conteudo" name="descricao" rows="6" required></textarea>
                         </div>
 
                         <div class="inputBox">
-                            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui
-                                (opcional):</label>
-                            <p><br><br>
+                            <label for="fotosec" class="labelInput2">Envie fotos do seu trabalho aqui: (opcional)</label>
+                            <p><br>
                                 <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
                                 <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
                                 <span id="arquivo_selecionado_trabalho1"></span>
@@ -269,9 +269,8 @@ $dbh = null;
                         </div>
 
                         <div class="inputBox">
-                            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho
-                                (opcional):</label>
-                            <p><br><br>
+                            <label for="fotosec2" class="labelInput2">Envie mais uma foto do seu trabalho: (opcional)</label>
+                            <p><br>
                                 <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
                                 <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
                                 <span id="arquivo_selecionado_trabalho2"></span>
@@ -279,7 +278,7 @@ $dbh = null;
                         </div>
 
                         <div class="inputBox">
-                            <label for="status" class="labelInput">Status</label><br>
+                            <label for="status" class="labelInput2">Status:<span class="asterisk">*</span></label><br>
                             <div class="select-wrapper">
                                 <select name="status" id="status" class="inputUser" required>
                                     <option value="1">Ativo</option>

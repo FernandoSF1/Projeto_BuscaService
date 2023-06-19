@@ -23,7 +23,7 @@ if (isset($_GET['error'])) {
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Erro',
+            title: 'Ops!',
             text: '<?= $_GET['error'] ?>',
         });
     </script>
@@ -49,6 +49,7 @@ elseif (isset($_GET['success'])) {
 <main>
     <section>
         <div class="introducao_fundo">
+        <?php require_once "botoes_navegacao.php"?>
             <article class="introducao">
                 <header>
                     <h1>Encontre os serviços que esteja precisando!</h1>
@@ -136,24 +137,32 @@ elseif (isset($_GET['success'])) {
 
         <!--INÍCIO DOBRA REGISTRO-->
         <article>
-            <header>
-                <div class="registrar">
-                    <div class="registrar-pro">
-                        <p>Se você é um profissional autônomo, registre o seu serviço no site e alcançe mais clientes!</p>
-                        <div class="registrar-pro-btn">
-                            <a href="cadastra_pro.php">Registre-se como profissional</a>
-                        </div>
-                    </div>
-
-                    <div class="registrar-cli">
-                        <p>Você é um cliente? Registre-se como cliente e tenha acesso a mais recursos</p>
-                        <div class="registrar-cli-btn">
-                            <a href="cadastra_cli.php">Registre-se como cliente</a>
-                        </div>
+    <header>
+        <div class="registrar">
+        <?php
+        if (!isset($_SESSION['usuario']) || ($_SESSION['usuario']['perfil'] != 'PRO' && $_SESSION['usuario']['perfil'] != 'CLI')) {
+            // Usuário não logado ou usuário logado com perfil diferente de PRO e CLI, exibe as divs de registro
+            echo '
+                <div class="registrar-pro">
+                    <p>Se você é um profissional autônomo, registre o seu serviço no site e alcance mais clientes!</p>
+                    <div class="registrar-pro-btn">
+                        <a href="cadastra_pro.php">Registre-se como profissional</a>
                     </div>
                 </div>
-            </header>
-        </article>
+
+                <div class="registrar-cli">
+                    <p>Você é um cliente? Registre-se como cliente e tenha acesso a mais recursos</p>
+                    <div class="registrar-cli-btn">
+                        <a href="cadastra_cli.php">Registre-se como cliente</a>
+                    </div>
+                </div>
+            </div>';
+        }
+        ?>
+    </header>
+</article>
+
+
     </section>
     <!--FIM DOBRA REGISTRO-->
 

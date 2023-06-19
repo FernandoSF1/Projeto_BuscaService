@@ -9,8 +9,9 @@ require_once 'login.php';
 ?>
 
 <!--INÍCIO DOBRA POLITICA DE QUEM SOMOS-->
-<main>
-    <section>
+<main class="bg_form">
+<?php require_once "botoes_navegacao.php"?>
+    <section class="main_contato_dados">
         <article>
             <header class="introducao_link">
                 <h1>Quem Somos - Busca Service</h1>
@@ -28,35 +29,25 @@ require_once 'login.php';
 
                 <h3 class="titulo_link">Missão</h3>
 
-                <p>Nosso objetivo principal é ajudar a quem precisa
-                    serviços, contudo nosso site oferece apoio tanto
-                    para clientes quanto para profissionais.
-                    Nosso público alvo é quem está disposto a
-                    acrescentar junto conosco.</p>
+                <p>Divulgar os melhores profissionais, inicialmente do Distrito Federal e futuramente do Brasil, capacitados e especializados em diversos serviços com ampla experiência e com foco na qualidade e eficiência dos serviços.</p>
 
                 <h4 class="titulo_link">Visão</h4>
 
-                <p>Esperamos que futuramente nosso site tenha um amplo
-                    crescimento dentro do mercado de trabalho e que seja
-                    reconhecido principalmente por pessoas que estejam
-                    precisando de serviços autônomos.
-                    Além disso, que conquiste espaço internacional por
-                    meio da inovação, estando sempre à frente dos
-                    demais.</p>
+                <p>Consquistar espaço no ramo de prestação de serviço oferecendo um site acessível e dinâmico, proporcionando as melhores experiências e facilitando o acesso para os nossos clientes.</p>
 
                 <h5 class="titulo_link">Valores</h5>
 
-                <p>Parceria, serviço ao cliente, integridade e
-                    responsabilidade. Foco em resultados, segurança,
-                    eficiência e facilidade. Simplicidade, foco na
-                    satisfação do cliente, qualidade e melhoria dos
-                    serviços. Acessibilidade e prosperidade para todos.
-                    Essas são algumas de nossas crenças, filosofia e
-                    princípios que deverão orientar nossos negócios e
-                    atividades.
-                    Deverão ser a motivação, o direcionamento e o
-                    posicionamento para agir com foco nos objetivos e na
-                    ética.</p>
+                <p>Parceria;<br>
+                    Serviço ao cliente;<br>
+                    Integridade e responsabilidade;<br>
+                    Foco em resultados;<br>
+                    Segurança;<br>
+                    Eficiência e facilidade;<br>
+                    Simplicidade;<br>
+                    Foco na satisfação do cliente;<br>
+                    Qualidade e melhoria dos serviços;<br>
+                    Acessibilidade e prosperidade para todos.
+                </p>
 
             </header>
         </div>

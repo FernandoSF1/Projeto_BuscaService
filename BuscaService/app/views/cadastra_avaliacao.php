@@ -8,8 +8,8 @@ require_once 'layouts/site/menu.php';
 require_once "../database/conexao.php";
 
 // Verificando se o usuário está logado como cliente
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'CLI') {
-    header("Location: index.php?error=Você precisa estar logado como cliente para ter acesso a este recurso");
+if (!isset($_SESSION['usuario']) || ($_SESSION['usuario']['perfil'] != 'CLI' && $_SESSION['usuario']['perfil'] != 'ADM')) {
+    header("Location: index.php?error=Você precisa estar logado como cliente para ter acesso a este recurso!");
     exit;
 }
 
@@ -36,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idpro_encrypted = base64_encode($idpro);
 
     if ($stmt->execute()) {
-        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&success=Avaliação cadastrada com sucesso.";
+        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&success=Avaliação cadastrada com sucesso";
         header('Location: ' . $url);
     } else {
-        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&error=Erro ao enviar avaliação.";
+        $url = "perfil_exibe_pro.php?idpro=" . urlencode($idpro_encrypted) . "&error=Erro ao enviar avaliação";
         header('Location: ' . $url);
     }
 
@@ -55,7 +55,7 @@ if (isset($_GET['error'])) {
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Erro',
+            title: 'Ops!',
             text: '<?= $_GET['error'] ?>',
         });
     </script>

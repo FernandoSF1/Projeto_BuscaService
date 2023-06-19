@@ -1,5 +1,8 @@
 <?php
+
 session_start();
+
+
 require_once 'layouts/site/header.php';
 require_once 'layouts/site/menu.php';
 require_once 'login.php';
@@ -35,7 +38,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script>
       Swal.fire({
         icon: 'error',
-        title: 'Erro',
+        title: 'Ops!',
         text: '<?= $_GET['error'] ?>',
       });
     </script>
@@ -54,6 +57,10 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php
   }
   ?>
+  
+  <article class="main_volta">
+    <?php require_once "botoes_navegacao.php"?>
+  </article>
   <article>
     <header>
       <div class="busca">

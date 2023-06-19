@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
     $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $cpf = isset($_POST['cpf']) ? $_POST['cpf'] : '';
     $telefone = isset($_POST['telefone']) ? $_POST['telefone'] : '';
     $telefone2 = $_POST['telefone2'] ?? '';
     $cep = isset($_POST['cep']) ? $_POST['cep'] : '';
@@ -51,60 +50,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     # cria uma consulta no banco de dados buscando todos os dados da tabela profissional
-# filtrando pelo id do profissional.
-$query = "SELECT * FROM `busca_service`.`profissional` WHERE idpro=:idpro LIMIT 1";
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':idpro', $idpro);
+    # filtrando pelo id do profissional.
+    $query = "SELECT * FROM `busca_service`.`profissional` WHERE idpro=:idpro LIMIT 1";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':idpro', $idpro);
 
-# executa a consulta no banco de dados e aguarda o resultado.
-$stmt->execute();
+    # executa a consulta no banco de dados e aguarda o resultado.
+    $stmt->execute();
 
-# Faz um fetch para trazer os dados existentes, se existirem, em um array na variável $row.
-# se não existir, retorna null
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variável $row.
+    # se não existir, retorna null
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-# Verificar se a imagem atual do $row está vazia e se o campo 'fotoprin' está vazio
-if (empty($row['fotoprin']) && empty($_FILES['fotoprin']['name'])) {
-    # Se ambos estiverem vazios, exiba uma mensagem de erro e interrompa o processamento do formulário
-    echo "Por favor, selecione uma imagem para o perfil.";
-    return;
-}
+    # Verificar se a imagem atual do $row está vazia e se o campo 'fotoprin' está vazio
+    if (empty($row['fotoprin']) && empty($_FILES['fotoprin']['name'])) {
+        # Se ambos estiverem vazios, exiba uma mensagem de erro e interrompa o processamento do formulário
+        echo "Por favor, selecione uma imagem para o perfil.";
+        return;
+    }
 
-// CADASTRO DE IMAGENS
+    // CADASTRO DE IMAGENS
 
-# Verificar o campo 'fotoprin'
-if (!empty($_FILES['fotoprin']['name'])) {
-    require_once 'update_fotoprin.php';
-    # Atualize o valor de $destino_fotoprin aqui, com base na lógica do script 'update_fotoprin.php'
-} else {
-    $destino_fotoprin = $row['fotoprin'];
-}
+    # Verificar o campo 'fotoprin'
+    if (!empty($_FILES['fotoprin']['name'])) {
+        require_once 'update_fotoprin.php';
+        # Atualize o valor de $destino_fotoprin aqui, com base na lógica do script 'update_fotoprin.php'
+    } else {
+        $destino_fotoprin = $row['fotoprin'];
+    }
 
-# Repita a mesma lógica para os campos 'fotosec' e 'fotosec2'
-if (!empty($_FILES['fotosec']['name'])) {
-    require_once 'update_fotosec.php';
-    # Atualize o valor de $destino_fotosec aqui
-} else {
-    $destino_fotosec = $row['fotosec'];
-}
+    # Repita a mesma lógica para os campos 'fotosec' e 'fotosec2'
+    if (!empty($_FILES['fotosec']['name'])) {
+        require_once 'update_fotosec.php';
+        # Atualize o valor de $destino_fotosec aqui
+    } else {
+        $destino_fotosec = $row['fotosec'];
+    }
 
-if (!empty($_FILES['fotosec2']['name'])) {
-    require_once 'update_fotosec2.php';
-    # Atualize o valor de $destino_fotosec2 aqui
-} else {
-    $destino_fotosec2 = $row['fotosec2'];
-}
+    if (!empty($_FILES['fotosec2']['name'])) {
+        require_once 'update_fotosec2.php';
+        # Atualize o valor de $destino_fotosec2 aqui
+    } else {
+        $destino_fotosec2 = $row['fotosec2'];
+    }
 
     // ...
 
     // Insere os dados do profissional na tabela 'profissional'
-    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
+    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2, `perfil` = :perfil, `status` = :status 
                     WHERE idpro = :idpro";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':titulo', $titulo);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':telefone2', $telefone2);
     $stmt->bindParam(':cep', $cep);
@@ -137,7 +135,9 @@ if (!empty($_FILES['fotosec2']['name'])) {
     if ($stmt->rowCount()) {
         header('location: usuario_admin_listpro.php?success=Profissional atualizado com sucesso!');
     } else {
-        header('location: usuario_admin_updpro.php?error=Erro ao atualizar o profissional!');
+        $error_message = urlencode('Erro ao atualizar o profissional!');
+        $redirect_url = 'usuario_admin_updpro.php?error=' . $error_message . '&idpro=' . $idpro;
+        header('location: ' . $redirect_url);
     }
 }
 
@@ -165,6 +165,7 @@ $dbh = null;
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
+        <?php require_once "botoes_navegacao.php" ?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -173,7 +174,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -200,58 +201,58 @@ $dbh = null;
                         <div class="dadosPessoais">
                             <div class="inputBox">
                                 <input type="text" name="nome" id="nome" class="inputUser" required autofocus value="<?= isset($row) ? $row['nome'] : '' ?>">
-                                <label for="nome" class="labelInput">Nome</label>
+                                <label for="nome" class="labelInput">Nome:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="titulo" id="titulo" class="inputUser" required autofocus value="<?= isset($row) ? $row['titulo'] : '' ?>">
-                                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):</label>
+                                <label for="titulo" class="labelInput">Título (seu nome ou do negócio):<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="email" name="email" id="email" class="inputUser" autofocus value="<?= isset($row) ? $row['email'] : '' ?>">
-                                <label for="email" class="labelInput <?= isset($row) && !empty($row['email']) ? 'active' : '' ?>">E-mail:</label>
+                                <label for="email" class="labelInput <?= isset($row) && !empty($row['email']) ? 'active' : '' ?>">E-mail:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cpf" id="cpf" class="inputUser" readonly autofocus value="<?= isset($row) ? $row['cpf'] : '' ?>">
-                                <label for="cpf" class="labelInput <?= isset($row) && !empty($row['cpf']) ? 'active' : '' ?>">CPF:</label>
+                                <label for="cpf" class="labelInput <?= isset($row) && !empty($row['cpf']) ? 'active' : '' ?>">CPF:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="tel" name="telefone" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required autofocus value="<?= isset($row) ? $row['telefone'] : '' ?>">
-                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
+                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="tel" name="telefone2" id="telefone-geral" class="inputUser" minlength="14" maxlength="14" required autofocus value="<?= isset($row) ? $row['telefone2'] : '' ?>">
-                                <label for="telefone-geral" class="labelInput">Telefone:</label>
+                                <label for="telefone-geral" class="labelInput">Outro telefone: (opcional)<span class="asterisk">*</span></label>
                             </div>
                         </div>
 
                         <div class="endereco">
                             <div class="inputBox">
                                 <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" autofocus value="<?= isset($row) ? $row['cep'] : '' ?>">
-                                <label for="cep" class="labelInput">CEP:</label><br>
+                                <label for="cep" class="labelInput">CEP:<span class="asterisk">*</span></label><br>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="estado" id="estado" class="inputUser" autofocus value="<?= isset($row) ? $row['estado'] : '' ?>">
-                                <label for="uf" class="labelInput">Estado:</label>
+                                <label for="uf" class="labelInput">Estado:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cidade" id="cidade" class="inputUser" autofocus value="<?= isset($row) ? $row['cidade'] : '' ?>">
-                                <label for="cidade" class="labelInput">Cidade:</label>
+                                <label for="cidade" class="labelInput">Cidade:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="bairro" id="bairro" class="inputUser" autofocus value="<?= isset($row) ? $row['bairro'] : '' ?>">
-                                <label for="bairro" class="labelInput">Bairro:</label>
+                                <label for="bairro" class="labelInput">Bairro:<span class="asterisk">*</span></label>
                             </div>
                         </div>
 
-                        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
+                        <label for="servicos" class="servicos_oferecidos labelInput2">Serviços oferecidos:<span class="asterisk">*</span></label>
                         <div class="seleciona_servicos">
                             <div class="servicos_lista">
                                 <?php
@@ -294,61 +295,59 @@ $dbh = null;
                         <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
 
                         <div class="inputBox">
-    <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
-    <p><br><br>
-        <?php
-        if (!empty($row['fotoprin'])) {
-            echo '<img src="' . $row['fotoprin'] . '" alt="Imagem do perfil" style="width: 50px; height: 50px;">';
-        }
-        ?>
-        <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*">
-        <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
-        <span id="arquivo_selecionado_perfil"></span>
-    </p>
-    <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
-</div>
+                            <label for="fotoprin" class="labelInput2">Imagem do perfil:<span class="asterisk">*</span></label>
+                            <p><br>
+                                <?php
+                                if (!empty($row['fotoprin'])) {
+                                    echo '<img src="' . $row['fotoprin'] . '" alt="Imagem do perfil" style="width: 50px; height: 50px;">';
+                                }
+                                ?>
+                                <input type="file" class="fileInput" name="fotoprin" id="fotoprin" data-titulo="Imagem" data-obrigatorio="1" accept="image/*">
+                                <label for="fotoprin" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_perfil"></span>
+                            </p>
+                            <span class="campo-obrigatorio" style="display: none;">Por favor, selecione uma imagem para o perfil.</span>
+                        </div>
 
 
                         <div class="inputBox">
-                            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-                            <textarea class="descricao" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
+                            <label for="field_conteudo" class="labelInput2">Fale um pouco sobre você ou sobre o seu negócio:<span class="asterisk">*</span></label><br>
+                            <textarea class="descricao_form" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
                         </div>
 
                         <div class="inputBox">
-    <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui (opcional):</label>
-    <p><br><br>
-        <?php
-        if (!empty($row['fotosec'])) {
-            echo '<img src="' . $row['fotosec'] . '" alt="Primeira imagem do trabalho" style="width: 50px; height: 50px;">';
-        }
-        ?>
-        <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
-        <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
-        <span id="arquivo_selecionado_trabalho1"></span>
-    </p>
-</div>
-
-
-<div class="inputBox">
-    <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho (opcional):</label>
-    <p><br><br>
-        <?php
-        if (!empty($row['fotosec2'])) {
-            echo '<img src="' . $row['fotosec2'] . '" alt="Segunda imagem do trabalho" style="width: 50px; height: 50px;">';
-        }
-        ?>
-        <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
-        <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
-        <span id="arquivo_selecionado_trabalho2"></span>
-    </p>
-</div>
+                            <label for="fotosec" class="labelInput2">Envie fotos do seu trabalho aqui: (opcional)</label>
+                            <p><br>
+                                <?php
+                                if (!empty($row['fotosec'])) {
+                                    echo '<img src="' . $row['fotosec'] . '" alt="Primeira imagem do trabalho" style="width: 50px; height: 50px;">';
+                                }
+                                ?>
+                                <input type="file" class="fileInput" name="fotosec" id="fotosec" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho1"></span>
+                            </p>
+                        </div>
 
 
                         <div class="inputBox">
-                            <label for="perfil" id="perfilLabel">Perfil</label><br>
-                            <select name="perfil" id="perfil"><br><br>
-                                <option value="CLI" <?= isset($row) && $row['perfil'] == 'CLI' ? 'selected' : '' ?>>
-                                    Cliente</option>
+                            <label for="fotosec2" class="labelInput2">Envie mais uma foto do seu trabalho: (opcional)</label>
+                            <p><br>
+                                <?php
+                                if (!empty($row['fotosec2'])) {
+                                    echo '<img src="' . $row['fotosec2'] . '" alt="Segunda imagem do trabalho" style="width: 50px; height: 50px;">';
+                                }
+                                ?>
+                                <input type="file" class="fileInput" name="fotosec2" id="fotosec2" data-titulo="Imagem" accept="image/*">
+                                <label for="fotosec2" class="fileInputLabel">Escolher arquivo</label>
+                                <span id="arquivo_selecionado_trabalho2"></span>
+                            </p>
+                        </div>
+
+
+                        <div class="inputBox">
+                            <label for="perfil" class="labelInput2">Perfil:<span class="asterisk">*</span></label>
+                            <select name="perfil" id="perfil" class="inputUser" required><br><br>
                                 <option value="PRO" <?= isset($row) && $row['perfil'] == 'PRO' ? 'selected' : '' ?>>
                                     Profissional</option>
                                 <option value="ADM" <?= isset($row) && $row['perfil'] == 'ADM' ? 'selected' : '' ?>>
@@ -357,9 +356,9 @@ $dbh = null;
                         </div>
 
                         <div class="inputBox">
-                            <label for="status" class="statusLabel">Status</label><br>
+                            <label for="status" class="labelInput2">Status:<span class="asterisk">*</span></label>
                             <div class="select-wrapper">
-                                <select name="status" id="status"><br><br>
+                                <select name="status" id="status" class="inputUser" required><br><br>
                                     <option value="1" <?= isset($row) && $row['status'] == '1' ? 'selected' : '' ?>>Ativo
                                     </option>
                                     <option value="0" <?= isset($row) && $row['status'] == '0' ? 'selected' : '' ?>>Inativo

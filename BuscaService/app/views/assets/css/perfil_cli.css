@@ -2,7 +2,7 @@
     max-width: 80%;
     width: 80%;
     margin: 100px auto;
-    padding: 20px;
+    padding: 30px 50px;
     background-color: #f2f2f2;
     text-align: center;
     display: flex;
@@ -14,7 +14,9 @@
 }
 
 .container_titulo {
-    font-size: 1.8em;
+    font-size: 2em;
+    margin-bottom: 40px;
+    color: #333;
 }
 
 .perfil-btn,
@@ -56,10 +58,21 @@
 
 #edit-perfil {
     position: absolute;
-    top: 30px;
+    font-size: 1.2em;
+    top: 15px;
     right: 30px;
     background-color: rgb(0, 73, 122);
     padding: 15px;
+}
+
+#delete-perfil {
+    position: absolute;
+    font-size: 1.2em;
+    top: 75px;
+    right: 30px;
+    background-color: rgb(158, 0, 0);
+    padding: 5px;
+    width: 120px;
 }
 
 .avaliacao-botoes {
@@ -84,22 +97,46 @@
     display: flex;
     justify-content: space-between;
     flex-basis: 100%;
+    flex-wrap: wrap;
 }
 
 .dados-pessoais_cli {
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-basis: 50%;
+    flex-basis: 55%;
+    flex-wrap: wrap;
 }
 
 .dados-endereco {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: flex-start;
-    flex-basis: 50%;
+    flex-basis: 45%;
+    flex-wrap: wrap;
+}
+
+.campo_titulo_perfil {
+    display: flex;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: rgb(0, 73, 122);
+}
+
+.dado_pessoal_perfil {
+    display: flex;
+    font-size: 1.2em;
+}
+
+.servicos-oferecidos-perfil {
+    display: block;
+    text-align: left;
+}
+
+.destaque-servico {
+    font-weight: 600;
+    color: #333;
 }
 
 .descricao {
@@ -108,23 +145,77 @@
 }
 
 .descricao_titulo {
+    display: flex;
     font-size: 1.5em;
     color: #333;
+    margin-top: 50px;
 }
 
+.titulo_descricao_perfil{
+    font-weight: bold;
+    color: rgb(0, 73, 122);
+}
+
+
 .descricao_negocio {
-    background-color: #f2f2f2;
+    background-color: #fff;
+    margin-top: 10px;
+    font-size: 1.2em;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    width: 100%; /* Largura máxima */
-    overflow: auto; /* Rolagem caso o conteúdo exceda a altura */
+    max-width: 385px; /* Largura máxima */
+    overflow: hidden; /* Oculta a rolagem vertical */
 }
 
 .descricao_negocio p {
     margin: 0;
     line-height: 1.5;
-    text-align: justify;
+    text-align: left;
+    overflow: hidden; /* Oculta a rolagem vertical */
+    white-space: pre-wrap; /* Permite quebra de linha */
+    word-wrap: break-word; /* Quebra de palavra */
+}
+
+
+.imagens_perfil{
+    display: flex;
+    width: 230px;
+    height: 220px;
+    margin: 20px 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    transition: 0.1s all ease-out;
+    border: 7px solid #333;
+    padding: 10px;
+}
+
+
+.imagens_perfil_trabalho{
+    display: flex;
+    margin: 30px 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    transition: 0.1s all ease-out;
+}
+
+.imagens_perfil_trabalho:hover{
+    transition: 0.2s;
+    scale: 1.3;
+}
+
+.whatsapp_btn{
+    margin-top: 40px;
+    transition: 0.8s all ease-out;
+}
+
+.whatsapp_btn:hover{
+    scale: 1.05;
+    transition: 0.8s;
 }
 
 .imagens_trabalho {
@@ -144,8 +235,9 @@
 .imagens_trabalho_img {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 50px;
     margin-top: 20px;
+    border-radius: 10px;
 }
 
 .campo {
@@ -156,12 +248,29 @@
     flex-basis: 100%;
     margin-top: 20px;
     text-align: left;
+    padding: 0 30px;
+}
+
+.avaliacoes_titulo{
+    display: flex;
+    justify-content: center;
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 50px;
+}
+
+.avaliacao_form_titulo{
+    font-size: 1.5em;
+    color: #333;
+    margin-top: 100px;
+    margin-bottom: 50px;
 }
 
 .avaliacoes>h2 {
-    flex-basis: 100%;
-    margin-top: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-size: 1.5em;
+    color: #333;
 }
 
 .avaliacao-item {
@@ -169,6 +278,7 @@
     border: 1px solid #ddd;
     padding: 10px;
     font-size: 1.2em;
+    background-color: #fff;
 }
 
 .avaliacao-nome {
@@ -194,9 +304,23 @@
     font-weight: bold;
 }
 
+.estrelas_alinhamento{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .avaliacao-estrelas {
     margin-bottom: 5px;
+}
+
+.estrelas_ind{
+    transition: 0.2s all ease-out;
+}
+
+.estrelas_ind:hover{
+    scale: 1.4;
+    transition: 0.2s;
 }
 
 .avaliacao-pontuacao {
@@ -207,21 +331,50 @@
     margin-bottom: 10px;
     font-size: 1.2em;
     padding: 20px 10px;
-    border: 1px solid #ebebeb;
+    border: 1px solid #ddd;
 }
 
 .avaliacao-form {
     margin-top: 20px;
 }
 
+.avaliacao-form>h2{
+    margin-top: 30px;
+    font-size: 1.5em;
+    color: #333;
+}
+
 .campo-avaliacao {
     margin-bottom: 10px;
 }
 
+.btn_enviar_ava_perfilpro{
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(0, 73, 122);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn_enviar_ava_perfilpro:hover {
+  background-color: rgb(3, 3, 133);
+}
+
+
 .label_perfil {
     display: block;
+    font-size: 1.3em;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
     color: rgb(3, 3, 133);
     font-weight: 600;
 }
@@ -229,13 +382,26 @@
 .input_perfil[type="text"],
 .input_perfil[type="number"],
 .input_perfil[type="email"],
-.input_perfil[type="tel"],
-textarea {
+.input_perfil[type="tel"] {
+    display: flex;
+    font-size: 1.2em;
     padding: 5px;
     width: 300px;
     border-radius: 3px;
     border: 1px solid #ddd;
     background-color: #fff;
+}
+
+.input_perfil2[type="text"], textarea {
+    display: flex;
+    font-size: 1.2em;
+    padding: 5px;
+    width: 300px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100%;
+    height: 100px;
 }
 
 .historico-avaliacoes {
@@ -257,6 +423,7 @@ textarea {
 .btn_historico {
     display: inline-block;
     padding: 10px 20px;
+    font-size: 1.2em;
     background-color: #4CAF50;
     color: #fff;
     text-decoration: none;

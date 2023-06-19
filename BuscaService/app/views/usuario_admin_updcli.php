@@ -56,11 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # se sim, redireciona para a pagina de admin com mensagem de sucesso.
     # se não, redireciona para a pagina de cadastro com mensagem de erro.
     if ($stmt->rowCount()) {
-        header('location: usuario_admin_addcli.php?success=Cliente atualizado com sucesso!');
+        header('location: usuario_admin_listcli.php?success=Cliente atualizado com sucesso!');
     } else {
-        $error = $dbh->errorInfo();
-        var_dump($error);
-        header('location: usuario_admin_newcli.php?error=Erro ao atualizar o cliente!');
+        {
+            $error_message = urlencode('Erro ao atualizar o cliente!');
+            $redirect_url = 'usuario_admin_updcli.php?error=' . $error_message . '&idcli=' . $idcli;
+            header('location: ' . $redirect_url);
+        }
     }
 
     # destroi a conexao com o banco de dados.
@@ -94,6 +96,7 @@ $dbh = null;
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -102,7 +105,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -129,63 +132,61 @@ $dbh = null;
                         <div class="dadosPessoais">
                             <div class="inputBox">
                                 <input type="text" name="nome" id="nome" class="inputUser" required autofocus value="<?= isset($row) ? $row['nome'] : '' ?>">
-                                <label for="nome" class="labelInput">Nome</label>
+                                <label for="nome" class="labelInput">Nome:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="email" name="email" id="email" class="inputUser" autofocus value="<?= isset($row) ? $row['email'] : '' ?>">
-                                <label for="email" class="labelInput <?= isset($row) && !empty($row['email']) ? 'active' : '' ?>">E-mail:</label>
+                                <label for="email" class="labelInput <?= isset($row) && !empty($row['email']) ? 'active' : '' ?>">E-mail:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cpf" id="cpf" class="inputUser" readonly autofocus value="<?= isset($row) ? $row['cpf'] : '' ?>">
-                                <label for="cpf" class="labelInput <?= isset($row) && !empty($row['cpf']) ? 'active' : '' ?>">CPF:</label>
+                                <label for="cpf" class="labelInput <?= isset($row) && !empty($row['cpf']) ? 'active' : '' ?>">CPF:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="tel" name="telefone-whatsapp" id="telefone-whatsapp" class="inputUser" minlength="14" maxlength="14" required autofocus value="<?= isset($row) ? $row['telefone'] : '' ?>">
-                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):</label>
+                                <label for="telefone-whatsapp" class="labelInput">Celular (WhatsApp):<span class="asterisk">*</span></label>
                             </div>
                         </div>
 
                         <div class="endereco">
                             <div class="inputBox">
                                 <input type="text" id="cep" name="cep" class="inputUser" maxlength="8" minlength="8" required autofocus value="<?= isset($row) ? $row['cep'] : '' ?>">
-                                <label for="cep" class="labelInput">CEP:</label><br>
+                                <label for="cep" class="labelInput">CEP:<span class="asterisk">*</span></label><br>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="estado" id="estado" class="inputUser" required autofocus value="<?= isset($row) ? $row['estado'] : '' ?>">
-                                <label for="uf" class="labelInput">Estado:</label>
+                                <label for="uf" class="labelInput">Estado:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="cidade" id="cidade" class="inputUser" required autofocus value="<?= isset($row) ? $row['cidade'] : '' ?>">
-                                <label for="cidade" class="labelInput">Cidade:</label>
+                                <label for="cidade" class="labelInput">Cidade:<span class="asterisk">*</span></label>
                             </div>
 
                             <div class="inputBox">
                                 <input type="text" name="bairro" id="bairro" class="inputUser" required autofocus value="<?= isset($row) ? $row['bairro'] : '' ?>">
-                                <label for="bairro" class="labelInput">Bairro:</label>
+                                <label for="bairro" class="labelInput">Bairro:<span class="asterisk">*</span></label>
                             </div><br><br>
                         </div>
 
                         <div class="inputBox">
-                            <label for="perfil" id="perfilLabel">Perfil</label><br>
-                            <select name="perfil" id="perfil"><br><br>
+                            <label for="perfil" class="labelInput">Perfil<span class="asterisk">*</span></label>
+                            <select name="perfil" id="perfil" class="inputUser" required><br><br>
                                 <option value="CLI" <?= isset($row) && $row['perfil'] == 'CLI' ? 'selected' : '' ?>>
                                     Cliente</option>
-                                <option value="PRO" <?= isset($row) && $row['perfil'] == 'PRO' ? 'selected' : '' ?>>
-                                    Profissional</option>
                                 <option value="ADM" <?= isset($row) && $row['perfil'] == 'ADM' ? 'selected' : '' ?>>
                                     Administrador</option>
                             </select>
                         </div><br>
 
                         <div class="inputBox">
-                            <label for="status" class="statusLabel">Status</label><br>
+                            <label for="status" class="labelInput">Status<span class="asterisk">*</span></label>
                             <div class="select-wrapper">
-                                <select name="status" id="status"><br><br>
+                                <select name="status" id="status" class="inputUser" required><br><br>
                                     <option value="1" <?= isset($row) && $row['status'] == '1' ? 'selected' : '' ?>>Ativo
                                     </option>
                                     <option value="0" <?= isset($row) && $row['status'] == '0' ? 'selected' : '' ?>>Inativo

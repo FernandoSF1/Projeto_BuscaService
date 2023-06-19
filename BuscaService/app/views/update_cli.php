@@ -101,6 +101,7 @@ $dbh = null;
 
 <body>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -109,7 +110,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>

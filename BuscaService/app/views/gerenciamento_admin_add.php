@@ -28,8 +28,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                     <li class="item_sidebar"><a href="usuario_admin_addcli.php">Clientes</a></li>
                     <li class="item_sidebar"><a href="usuario_admin_addpro.php">Profissionais</a></li>
                     <li class="item_sidebar"><a href="usuario_admin_addserv.php">Serviços</a></li>
-                    <li class="item_sidebar"><a href="usuario_admin_addava.php">Avaliações</a></li>
-                    <!--<li><a href="#">Avaliações</a></li>-->
+                    <!-- <li class="item_sidebar"><a href="usuario_admin_addava.php">Avaliações</a></li> -->
                 </ul>
             </nav>
         </div>
@@ -37,6 +36,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
         <!--FIM MENU LATERAL-->
 
         <div class="main_stage_lista">
+        <?php require_once "botoes_navegacao.php" ?>
             <div class="main_stage_lista_content">
 
                 <article>
@@ -48,12 +48,6 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
 
                     </header>
                 </article>
-                <article>
-                    <header>
-                        <h2><a href="usuario_admin.php" class="btn_volta">Voltar</a></h2>
-                    </header>
-                </article>
-
             </div>
         </div>
     </section>

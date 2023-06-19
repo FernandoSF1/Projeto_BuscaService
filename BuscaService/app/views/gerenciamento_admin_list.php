@@ -36,6 +36,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
         <!--FIM MENU LATERAL-->
 
         <div class="main_stage_lista">
+        <?php require_once "botoes_navegacao.php" ?>
             <div class="main_stage_lista_content">
 
                 <article>
@@ -43,16 +44,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                         <h1>Listagem de Dados</h1>
                         <p>Bem-vindo(a) à página de Gerenciamento do Busca Service! Aqui você terá acesso a todas as ferramentas necessárias para alterar e excluir dados do sistema.
                         </p><br>
-                        <p>Usando o menu lateral localizado à esquerda da página, você poderá navegar pelas diferentes seções de gerenciamento, que incluem clientes, profissionais e serviços. Em cada seção, você encontrará as ferramentas para o gerenciamento daquele aspecto do sistema selecionado.</p>
+                        <p>Usando o menu lateral localizado à esquerda da página, você poderá navegar pelas diferentes seções de gerenciamento, que incluem clientes, profissionais, serviços e avaliações. Em cada seção, você encontrará as ferramentas para o gerenciamento daquele aspecto do sistema selecionado.</p>
 
                     </header>
                 </article>
-                <article>
-                    <header>
-                        <h2><a href="usuario_admin.php" class="btn_volta">Voltar</a></h2>
-                    </header>
-                </article>
-
             </div>
         </div>
     </section>

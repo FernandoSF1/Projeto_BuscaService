@@ -9,7 +9,7 @@
             <h2>Nossas Páginas</h2>
         </header>
         <ul>
-            <li><a href="index.php">Topo</a></li>
+            <li><button class="topo-button" onclick="scrollToTop()">Topo</button></li>
             <li><a href="quem_somos.php">Quem somos</a></li>
         </ul>
     </article>
@@ -46,5 +46,9 @@
 <script src="assets/js/modal.js">
     //janela modal
 </script>
-
+<script>
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
 </html>

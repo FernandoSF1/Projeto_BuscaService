@@ -63,9 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->rowCount()) {
         header('location: usuario_admin_listava.php?success=Avaliação atualizada com sucesso!');
         exit;
-    } else {
-        $error = $dbh->errorInfo();
-        var_dump($error);
+    } else {;
         header('location: usuario_admin_updava.php?idava=' . urlencode($idavaCriptografado) . '&idpro=' . urlencode($idproCriptografado) . '&error=Erro ao atualizar a avaliação!');
         exit;
     }
@@ -80,6 +78,7 @@ $dbh = null;
 
 <body>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -88,7 +87,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -114,6 +113,7 @@ $dbh = null;
                         <legend><b>Atualizar Avaliação</b></legend>
                         <div class="avaliacoes">
                             <h2>Nota atual da avaliação: <?php echo $pontuacaoAvaAtual; ?></h2>
+                            <div class="estrelas_alinhamento">
                             <?php
                             $estrelaPreenchida = 'assets/img/estrela.png';
                             $estrelaVazia = 'assets/img/estrela_vazia2.png';
@@ -123,27 +123,27 @@ $dbh = null;
                                 echo '<img src="' . $imagemEstrela . '" alt="Estrela" style="width: 25px; height: 25px;">';
                             }
                             ?>
-
+                            </div>
                             <div class="avaliacao-form">
-                                <h2>Fazer uma Avaliação</h2>
+                                <h2>Alterar avaliação</h2>
                                 <div class="campo-avaliacao">
                                     <label for="pontuacao" class="label_perfil">Pontuação:</label>
                                     <div class="estrelas">
                                         <input type="radio" id="pontuacao1" name="pontuacao" value="1" required <?php if ($row['pontuacao'] == '1') echo 'checked'; ?>>
-                                        <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao2" name="pontuacao" value="2" required <?php if ($row['pontuacao'] == '2') echo 'checked'; ?>>
-                                        <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao3" name="pontuacao" value="3" required <?php if ($row['pontuacao'] == '3') echo 'checked'; ?>>
-                                        <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao4" name="pontuacao" value="4" required <?php if ($row['pontuacao'] == '4') echo 'checked'; ?>>
-                                        <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                         <input type="radio" id="pontuacao5" name="pontuacao" value="5" required <?php if ($row['pontuacao'] == '5') echo 'checked'; ?>>
-                                        <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                                        <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                                     </div>
                                 </div>
                                 <div class="campo-avaliacao">
                                     <label for="comentario" class="label_perfil">Comentário:</label>
-                                    <textarea id="comentario" name="comentario" class="input_perfil"><?php echo $row['comentario']; ?></textarea>
+                                    <textarea id="comentario" name="comentario" class="input_perfil2"><?php echo $row['comentario']; ?></textarea>
                                 </div>
 
                                 <script>
@@ -158,7 +158,7 @@ $dbh = null;
                                             }
                                         }
                                     }
-                                </script><br><br>
+                                </script>
                             </div><br><br>
 
 

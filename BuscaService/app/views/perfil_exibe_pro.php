@@ -46,7 +46,7 @@ if (isset($_GET['error'])) {
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Erro',
+            title: 'Ops!',
             text: '<?= $_GET['error'] ?>',
         });
     </script>
@@ -67,29 +67,49 @@ elseif (isset($_GET['success'])) {
 ?>
 
 <body>
+<?php require_once "botoes_navegacao.php"?>
     <div class="container">
         <h1 class="container_titulo">Perfil do Profissional</h1>
 
         <div class="dados">
             <div class="dados-pessoais_cli">
-                
+
                 <div class="campo campo-pessoal">
-                    <label for="" class="label_perfil">Imagem do perfil:</label>
-                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil" style="width:200px;height:190px;">
+                    <img src="<?= $row['fotoprin'] ?>" class="imagens_perfil" alt="Imagem perfil">
                 </div>
 
                 <div class="campo campo-pessoal">
-                    <label for="titulo" class="label_perfil">Título do seu negócio:</label>
-                    <input type="text" id="titulo" class="input_perfil" value="<?= $row['titulo'] ?>" readonly>
+                    <p class="campo_titulo_perfil"><?php echo $row['titulo']; ?></p>
                 </div>
 
                 <div class="campo campo-pessoal">
                     <label for="nome" class="label_perfil">Nome do profissional:</label>
-                    <input type="text" id="nome" class="input_perfil" value="<?= $row['nome'] ?>" readonly>
+                    <p class="dado_pessoal_perfil"><?= $row['nome'] ?></p>
                 </div>
 
                 <div class="campo campo-pessoal">
-                    <h2 class="descricao_titulo">Sobre:</h2>
+                    <label for="nome_servico" class="label_perfil">Serviço(s) que este profissional oferece:</label>
+                    <p class="dado_pessoal_perfil servicos-oferecidos-perfil">
+                        <?php
+                        $dbh = Conexao::getInstance();
+                        $queryServicos = "SELECT s.nome FROM servico s INNER JOIN profissional_has_servico ps ON s.idserv = ps.idserv WHERE ps.idpro = :idpro ORDER BY s.nome ASC";
+                        $stmtServicos = $dbh->prepare($queryServicos);
+                        $stmtServicos->bindParam(':idpro', $idpro);
+                        $stmtServicos->execute();
+                        $servicos = $stmtServicos->fetchAll(PDO::FETCH_COLUMN);
+                        $totalServicos = count($servicos);
+                        foreach ($servicos as $index => $servico) {
+                            echo '<span class="destaque-servico">' . $servico . '</span>';
+                            if ($index < $totalServicos - 1) {
+                                echo ', ';
+                            }
+                        }
+                        ?>
+                    </p>
+                </div>
+
+                <div class="campo campo-pessoal">
+                    <h2 class="descricao_titulo">Sobre <span class="titulo_descricao_perfil"><?php echo "&nbsp;" . $row['titulo']; ?></span>:</h2>
                     <div class="descricao_negocio">
                         <p><?php echo $row['descricaonegocio']; ?></p>
                     </div>
@@ -99,17 +119,17 @@ elseif (isset($_GET['success'])) {
             <div class="dados dados-endereco">
                 <div class="campo campo-endereco">
                     <label for="estado" class="label_perfil">Estado:</label>
-                    <input type="text" id="estado" class="input_perfil" value="<?= $row['estado'] ?>" readonly>
+                    <p class="dado_pessoal_perfil"><?= $row['estado'] ?></p>
                 </div>
 
                 <div class="campo campo-endereco">
                     <label for="cidade" class="label_perfil">Cidade:</label>
-                    <input type="text" id="cidade" class="input_perfil" value="<?= $row['cidade'] ?>" readonly>
+                    <p id="nome" class="dado_pessoal_perfil"><?= $row['cidade'] ?></p>
                 </div>
 
                 <div class="campo campo-endereco">
                     <label for="bairro" class="label_perfil">Bairro:</label>
-                    <input type="text" id="bairro" class="input_perfil" value="<?= $row['bairro'] ?>" readonly>
+                    <p id="nome" class="dado_pessoal_perfil"><?= $row['bairro'] ?></p>
                 </div>
 
                 <div class="campo campo-pessoal">
@@ -123,7 +143,7 @@ elseif (isset($_GET['success'])) {
 
                 <div class="campo campo-pessoal">
                     <a href="#" onclick="openWhatsApp()">
-                        <img src="assets/img/whatsapp.png" alt="WhatsApp" width="400">
+                        <img src="assets/img/whatsapp.png" class="whatsapp_btn" alt="WhatsApp" width="300">
                     </a>
                 </div>
 
@@ -152,23 +172,30 @@ elseif (isset($_GET['success'])) {
         <section class="imagens_trabalho">
             <h2 class="imagens_trabalho_titulo">Galeria de imagens</h2>
             <div class="imagens_trabalho_img">
-                <?php if (!empty($row['fotosec'])) : ?>
-                    <div class="campo campo-pessoal">
-                        <img src="<?= $row['fotosec'] ?>" class="imagens_perfil" alt="imagem" style="width:230px;height:220px;">
-                    </div>
-                <?php endif; ?>
+                <?php if (!empty($row['fotosec']) || !empty($row['fotosec2'])) : ?>
+                    <?php if (!empty($row['fotosec'])) : ?>
+                        <div class="campo campo-pessoal">
+                            <img src="<?= $row['fotosec'] ?>" class="imagens_perfil_trabalho" alt="imagem" style="width:230px;height:220px;">
+                        </div>
+                    <?php endif; ?>
 
-                <?php if (!empty($row['fotosec2'])) : ?>
-                    <div class="campo campo-pessoal">
-                        <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil" alt="Imagem" style="width:230px;height:220px;">
-                    </div>
+                    <?php if (!empty($row['fotosec2'])) : ?>
+                        <div class="campo campo-pessoal">
+                            <img src="<?= $row['fotosec2'] ?>" class="imagens_perfil_trabalho" alt="Imagem" style="width:230px;height:220px;">
+                        </div>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <div class="nao-encontrados-img">
+                    <p>A galeria de imagens de <?= $row['titulo'] ?> não possui imagens no momento</p>
+                     </div>
                 <?php endif; ?>
             </div>
         </section>
 
 
+
         <div class="avaliacoes">
-            <h3>Avaliações</h3>
+            <h3 class="avaliacoes_titulo">Avaliações</h3>
 
             <?php
             # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
@@ -213,36 +240,38 @@ elseif (isset($_GET['success'])) {
                     echo '</div>';
                 }
             } else {
-                echo '<p>Nenhuma avaliação encontrada.</p>';
+                echo '<div class="nao-encontrados">';
+                echo '<p>Nenhuma avaliação encontrada</p>';
+                echo '</div>';
             }
             ?>
 
             <!-- Código do formulário de avaliação -->
             <div class="avaliacao-form">
-                <h4>Fazer uma Avaliação</h4>
+                <h4 class="avaliacao_form_titulo">Fazer uma Avaliação</h4>
                 <form action="cadastra_avaliacao.php" method="POST">
                     <div class="campo-avaliacao">
                         <label for="pontuacao" class="label_perfil">Pontuação:</label>
                         <div class="estrelas">
                             <input type="radio" id="pontuacao1" name="pontuacao" value="1" required>
-                            <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao1" onclick="marcarEstrelas(1)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao2" name="pontuacao" value="2" required>
-                            <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao2" onclick="marcarEstrelas(2)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao3" name="pontuacao" value="3" required>
-                            <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao3" onclick="marcarEstrelas(3)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao4" name="pontuacao" value="4" required>
-                            <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao4" onclick="marcarEstrelas(4)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="radio" id="pontuacao5" name="pontuacao" value="5" required>
-                            <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" alt="Estrela" style="width: 25px; height: 25px;"></label>
+                            <label for="pontuacao5" onclick="marcarEstrelas(5)"><img src="assets/img/estrela_vazia2.png" class="estrelas_ind" alt="Estrela" style="width: 25px; height: 25px;"></label>
                             <input type="hidden" name="idpro" value="<?php echo $row['idpro']; ?>">
                         </div>
                     </div>
                     <div class="campo-avaliacao">
                         <label for="comentario" class="label_perfil">Comentário:</label>
-                        <textarea id="comentario" name="comentario" class="input_perfil"></textarea>
+                        <textarea id="comentario" name="comentario" class="input_perfil2"></textarea>
                         <input type="hidden" name="idpro" value="<?= $idpro ?>">
                     </div>
-                    <input type="submit" value="Enviar Avaliação">
+                    <input type="submit" value="Enviar Avaliação" class="btn_enviar_ava_perfilpro">
                 </form>
             </div>
 
@@ -259,12 +288,8 @@ elseif (isset($_GET['success'])) {
                     }
                 }
             </script>
-
-
         </div>
-
     </div>
-
     </main>
 
     <!--INÍCIO DOBRA RODAPÉ-->

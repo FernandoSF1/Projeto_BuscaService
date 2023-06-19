@@ -54,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+<?php require_once "botoes_navegacao.php"?>
+
 <?php
 $query = "SELECT a.*, c.nome AS nome_cliente, p.titulo AS titulo_negocio 
               FROM `busca_service`.`avaliacao` AS a
@@ -111,7 +113,7 @@ if ($stmt->rowCount() > 0) {
         echo '<button class="perfil-btn" name="botao" id="edit-cli-ava' . $avaliacao['idava'] . '" value="editar">Editar avaliação</button>';
         echo '</a>';
 
-        echo '<form method="POST" onsubmit="return confirm(\'Deseja excluir a avaliação?\');" action="">';
+        echo '<form method="POST" onsubmit="return confirm(\'Deseja realmente excluir esta avaliação?\');" action="">';
         echo '<input type="hidden" name="idava" value="' . $avaliacao['idava'] . '">';
         echo '<button class="perfil-btn" name="botao" id="delete-cli-ava" value="deletar">Excluir avaliação</button>';
         echo '</form>';
@@ -121,7 +123,12 @@ if ($stmt->rowCount() > 0) {
     }
     echo '</div>'; // Fecha a div "historico-avaliacoes"
 } else {
+    echo '<h2 class="historico-avaliacoes-titulo">Histórico de avaliações enviadas</h2>';
+    echo '<br><br><br>';
+    echo '<div class="nao-encontrados">';
     echo '<p>Nenhuma avaliação encontrada.</p>';
+    echo '</div>';
+    echo '<br><br><br>';
 }
 ?>
 
@@ -132,7 +139,7 @@ if (isset($_GET['error'])) {
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Erro',
+            title: 'Ops!',
             text: '<?= $_GET['error'] ?>',
         });
     </script>

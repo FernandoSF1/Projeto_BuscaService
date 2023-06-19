@@ -9,7 +9,7 @@
 
                 <nav>
     <ul class="navmenu">
-        <li><a href="index.php" class='navmenu_index'>Página Inicial</a></li>
+        <li><a href="index.php" class='navmenu_index'>Início</a></li>
 
         <?php
         # verifica se existe sessão de usuário e se ele é administrador.

@@ -17,6 +17,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main>
+    <?php require_once "botoes_navegacao.php"?>
         <?php
         # Verifica se existe uma mensagem de erro enviada via GET
         if (isset($_GET['error'])) {
@@ -24,7 +25,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
             <script>
                 Swal.fire({
                     icon: 'error',
-                    title: 'Erro',
+                    title: 'Ops!',
                     text: '<?= $_GET['error'] ?>',
                 });
             </script>
@@ -55,7 +56,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                         <header>
 
                             <p align="center">
-                                <a href="gerenciamento_admin_add.php"><img src="assets/img/cadastro.png" width="200"></a>
+                                <a href="gerenciamento_admin_add.php"><img src="assets/img/cadastrar_dados.png" width="200"></a>
                             </p>
 
                         </header>
@@ -64,7 +65,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
                         <h2 align="center">Listar dados</h2>
                         <header>
 
-                            <p align="center"><a href="gerenciamento_admin_list.php"><img src="assets/img/listar.png" width="350"></a></p>
+                            <p align="center"><a href="gerenciamento_admin_list.php"><img src="assets/img/listar_dados.png" width="200"></a></p>
 
                         </header>
                     </article>

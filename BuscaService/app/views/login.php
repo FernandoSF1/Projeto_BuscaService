@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('location: usuario_admin.php');
         } else {
             header('location: index.php');
+
         }
     } elseif ($rowProfissional) {
 
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Usuário não encontrado em nenhuma das tabelas
         session_destroy();
-        header('location: index.php?error=Usuário ou senha inválidos.');
+        header('location: index.php?error=Usuário ou senha inválidos');
     }
 
     # destroi a conexão com o banco de dados.

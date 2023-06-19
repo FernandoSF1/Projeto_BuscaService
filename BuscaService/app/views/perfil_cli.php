@@ -39,6 +39,34 @@ if (!$row) {
     header('location: index.php?error=Usuário inválido.');
 }
 
+# verifica se os dados do formulario foram enviados via POST 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    # recupera o id do enviado por post para delete ou update.
+    $idcli = (isset($_POST['idcli']) ? $_POST['idcli'] : 0);
+    $operacao = (isset($_POST['botao']) ? $_POST['botao'] : null);
+    # verifica se o nome do botão acionado por post se é deletar ou atualizar
+    if ($operacao === 'deletar') {
+        # cria uma query no banco de dados para excluir o usuario com id informado 
+        $query = "DELETE FROM `busca_service`.`cliente` WHERE idcli = :idcli";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':idcli', $idcli);
+
+        # executa a consulta banco de dados para excluir o registro.
+        $stmt->execute();
+
+        # verifica se a quantiade de registros excluido é maior que zero.
+        # se sim, redireciona para a pagina index com mensagem de sucesso.
+        # se não, redireciona para a pagina perfil_cli com mensagem de erro.
+        if ($stmt->rowCount()) {
+            # destroi todas sessões, se existirem.
+            session_destroy();
+            header('location: index.php?success=Conta excluída com sucesso!');
+        } else {
+            header('location: perfil_cli.php?error=Erro ao excluir a sua conta!');
+        }
+    }
+}
+
 # destroi a conexao com o banco de dados.
 $dbh = null;
 ?>
@@ -50,7 +78,7 @@ if (isset($_GET['error'])) {
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Erro',
+            title: 'Ops!',
             text: '<?= $_GET['error'] ?>',
         });
     </script>
@@ -71,10 +99,20 @@ elseif (isset($_GET['success'])) {
 ?>
 
 <body>
+<?php require_once "botoes_navegacao.php"?>
     <div class="container">
         <h1 class="container_titulo">Perfil do Cliente</h1>
-        <!-- Botão: Editar dados -->
-        <a href="update_cli.php?idcli=<?= base64_encode($row['idcli']) ?>" class="perfil-btn" id="edit-perfil">Editar dados</a>
+
+        <!-- Botão: Editar dados -->    
+        <a href="update_cli.php?idcli=<?= base64_encode($row['idcli']) ?>">
+        <button class="perfil-btn" name="botao" id="edit-perfil" value="editar">Editar meus dados</button>
+        </a>
+
+        <!-- Botão: Apagar conta -->
+        <form action="" method="post">
+            <input type="hidden" name="idcli" value="<?= $row['idcli'] ?>" />
+            <button class="perfil-btn" name="botao" id="delete-perfil" value="deletar" onclick="return confirm('Deseja realmente excluir sua conta?');">Excluir minha conta</button>
+        </form>
 
         <div class="dados">
             <div class="dados-pessoais_cli">
@@ -129,12 +167,12 @@ elseif (isset($_GET['success'])) {
 
         <!-- Tópico: Histórico de avaliações enviadas -->
         <div class="historico-avaliacoes">
-            <h2>Histórico de avaliações enviadas</h2>
+            <h2 class="imagens_trabalho_titulo">Histórico de avaliações enviadas</h2>
             <a href="historico_ava.php?idcli=<?= base64_encode($row['idcli']) ?>" class="btn_historico">Ver avaliações</a>
         </div>
         <!-- Tópico: Histórico de pagamento -->
         <div class="historico-avaliacoes">
-            <h2>Pagamento</h2>
+            <h2 class="imagens_trabalho_titulo">Pagamento</h2>
             <!-- Declaração do formulário -->
             <form method="post" target="pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">
 

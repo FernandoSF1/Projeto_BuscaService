@@ -8,9 +8,10 @@ require_once 'layouts/site/menu.php';
 require_once 'login.php';
 ?>
 
-<main>
+<main class="bg_form">
   <section class="main_contato">
-    <div>
+  <?php require_once "botoes_navegacao.php"?>
+    <div class="main_contato_dados">
       <h1>Contato</h1>
 
       <div class="contato-info">
@@ -30,8 +31,7 @@ require_once 'login.php';
       </div>
 
       <form id="form_contato" method="POST" action="" data-customvalidate="true" autocomplete="off" novalidate>
-        <input type="hidden" name="source" value="Formulário de Contato" />
-        <input type="hidden" name="hash" value="80f3e07940c9e3c2888735b2a279092e" />
+
 
         <div>
           <div>
@@ -72,7 +72,7 @@ require_once 'login.php';
           </div>
 
           <div class="alinhar_bt">
-            <button type="submit" class="bt">Enviar Mensagem</button>
+            <a href="" class="bt">Enviar Mensagem</a>
           </div>
         </div>
       </form>

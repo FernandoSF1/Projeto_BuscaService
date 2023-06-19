@@ -10,6 +10,7 @@ require_once 'login.php';
 
 <!--INÍCIO DOBRA POLITICA DE PRIVACIDADE-->
 <main>
+<?php require_once "botoes_navegacao.php"?>
     <section>
         <article class="introducao_link">
             <header>

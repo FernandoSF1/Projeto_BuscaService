@@ -46,9 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->rowCount()) {
         header('location: usuario_admin_listserv.php?success=Serviço atualizado com sucesso!');
     } else {
-        $error = $dbh->errorInfo();
-        var_dump($error);
-        header('location: usuario_admin_updserv.php?error=Erro ao atualizar o serviço!');
+        {
+            $error_message = urlencode('Erro ao atualizar o serviço!');
+            $redirect_url = 'usuario_admin_updserv.php?error=' . $error_message . '&idserv=' . $idserv;
+            header('location: ' . $redirect_url);
+        }
     }
 
     # destroi a conexao com o banco de dados.
@@ -82,6 +84,7 @@ $dbh = null;
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
     <main class="bg_form">
+    <?php require_once "botoes_navegacao.php"?>
         <div class="main_opc">
             <?php
             # Verifica se existe uma mensagem de erro enviada via GET
@@ -90,7 +93,7 @@ $dbh = null;
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'Erro',
+                        title: 'Ops!',
                         text: '<?= $_GET['error'] ?>',
                     });
                 </script>
@@ -116,18 +119,18 @@ $dbh = null;
 
                         <div class="inputBox">
                             <input type="text" name="nome" id="nome" class="inputUser" autofocus value="<?= isset($row) ? $row['nome'] : '' ?>">
-                            <label for="nome" class="labelInput">Nome</label>
+                            <label for="nome" class="labelInput">Nome do serviço:<span class="asterisk">*</span></label>
                         </div>
 
                         <div class="inputBox">
                             <input type="text" name="categoria" id="categoria" class="inputUser" autofocus value="<?= isset($row) ? $row['categoria'] : '' ?>">
-                            <label for="categoria" class="labelInput">Categoria</label>
+                            <label for="categoria" class="labelInput">Categoria:<span class="asterisk">*</span></label>
                         </div><br>
 
                         <div class="inputBox">
-                            <label for="status" class="statusLabel">Status</label><br>
+                            <label for="status" class="labelInput">Status:<span class="asterisk">*</span></label>
                             <div class="select-wrapper">
-                                <select name="status" id="status"><br><br>
+                                <select name="status" id="status" class="inputUser" required><br><br>
                                     <option value="1" <?= isset($row) && $row['status'] == '1' ? 'selected' : '' ?>>Ativo
                                     </option>
                                     <option value="0" <?= isset($row) && $row['status'] == '0' ? 'selected' : '' ?>>Inativo
