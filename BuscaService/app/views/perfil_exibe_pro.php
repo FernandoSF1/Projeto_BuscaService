@@ -151,7 +151,7 @@ elseif (isset($_GET['success'])) {
                     function openWhatsApp() {
                         var telefone = document.getElementById("telefone").value;
                         var telefoneLimpo = telefone.replace(/[^\d]/g, ""); // Remover caracteres não numéricos
-                        var telefoneCompleto = "55" + 61982629675;
+                        var telefoneCompleto = "55" + 6192066241;
                         var mensagem = "Olá, vi o seu perfil no site Busca Service. Vamos conversar?";
                         var url = "https://api.whatsapp.com/send?phone=" + telefoneCompleto + "&text=" + encodeURIComponent(mensagem);
                         window.open(url, "_blank");

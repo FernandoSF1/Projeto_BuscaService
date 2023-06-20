@@ -257,7 +257,7 @@ $dbh = null;
                             </div>
                         </div>
 
-                        <label for="servicos" class="servicos_oferecidos">Serviços oferecidos:</label>
+                        <label for="servicos" class="servicos_oferecidos labelInput2">Serviços oferecidos:</label>
                         <div class="seleciona_servicos">
                             <div class="servicos_lista">
                                 <?php
@@ -300,8 +300,8 @@ $dbh = null;
                         <span class="servicos-obrigatorio" style="display: none;">Selecione pelo menos um serviço.</span>
 
                         <div class="inputBox">
-                            <label for="fotoprin" class="labelInput">Imagem do perfil:</label>
-                            <p><br><br>
+                            <label for="fotoprin" class="labelInput2">Imagem do perfil:</label>
+                            <p><br>
                                 <?php
                                 if (!empty($row['fotoprin'])) {
                                     echo '<img src="' . $row['fotoprin'] . '" alt="Imagem do perfil" style="width: 50px; height: 50px;">';
@@ -316,13 +316,13 @@ $dbh = null;
 
 
                         <div class="inputBox">
-                            <label for="field_conteudo" class="labelInput">Fale um pouco sobre você ou sobre o seu negócio:</label><br>
-                            <textarea class="descricao" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
+                            <label for="field_conteudo" class="labelInput2">Fale um pouco sobre você ou sobre o seu negócio:</label>
+                            <textarea class="descricao_form" id="field_conteudo" name="descricaonegocio" rows="6" required autofocus><?= isset($row) ? $row['descricaonegocio'] : '' ?></textarea>
                         </div>
 
                         <div class="inputBox">
-                            <label for="fotosec" class="labelInput">Envie fotos do seu trabalho aqui (opcional):</label>
-                            <p><br><br>
+                            <label for="fotosec" class="labelInput2">Envie fotos do seu trabalho aqui (opcional):</label>
+                            <p><br>
                                 <?php
                                 if (!empty($row['fotosec'])) {
                                     echo '<img src="' . $row['fotosec'] . '" alt="Primeira imagem do trabalho" style="width: 50px; height: 50px;">';
@@ -336,8 +336,8 @@ $dbh = null;
 
 
                         <div class="inputBox">
-                            <label for="fotosec2" class="labelInput">Envie mais uma foto do seu trabalho (opcional):</label>
-                            <p><br><br>
+                            <label for="fotosec2" class="labelInput2">Envie mais uma foto do seu trabalho (opcional):</label>
+                            <p><br>
                                 <?php
                                 if (!empty($row['fotosec2'])) {
                                     echo '<img src="' . $row['fotosec2'] . '" alt="Segunda imagem do trabalho" style="width: 50px; height: 50px;">';
