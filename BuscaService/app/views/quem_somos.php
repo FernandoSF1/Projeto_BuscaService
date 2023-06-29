@@ -33,7 +33,7 @@ require_once 'login.php';
 
                 <h4 class="titulo_link">Visão</h4>
 
-                <p>Consquistar espaço no ramo de prestação de serviço oferecendo um site acessível e dinâmico, proporcionando as melhores experiências e facilitando o acesso para os nossos clientes.</p>
+                <p>Conquistar espaço no ramo de prestação de serviço oferecendo um site acessível e dinâmico, proporcionando as melhores experiências e facilitando o acesso para os nossos clientes.</p>
 
                 <h5 class="titulo_link">Valores</h5>
 
@@ -41,12 +41,10 @@ require_once 'login.php';
                     Serviço ao cliente;<br>
                     Integridade e responsabilidade;<br>
                     Foco em resultados;<br>
-                    Segurança;<br>
-                    Eficiência e facilidade;<br>
-                    Simplicidade;<br>
-                    Foco na satisfação do cliente;<br>
+                    Segurança, eficiência e facilidade;<br>
+                    Simplicidade, foco na satisfação do cliente;<br>
                     Qualidade e melhoria dos serviços;<br>
-                    Acessibilidade e prosperidade para todos.
+                    Acessibilidade para todos.
                 </p>
 
             </header>

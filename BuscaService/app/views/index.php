@@ -49,7 +49,10 @@ elseif (isset($_GET['success'])) {
 <main>
     <section>
         <div class="introducao_fundo">
-        <?php require_once "botoes_navegacao.php"?>
+        <?php // Verifica se a sessão de usuário está ativa
+            if (isset($_SESSION['usuario'])) {
+                require_once "botoes_navegacao.php"; // Inclui os botões de navegação
+        }?>
             <article class="introducao">
                 <header>
                     <h1>Encontre os serviços que esteja precisando!</h1>

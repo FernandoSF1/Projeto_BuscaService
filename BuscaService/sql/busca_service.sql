@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS profissional(
   cidade VARCHAR(45) NOT NULL,
   bairro VARCHAR(45) NOT NULL,
   titulo VARCHAR(100) NOT NULL,
-  descricaonegocio TEXT NOT NULL,
+  descricaonegocio VARCHAR(255) NOT NULL,
   fotoprin VARCHAR(255) NOT NULL,
   fotosec VARCHAR(255) NULL DEFAULT NULL,
   fotosec2 VARCHAR(255) NULL DEFAULT NULL,

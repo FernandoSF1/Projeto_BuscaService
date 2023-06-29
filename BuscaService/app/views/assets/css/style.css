@@ -185,7 +185,8 @@ footer {
     text-align: center;
     color: #ebebeb;
     font-size: 1.4em;
-    margin-top: 130px;
+    padding-top: 130px;
+    /* margin-top: 130px; */
     margin-bottom: 110px;
 }
 

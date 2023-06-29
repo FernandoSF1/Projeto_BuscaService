@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
     $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $cpf = isset($_POST['cpf']) ? $_POST['cpf'] : '';
     $telefone = isset($_POST['telefone']) ? $_POST['telefone'] : '';
     $telefone2 = $_POST['telefone2'] ?? '';
     $cep = isset($_POST['cep']) ? $_POST['cep'] : '';
@@ -105,13 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ...
 
     // Insere os dados do profissional na tabela 'profissional'
-    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `cpf` = :cpf, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2 
+    $query = "UPDATE `busca_service`.`profissional` SET `nome` = :nome, `titulo` = :titulo, `email` = :email, `telefone` = :telefone, `telefone2` = :telefone2, `cep` = :cep, `estado` = :estado, `cidade` = :cidade, `bairro` = :bairro, `fotoprin` = :fotoprin, `descricaonegocio` = :descricaonegocio, `fotosec` = :fotosec, `fotosec2` = :fotosec2 
                     WHERE idpro = :idpro";
     $stmt = $dbh->prepare($query);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':titulo', $titulo);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':telefone2', $telefone2);
     $stmt->bindParam(':cep', $cep);
